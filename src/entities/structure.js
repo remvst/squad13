@@ -12,11 +12,13 @@ class Structure extends Entity {
         super();
         this.buckets.push('structure');
 
-
         this.walls = [];
 
-        this.walls.push(new Wall({ x: 0, y: 0 }, { x: 0, y: 100 }));
+        this.walls.push(new Wall({ x: 0, y: 0 }, { x: 0, y: 200 }));
         this.walls.push(new Wall({ x: 0, y: 0 }, { x: 200, y: 0 }));
+        this.walls.push(new Wall({ x: 0, y: 200 }, { x: 200, y: 200 }));
+        this.walls.push(new Wall({ x: 200, y: 0 }, { x: 200, y: 100 }));
+        this.walls.push(new Wall({ x: 200, y: 200 }, { x: 200, y: 150 }));
 
         for (const wall of this.walls) {
             const shunks = wall.length / 20;
@@ -30,6 +32,8 @@ class Structure extends Entity {
                         sprite.x = x;
                         sprite.y = y;
                         sprite.z = z;
+                        sprite.character = '-';
+                        sprite.rotation = wall.angle;
                     });
                 }
             }

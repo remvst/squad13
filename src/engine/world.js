@@ -63,7 +63,7 @@ class World {
         ctx.translate(-camera.x, -camera.y);
 
         for (const sprite of this.sprites) {
-            sprite.render();
+            sprite.render(camera);
         }
 
         ctx.restore();

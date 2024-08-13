@@ -1,3 +1,5 @@
+const PERSPECTIVE = 500;
+
 class Sprite {
 
     constructor() {
@@ -7,11 +9,15 @@ class Sprite {
         this.character = 'A';
     }
 
-    render() {
-        // console.log('go spr', this.x);
+    render(camera) {
+        const relDistX = (this.x - camera.x) / (CANVAS_WIDTH / 2);
+        const relDistY = (this.y - camera.y) / (CANVAS_HEIGHT / 2);
+
+        const addX = this.z * relDistX * PERSPECTIVE;
+        const addY = this.z * relDistY * PERSPECTIVE;
 
         ctx.save();
-        ctx.translate(this.x, this.y);
+        ctx.translate(this.x + addX, this.y + addY);
         ctx.rotate(this.rotation);
         ctx.scale(this.scaleX, this.scaleY);
         ctx.fillStyle = 'white';

@@ -19,6 +19,16 @@ class Character extends Entity {
 
             sprite.rotation = this.controls.aim.angle;
         });
+
+        // Hips
+        this.sprite(sprite => {
+            // console.log(this.x);
+            sprite.x = this.x;
+            sprite.y = this.y;
+            sprite.z = 0.5;
+
+            sprite.rotation = this.controls.aim.angle;
+        });
     }
 
     cycle(elapsed) {

@@ -3,7 +3,19 @@ class Game {
         this.world = new World();
 
         this.world.add(new Player());
-        this.world.add(new Structure());
+
+        const topLeft = { x: 0, y: 0 };
+        const topRight = { x: 200, y: 0 };
+        const bottomLeft = { x: 0, y: 200 };
+        const bottomRight = { x: 200, y: 200 };
+        const doorTop = { x: 200, y: 100 };
+        const doorBottom = { x: 200, y: 150 };
+        this.world.add(new Wall(topLeft, topRight, FULL_WALL));
+        this.world.add(new Wall(topLeft, bottomLeft, FULL_WALL));
+        this.world.add(new Wall(bottomLeft, bottomRight, FULL_WALL));
+        this.world.add(new Wall(topRight, doorTop, FULL_WALL));
+        this.world.add(new Wall(doorTop, doorBottom, DOOR_TOP));
+        this.world.add(new Wall(doorBottom, bottomRight, FULL_WALL));
     }
 
     cycle(elapsed) {

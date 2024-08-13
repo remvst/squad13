@@ -2,7 +2,7 @@ class Character extends Entity {
     constructor() {
         super();
 
-        this.speed = 100;
+        this.speed = 250;
 
         this.controls = {
             movement: { angle: 0, force: 0, },

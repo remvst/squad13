@@ -1,41 +1,47 @@
-class Wall {
-    constructor(from, to) {
+const FULL_WALL = {
+    fromZ: 0,
+    toZ: 1,
+}
+
+const DOOR_TOP = {
+    fromZ: 0.75,
+    toZ: 1,
+}
+
+const WINDOW_BOTTOM = {
+    fromZ: 0,
+    toZ: 0.25,
+}
+
+const WINDOW_TOP = {
+    fromZ: 0.25,
+    toZ: 0.75,
+}
+
+class Wall extends Entity {
+    constructor(from, to, zParams) {
+        super();
+
+        this.buckets.push('wall');
+
         this.from = from;
         this.to = to;
         this.length = dist(from, to);
         this.angle = angleBetween(from, to);
-    }
-}
 
-class Structure extends Entity {
-    constructor() {
-        super();
-        this.buckets.push('structure');
+        const shunks = this.length / 20;
+        for (let z = zParams.fromZ ; z <= zParams.toZ ; z += 1 / 5) {
+            for (let i = 0; i < shunks; i++) {
+                const x = interpolate(from.x, to.x, i / shunks);
+                const y = interpolate(from.y, to.y, i / shunks);
 
-        this.walls = [];
-
-        this.walls.push(new Wall({ x: 0, y: 0 }, { x: 0, y: 200 }));
-        this.walls.push(new Wall({ x: 0, y: 0 }, { x: 200, y: 0 }));
-        this.walls.push(new Wall({ x: 0, y: 200 }, { x: 200, y: 200 }));
-        this.walls.push(new Wall({ x: 200, y: 0 }, { x: 200, y: 100 }));
-        this.walls.push(new Wall({ x: 200, y: 200 }, { x: 200, y: 150 }));
-
-        for (const wall of this.walls) {
-            const shunks = wall.length / 20;
-
-            for (let z = 0 ; z <= 1 ; z += 1 / 5) {
-                for (let i = 0; i < shunks; i++) {
-                    const x = interpolate(wall.from.x, wall.to.x, i / shunks);
-                    const y = interpolate(wall.from.y, wall.to.y, i / shunks);
-
-                    this.sprite(sprite => {
-                        sprite.x = x;
-                        sprite.y = y;
-                        sprite.z = z;
-                        sprite.character = '-';
-                        sprite.rotation = wall.angle;
-                    });
-                }
+                this.sprite(sprite => {
+                    sprite.x = x;
+                    sprite.y = y;
+                    sprite.z = z;
+                    sprite.character = '-';
+                    sprite.rotation = this.angle;
+                });
             }
         }
     }

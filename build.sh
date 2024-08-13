@@ -23,6 +23,7 @@ for file in \
     entities/camera.js \
     entities/character.js \
     entities/player.js \
+    input/keyboard.js \
     globals.js \
     game.js \
     index.js \

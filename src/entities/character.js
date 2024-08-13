@@ -16,6 +16,8 @@ class Character extends Entity {
             sprite.x = this.x;
             sprite.y = this.y;
             sprite.z = 0.9;
+
+            sprite.rotation = this.controls.aim.angle;
         });
     }
 
@@ -27,5 +29,7 @@ class Character extends Entity {
         }
 
         // TODO angle at mouse
+
+        this.controls.aim.angle = Math.atan2(aim.y - this.y, aim.x - this.x);
     }
 }

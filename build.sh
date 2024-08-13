@@ -15,8 +15,10 @@ mkdir $OUT_DIR
 # Build the JS file
 touch $OUT_JS
 for file in \
+    globals.js \
     util/first-item.js \
     util/resizer.js \
+    util/math.js \
     engine/entity.js \
     engine/sprite.js \
     engine/world.js \
@@ -24,7 +26,7 @@ for file in \
     entities/character.js \
     entities/player.js \
     input/keyboard.js \
-    globals.js \
+    input/mouse.js \
     game.js \
     index.js \
 ; do
@@ -32,10 +34,10 @@ for file in \
 done
 
 # Terser
-tmp=`mktemp`
-npx -y terser $OUT_JS --compress ecma=2015,computed_props=false 1>$tmp
-cat $tmp 1>$OUT_JS
-rm $tmp
+# tmp=`mktemp`
+# npx -y terser $OUT_JS --compress ecma=2015,computed_props=false 1>$tmp
+# cat $tmp 1>$OUT_JS
+# rm $tmp
 
 # Roadroller
 # npx -y roadroller $OUT_JS  -o $OUT_JS

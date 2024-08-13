@@ -20,6 +20,11 @@ class World {
             this.bucket(bucket).add(entity);
         }
         entity.world = this;
+
+        entity.prepareSprites();
+        for (const sprite of entity.sprites) {
+            this.sprites.push(sprite);
+        }
     }
 
     remove() {
@@ -48,8 +53,19 @@ class World {
     }
 
     render() {
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+        const camera = firstItem(this.bucket('camera'));
+        ctx.save();
+        ctx.translate(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2)
+        ctx.scale(camera.zoom, camera.zoom);
+        ctx.translate(-camera.x, -camera.y);
+
         for (const sprite of this.sprites) {
             sprite.render();
         }
+
+        ctx.restore();
     }
 }

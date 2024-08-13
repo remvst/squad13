@@ -1,4 +1,4 @@
-const PERSPECTIVE = 500;
+const PERSPECTIVE = 200;
 
 class Sprite {
 

@@ -2,8 +2,8 @@ class Game {
     constructor() {
         this.world = new World();
 
-        this.world.add(new Camera());
         this.world.add(new Player());
+        this.world.add(new Structure());
     }
 
     cycle(elapsed) {

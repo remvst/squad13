@@ -25,6 +25,7 @@ for file in \
     entities/camera.js \
     entities/character.js \
     entities/player.js \
+    entities/structure.js \
     input/keyboard.js \
     input/mouse.js \
     game.js \

@@ -26,6 +26,9 @@ for file in \
     entities/character.js \
     entities/player.js \
     entities/structure.js \
+    graphics/wrap.js \
+    graphics/create-canvas.js \
+    graphics/font.js \
     input/keyboard.js \
     input/mouse.js \
     game.js \

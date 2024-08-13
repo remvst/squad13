@@ -1,7 +1,7 @@
 class Entity {
 
     constructor() {
-        this.x = this.y = 0;
+        this.x = this.y = this.age = 0;
         this.buckets = [];
         this.sprites = [];
 
@@ -9,21 +9,20 @@ class Entity {
     }
 
     prepareSprites() {
-        while (this.sprites.length < this.spriteSetups.length) {
-            this.sprites.push(new Sprite());
-        }
-
         for (let i = 0 ; i < this.spriteSetups.length ; i++) {
+            this.sprites[i].reset();
             this.spriteSetups[i](this.sprites[i]);
         }
     }
 
     sprite(setup) {
+        const sprite = new Sprite();
+        this.sprites.push(sprite);
         this.spriteSetups.push(setup);
+        return sprite;
     }
 
     cycle(elapsed) {
-        // TODO impl in subclass
+        this.age += elapsed;
     }
-
 }

@@ -49,7 +49,7 @@ class World {
             entity.prepareSprites();
         }
 
-        this.sprites.sort((a, b) => a.z - b.z);
+        this.sprites.sort((a, b) => a.actualZ - b.actualZ);
     }
 
     render() {

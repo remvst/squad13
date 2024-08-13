@@ -12,8 +12,8 @@ class Camera extends Entity {
 
         const diffX = Math.abs(player.x - this.x);
         const diffY = Math.abs(player.y - this.y);
-        const velX = diffX / 0.8;
-        const velY = diffY / 0.8;
+        const velX = diffX / 0.5;
+        const velY = diffY / 0.5;
 
         this.x += between(
             -elapsed * velX,

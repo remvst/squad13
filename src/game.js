@@ -4,6 +4,11 @@ class Game {
 
         this.world.add(new Player());
 
+        const enemy = new Character();
+        enemy.x = 200;
+        enemy.y = 200;
+        this.world.add(enemy);
+
         const topLeft = { x: 0, y: 0 };
         const topRight = { x: 200, y: 0 };
         const bottomLeft = { x: 0, y: 200 };

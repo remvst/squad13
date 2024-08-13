@@ -6,10 +6,10 @@ class Player extends Character {
 
         // Crosshair
         this.sprite(sprite => {
-            // console.log(this.x);
             sprite.x = this.controls.aim.x;
             sprite.y = this.controls.aim.y;
-            sprite.z = 0.5;
+            sprite.z = 0;
+            sprite.character = 'x';
         });
     }
 

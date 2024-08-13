@@ -43,6 +43,7 @@ class Wall extends Entity {
                     sprite.z = z;
                     sprite.character = '-';
                     sprite.rotation = this.angle;
+                    sprite.color = '#00f';
                 });
             }
         }
@@ -58,8 +59,8 @@ class Wall extends Entity {
 
         if (!isBetween(minX, entity.x, maxX) || !isBetween(minY, entity.y, maxY)) return;
 
-        const readjustedX = Math.abs(entity.x - minX) < Math.abs(entity.x - maxX) ? minX : maxX;
-        const readjustedY = Math.abs(entity.y - minY) < Math.abs(entity.y - maxY) ? minY : maxY;
+        const readjustedX = Math.abs(entity.x - minX) < Math.abs(entity.x - maxX) ? minX - 1 : maxX + 1;
+        const readjustedY = Math.abs(entity.y - minY) < Math.abs(entity.y - maxY) ? minY - 1 : maxY + 1;
 
         if (Math.abs(readjustedX - entity.x) < Math.abs(readjustedY - entity.y)) {
             entity.x = readjustedX;

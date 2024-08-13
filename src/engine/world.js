@@ -3,6 +3,8 @@ class World {
         this.entities = new Set();
         this.buckets = new Map();
         this.sprites = [];
+
+        this.add(new Camera());
     }
 
     bucket(bucket) {
@@ -17,6 +19,7 @@ class World {
         for (const bucket of entity.buckets)  {
             this.bucket(bucket).add(entity);
         }
+        entity.world = this;
     }
 
     remove() {

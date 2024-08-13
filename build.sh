@@ -15,12 +15,16 @@ mkdir $OUT_DIR
 # Build the JS file
 touch $OUT_JS
 for file in \
-    game.js \
     util/first-item.js \
+    util/resizer.js \
     engine/entity.js \
     engine/sprite.js \
     engine/world.js \
     entities/camera.js \
+    entities/character.js \
+    entities/player.js \
+    globals.js \
+    game.js \
     index.js \
 ; do
     cat src/$file >> $OUT_JS
@@ -33,7 +37,7 @@ cat $tmp 1>$OUT_JS
 rm $tmp
 
 # Roadroller
-npx -y roadroller $OUT_JS  -o $OUT_JS
+# npx -y roadroller $OUT_JS  -o $OUT_JS
 
 # Copy files as is
 for file in \

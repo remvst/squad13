@@ -41,5 +41,9 @@ class Character extends Entity {
         // TODO angle at mouse
 
         this.controls.aim.angle = Math.atan2(aim.y - this.y, aim.x - this.x);
+
+        for (const wall of this.world.bucket('wall')) {
+            wall.pushAway(this, 10);
+        }
     }
 }

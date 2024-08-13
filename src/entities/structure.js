@@ -29,6 +29,8 @@ class Wall extends Entity {
         this.length = dist(from, to);
         this.angle = angleBetween(from, to);
 
+        this.zParams = zParams;
+
         const shunks = this.length / 20;
         for (let z = zParams.fromZ ; z <= zParams.toZ ; z += 1 / 5) {
             for (let i = 0; i < shunks; i++) {
@@ -43,6 +45,26 @@ class Wall extends Entity {
                     sprite.rotation = this.angle;
                 });
             }
+        }
+    }
+
+    pushAway(entity, radius) {
+        if (this.zParams.fromZ >= 0.75) return;
+
+        const minX = Math.min(this.from.x, this.to.x) - radius;
+        const maxX = Math.max(this.from.x, this.to.x) + radius;
+        const minY = Math.min(this.from.y, this.to.y) - radius;
+        const maxY = Math.max(this.from.y, this.to.y) + radius;
+
+        if (!isBetween(minX, entity.x, maxX) || !isBetween(minY, entity.y, maxY)) return;
+
+        const readjustedX = Math.abs(entity.x - minX) < Math.abs(entity.x - maxX) ? minX : maxX;
+        const readjustedY = Math.abs(entity.y - minY) < Math.abs(entity.y - maxY) ? minY : maxY;
+
+        if (Math.abs(readjustedX - entity.x) < Math.abs(readjustedY - entity.y)) {
+            entity.x = readjustedX;
+        } else {
+            entity.y = readjustedY;
         }
     }
 }

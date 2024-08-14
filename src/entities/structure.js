@@ -67,5 +67,7 @@ class Wall extends Entity {
         } else {
             entity.y = readjustedY;
         }
+
+        return true;
     }
 }

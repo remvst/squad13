@@ -20,5 +20,12 @@ class Bullet extends Entity {
 
         this.x += Math.cos(this.angle) * 600 * elapsed;
         this.y += Math.sin(this.angle) * 600 * elapsed;
+
+        for (const wall of this.world.bucket('wall')) {
+            if (wall.pushAway(this, 15)) {
+                this.world.remove(this);
+                break;
+            }
+        }
     }
 }

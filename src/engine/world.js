@@ -27,7 +27,7 @@ class World {
         }
     }
 
-    remove() {
+    remove(entity) {
         this.entities.delete(entity);
         for (const bucket of entity.buckets)  {
             this.bucket(bucket).delete(entity);

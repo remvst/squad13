@@ -7,8 +7,10 @@ class Character extends Entity {
         this.controls = {
             movement: { angle: 0, force: 0, },
             aim: { x: 0, y: 0 },
-            shoot: false,
+            trigger: false,
         };
+
+        this.weapon = new Shotgun(this);
 
         // Head
         this.sprite(sprite => {
@@ -18,7 +20,7 @@ class Character extends Entity {
             sprite.character = '.';
             sprite.scaleX = sprite.scaleY = 3;
 
-            sprite.rotation = this.controls.aim.angle + Math.PI / 2;
+            sprite.rotation = this.aimAngle + Math.PI / 2;
         });
 
         const shoulders = this.sprite(sprite => {
@@ -27,7 +29,7 @@ class Character extends Entity {
             sprite.z = 0.6;
             sprite.character = 'O';
             sprite.color = '#f80';
-            sprite.rotation = this.controls.aim.angle;
+            sprite.rotation = this.aimAngle;
         });
 
         const hips = this.sprite(sprite => {
@@ -37,7 +39,7 @@ class Character extends Entity {
             sprite.character = 'O';
             sprite.color = '#f80';
             sprite.scaleX = sprite.scaleY = 0.5;
-            sprite.rotation = this.controls.aim.angle;
+            sprite.rotation = this.aimAngle;
         });
 
         const belly = this.sprite(sprite => {
@@ -47,7 +49,7 @@ class Character extends Entity {
             sprite.character = 'O';
             sprite.color = '#f80';
             sprite.scaleX = sprite.scaleY = 0.75;
-            sprite.rotation = this.controls.aim.angle;
+            sprite.rotation = this.aimAngle;
         });
 
         // Arms
@@ -74,97 +76,76 @@ class Character extends Entity {
 
         // Hips
         this.sprite(sprite => {
-            sprite.x = this.x + Math.cos(this.controls.aim.angle + Math.PI / 2) * 5;
-            sprite.y = this.y + Math.sin(this.controls.aim.angle + Math.PI / 2) * 5;
+            sprite.x = this.x + Math.cos(this.aimAngle + Math.PI / 2) * 5;
+            sprite.y = this.y + Math.sin(this.aimAngle + Math.PI / 2) * 5;
             sprite.z = 0.3;
             sprite.character = '.';
             sprite.color = '#f80';
             sprite.scaleX = sprite.scaleY = 0.5;
-            sprite.rotation = this.controls.aim.angle;
+            sprite.rotation = this.aimAngle;
         });
 
         // Knees
         this.sprite(sprite => {
-            sprite.x = this.x + Math.cos(this.controls.aim.angle + Math.PI / 2) * 5;
-            sprite.y = this.y + Math.sin(this.controls.aim.angle + Math.PI / 2) * 5;
+            sprite.x = this.x + Math.cos(this.aimAngle + Math.PI / 2) * 5;
+            sprite.y = this.y + Math.sin(this.aimAngle + Math.PI / 2) * 5;
             sprite.z = 0.15;
             sprite.scaleX = sprite.scaleY = 1;
             sprite.character = '.';
             sprite.color = '#f80';
-            sprite.rotation = this.controls.aim.angle;
+            sprite.rotation = this.aimAngle;
         });
         this.sprite(sprite => {
-            sprite.x = this.x - Math.cos(this.controls.aim.angle + Math.PI / 2) * 5;
-            sprite.y = this.y - Math.sin(this.controls.aim.angle + Math.PI / 2) * 5;
+            sprite.x = this.x - Math.cos(this.aimAngle + Math.PI / 2) * 5;
+            sprite.y = this.y - Math.sin(this.aimAngle + Math.PI / 2) * 5;
             sprite.z = 0.15;
             sprite.scaleX = sprite.scaleY = 1;
             sprite.character = '.';
             sprite.color = '#f80';
-            sprite.rotation = this.controls.aim.angle;
+            sprite.rotation = this.aimAngle;
         });
 
         // Feet
         this.sprite(sprite => {
             const stride = this.controls.movement.force ? Math.sin(this.age * Math.PI * 4) * 10 : 0;
-            sprite.x = this.x + Math.cos(this.controls.aim.angle + Math.PI / 2) * 5 + Math.cos(this.controls.aim.angle) * stride;
-            sprite.y = this.y + Math.sin(this.controls.aim.angle + Math.PI / 2) * 5 + Math.sin(this.controls.aim.angle) * stride;
+            sprite.x = this.x + Math.cos(this.aimAngle + Math.PI / 2) * 5 + Math.cos(this.aimAngle) * stride;
+            sprite.y = this.y + Math.sin(this.aimAngle + Math.PI / 2) * 5 + Math.sin(this.aimAngle) * stride;
             sprite.z = 0;
             sprite.anchorX = 0;
             sprite.scaleX = 0.5;
             sprite.character = '-';
             sprite.color = '#f80';
-            sprite.rotation = this.controls.aim.angle;
+            sprite.rotation = this.aimAngle;
         });
         this.sprite(sprite => {
             const stride = this.controls.movement.force ? Math.sin(this.age * Math.PI * 4) * 10 : 0;
 
-            sprite.x = this.x - Math.cos(this.controls.aim.angle + Math.PI / 2) * 5 - Math.cos(this.controls.aim.angle) * stride;
-            sprite.y = this.y - Math.sin(this.controls.aim.angle + Math.PI / 2) * 5 - Math.sin(this.controls.aim.angle) * stride;
+            sprite.x = this.x - Math.cos(this.aimAngle + Math.PI / 2) * 5 - Math.cos(this.aimAngle) * stride;
+            sprite.y = this.y - Math.sin(this.aimAngle + Math.PI / 2) * 5 - Math.sin(this.aimAngle) * stride;
             sprite.z = 0;
             sprite.anchorX = 0;
             sprite.scaleX = 0.5;
             sprite.character = '-';
             sprite.color = '#f80';
-            sprite.rotation = this.controls.aim.angle;
+            sprite.rotation = this.aimAngle;
         });
+    }
 
-        return;
-
-        // Legs
-        this.sprite(sprite => {
-            sprite.y = -5;
-            sprite.anchorY = 0;
-            sprite.character = 'I';
-            sprite.parent = hips;
-            sprite.scaleY = this.controls.movement.force ? Math.sin(this.age * Math.PI * 4) : 0.2;
-            sprite.color = '#f80';
-
-            sprite.rotation = -Math.PI / 2;
-        });
-        this.sprite(sprite => {
-            sprite.y = 5;
-            sprite.anchorY = 0;
-            sprite.character = 'I';
-            sprite.parent = hips;
-            sprite.scaleY = this.controls.movement.force ? -Math.sin(this.age * Math.PI * 4) : 0.2;
-            sprite.color = '#f80';
-
-            sprite.rotation = -Math.PI / 2;
-        });
+    get aimAngle() {
+        const { aim } = this.controls;
+        return Math.atan2(aim.y - this.y, aim.x - this.x);
     }
 
     cycle(elapsed) {
         super.cycle(elapsed);
 
-        const { movement, aim, shoot } = this.controls;
+        const { movement, trigger } = this.controls;
         if (movement.force) {
             this.x += movement.force * Math.cos(movement.angle) * elapsed * this.speed;
             this.y += movement.force * Math.sin(movement.angle) * elapsed * this.speed;
         }
 
-        // TODO angle at mouse
-
-        this.controls.aim.angle = Math.atan2(aim.y - this.y, aim.x - this.x);
+        this.weapon.setTriggerPulled(trigger);
 
         for (const wall of this.world.bucket('wall')) {
             wall.pushAway(this, 15);

@@ -27,6 +27,11 @@ for file in \
     entities/player.js \
     entities/structure.js \
     entities/floor.js \
+    entities/bullet.js \
+    weapon/weapon.js \
+    weapon/pistol.js \
+    weapon/machine-gun.js \
+    weapon/shotgun.js \
     graphics/wrap.js \
     graphics/create-canvas.js \
     graphics/font.js \

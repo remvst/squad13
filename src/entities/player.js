@@ -38,6 +38,7 @@ class Player extends Character {
         const camera = firstItem(this.world.bucket('camera'));
         this.controls.aim.x = MOUSE.x + camera.x - CANVAS_WIDTH / 2;
         this.controls.aim.y = MOUSE.y + camera.y - CANVAS_HEIGHT / 2;
+        this.controls.trigger = MOUSE.down;
 
         super.cycle(elapsed);
     }

@@ -58,6 +58,8 @@ const CHARACTERS = {
     ]
 }
 
+const AVAILABLE_CHARACTERS = Object.keys(CHARACTERS);
+
 function spriteForCharacterDefinition(characterDefinition, cellSize, color) {
     if (!characterDefinition) return;
 

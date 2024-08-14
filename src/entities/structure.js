@@ -29,6 +29,8 @@ class Wall extends Entity {
         this.length = dist(from, to);
         this.angle = angleBetween(from, to);
 
+        this.lastHit = 0;
+
         this.zParams = zParams;
 
         const shunks = this.length / 20;
@@ -43,7 +45,7 @@ class Wall extends Entity {
                     sprite.z = z;
                     sprite.character = '-';
                     sprite.rotation = this.angle;
-                    sprite.color = '#00f';
+                    sprite.color = this.age - this.lastHit < 0.1 ? pick(['#fff', '#00f']) : '#00f';
                 });
             }
         }

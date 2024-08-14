@@ -28,6 +28,7 @@ for file in \
     entities/structure.js \
     entities/floor.js \
     entities/bullet.js \
+    entities/particle.js \
     weapon/weapon.js \
     weapon/pistol.js \
     weapon/machine-gun.js \

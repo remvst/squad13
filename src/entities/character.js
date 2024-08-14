@@ -10,7 +10,7 @@ class Character extends Entity {
             trigger: false,
         };
 
-        this.weapon = new Shotgun(this);
+        this.weapon = new MachineGun(this);
 
         // Head
         this.sprite(sprite => {
@@ -146,6 +146,7 @@ class Character extends Entity {
         }
 
         this.weapon.setTriggerPulled(trigger);
+        this.weapon.cycle(elapsed);
 
         for (const wall of this.world.bucket('wall')) {
             wall.pushAway(this, 15);

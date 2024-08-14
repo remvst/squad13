@@ -16,7 +16,8 @@ class Weapon {
     shoot() {
         this.lastShot = this.owner.age;
         for (const angle of this.angles()) {
-            this.owner.world.add(new Bullet(this.owner.x, this.owner.y, angle + this.owner.aimAngle));
+            const actualAngle = angle + this.owner.aimAngle;
+            this.owner.world.add(new Bullet(this.owner.x + Math.cos(actualAngle) * 15, this.owner.y + Math.sin(actualAngle) * 15, actualAngle));
         }
     }
 

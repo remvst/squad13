@@ -44,8 +44,10 @@ class Sprite {
         const sprite = characterSprite(this.character, 4, this.color);
         if (sprite) ctx.drawImage(
             sprite,
-            interpolate(0, -sprite.width, this.anchorX),
-            interpolate(0, -sprite.height, this.anchorY),
+            this.anchorX * -sprite.width,
+            this.anchorY * -sprite.height,
+            // interpolate(0, -sprite.width, this.anchorX),
+            // interpolate(0, -sprite.height, this.anchorY),
         );
 
         // ctx.fillStyle = '#f00';

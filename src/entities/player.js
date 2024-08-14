@@ -9,7 +9,18 @@ class Player extends Character {
             sprite.x = this.controls.aim.x;
             sprite.y = this.controls.aim.y;
             sprite.z = 0;
-            sprite.character = 'x';
+            sprite.character = '[';
+            sprite.anchorX = 1.5;
+            sprite.rotation = this.age * Math.PI;
+        });
+        this.sprite(sprite => {
+            sprite.x = this.controls.aim.x;
+            sprite.y = this.controls.aim.y;
+            sprite.z = 0;
+            sprite.character = '[';
+            sprite.anchorX = 1.5;
+            sprite.scaleX = -1;
+            sprite.rotation = this.age * Math.PI;
         });
     }
 

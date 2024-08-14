@@ -18,6 +18,7 @@ class Sprite {
         this.color = '#fff';
         this.rotation = 0;
         this.character = 'A';
+        this.alpha = 1;
     }
 
     applyTransforms(camera) {
@@ -37,6 +38,8 @@ class Sprite {
 
         this.applyTransforms(camera);
         ctx.scale(this.scaleX, this.scaleY);
+
+        ctx.globalAlpha = this.alpha;
 
         const sprite = characterSprite(this.character, 4, this.color);
         if (sprite) ctx.drawImage(

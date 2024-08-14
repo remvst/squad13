@@ -3,6 +3,7 @@ class Game {
         this.world = new World();
 
         this.world.add(new Player());
+        this.world.add(new Floor());
 
         const enemy = new Character();
         enemy.x = 200;

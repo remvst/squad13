@@ -33,7 +33,7 @@ class Wall extends Entity {
 
         const shunks = this.length / 20;
         for (let z = zParams.fromZ ; z <= zParams.toZ ; z += 1 / 5) {
-            for (let i = 0; i < shunks; i++) {
+            for (let i = 0; i <= shunks; i++) {
                 const x = interpolate(from.x, to.x, i / shunks);
                 const y = interpolate(from.y, to.y, i / shunks);
 

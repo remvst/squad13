@@ -64,11 +64,17 @@ function spriteForCharacterDefinition(characterDefinition, cellSize, color) {
     if (!characterDefinition) return;
 
     const maxRowLength = Math.max(...characterDefinition.map(line => line.toString(2).length));
+    const blur = 5;
 
-    return createCanvas(maxRowLength * cellSize, characterDefinition.length * cellSize, ctx => {
+    return createCanvas(maxRowLength * cellSize + blur * 2, characterDefinition.length * cellSize + blur * 2, ctx => {
+        ctx.shadowBlur = blur;
+
+        ctx.translate(blur, blur);
+
         let row = 0;
         for (const line of characterDefinition) {
             ctx.fillStyle = color;
+            ctx.shadowColor = color;
             const lineStr = line.toString(2).padStart(maxRowLength, '0');
             for (let col = 0 ; col < 3 ; col++) {
                 if (lineStr.charAt(col) === '1') {

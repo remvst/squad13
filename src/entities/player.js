@@ -15,6 +15,7 @@ class Player extends Character {
             sprite.character = '[';
             sprite.anchorX = 1.5;
             sprite.rotation = this.age * Math.PI;
+            sprite.color = this.age - this.weapon.lastShot < 0.05 ? '#fff' : '#f00';
         });
         this.sprite(sprite => {
             sprite.x = this.controls.aim.x;
@@ -24,6 +25,7 @@ class Player extends Character {
             sprite.anchorX = 1.5;
             sprite.scaleX = -1;
             sprite.rotation = this.age * Math.PI;
+            sprite.color = this.age - this.weapon.lastShot < 0.05 ? '#fff' : '#f00';
         });
     }
 

@@ -1,6 +1,15 @@
 class Shotgun extends Weapon {
+
+    constructor(owner) {
+        super(owner);
+
+        this.clipSize = 6;
+        this.reloadDuration = 1.5;
+        this.shotInterval = 0.4;
+    }
+
     setTriggerPulled(pulled) {
-        if (pulled && !this.pulledTrigger && this.owner.age - this.lastShot > 0.4) {
+        if (pulled && !this.pulledTrigger) {
             this.shoot();
         }
         super.setTriggerPulled(pulled);

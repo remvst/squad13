@@ -3,6 +3,7 @@ class Character extends Entity {
         super();
 
         this.speed = 250;
+        this.lastHitObstacle = 0;
 
         this.controls = {
             movement: { angle: 0, force: 0, },
@@ -87,8 +88,9 @@ class Character extends Entity {
 
         // Knees
         this.sprite(sprite => {
-            sprite.x = this.x + Math.cos(this.aimAngle + Math.PI / 2) * 5;
-            sprite.y = this.y + Math.sin(this.aimAngle + Math.PI / 2) * 5;
+            const stride = this.controls.movement.force ? Math.sin(this.age * Math.PI * 4) * 8 : 0;
+            sprite.x = this.x + Math.cos(this.aimAngle + Math.PI / 2) * 5 + Math.cos(this.aimAngle) * stride;
+            sprite.y = this.y + Math.sin(this.aimAngle + Math.PI / 2) * 5 + Math.sin(this.aimAngle) * stride;
             sprite.z = 0.15;
             sprite.scaleX = sprite.scaleY = 1;
             sprite.character = '.';
@@ -96,8 +98,9 @@ class Character extends Entity {
             sprite.rotation = this.aimAngle;
         });
         this.sprite(sprite => {
-            sprite.x = this.x - Math.cos(this.aimAngle + Math.PI / 2) * 5;
-            sprite.y = this.y - Math.sin(this.aimAngle + Math.PI / 2) * 5;
+            const stride = this.controls.movement.force ? Math.sin(this.age * Math.PI * 4) * 8 : 0;
+            sprite.x = this.x + Math.cos(this.aimAngle + Math.PI / 2) * 5 - Math.cos(this.aimAngle) * stride;
+            sprite.y = this.y + Math.sin(this.aimAngle + Math.PI / 2) * 5 - Math.sin(this.aimAngle) * stride;
             sprite.z = 0.15;
             sprite.scaleX = sprite.scaleY = 1;
             sprite.character = '.';
@@ -149,7 +152,13 @@ class Character extends Entity {
         this.weapon.cycle(elapsed);
 
         for (const wall of this.world.bucket('wall')) {
-            wall.pushAway(this, 15);
+            if (wall.pushAway(this, 15)) {
+                this.onObstacleHit(wall);
+            }
         }
+    }
+
+    onObstacleHit(wall) {
+
     }
 }

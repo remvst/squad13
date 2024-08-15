@@ -33,8 +33,8 @@ class Wall extends Entity {
 
         this.zParams = zParams;
 
-        const shunks = this.length / 20;
-        for (let z = zParams.fromZ ; z <= zParams.toZ ; z += 1 / 5) {
+        const shunks = this.length / 40;
+        for (let z = zParams.fromZ ; z <= zParams.toZ ; z += 1 / 3) {
             for (let i = 0; i <= shunks; i++) {
                 const x = interpolate(from.x, to.x, i / shunks);
                 const y = interpolate(from.y, to.y, i / shunks);
@@ -43,6 +43,7 @@ class Wall extends Entity {
                     sprite.x = x;
                     sprite.y = y;
                     sprite.z = z;
+                    sprite.scaleX = 3;
                     sprite.character = '-';
                     sprite.rotation = this.angle;
                     sprite.color = this.age - this.lastHit < 0.1 ? pick(['#fff', '#00f']) : '#00f';

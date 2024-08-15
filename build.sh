@@ -25,6 +25,7 @@ for file in \
     entities/camera.js \
     entities/character.js \
     entities/player.js \
+    entities/enemy.js \
     entities/structure.js \
     entities/floor.js \
     entities/bullet.js \
@@ -38,6 +39,7 @@ for file in \
     graphics/font.js \
     input/keyboard.js \
     input/mouse.js \
+    map-generator.js \
     game.js \
     index.js \
 ; do

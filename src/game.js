@@ -2,10 +2,12 @@ class Game {
     constructor() {
         this.world = new World();
 
+        this.createMap();
+
         this.world.add(new Player());
         this.world.add(new Floor());
 
-        const enemy = new Character();
+        const enemy = new Enemy();
         enemy.x = 200;
         enemy.y = 200;
         this.world.add(enemy);
@@ -46,6 +48,13 @@ class Game {
                 ctx.fillText(line, 10, y);
                 y -= 20;
             }
+        }
+    }
+
+    createMap() {
+        const generator = new MapGenerator();
+        for (const wall of generator.walls) {
+            this.world.add(wall);
         }
     }
 }

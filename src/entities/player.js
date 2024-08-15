@@ -2,6 +2,8 @@ class Player extends Character {
     constructor() {
         super();
 
+        this.speed = 350;
+
         this.buckets.push('player');
 
         // Crosshair

@@ -1,5 +1,10 @@
 class Enemy extends Character {
 
+    constructor() {
+        super();
+        this.speed = 100;
+    }
+
     cycle(elapsed) {
         super.cycle(elapsed);
         this.controls.movement.force = 1;

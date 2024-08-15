@@ -88,7 +88,7 @@ class Character extends Entity {
 
         // Knees
         this.sprite(sprite => {
-            const stride = this.controls.movement.force ? Math.sin(this.age * Math.PI * 4) * 10 : 0;
+            const stride = this.controls.movement.force ? Math.sin(this.age * Math.PI * 4) * 8 : 0;
             sprite.x = this.x + Math.cos(this.aimAngle + Math.PI / 2) * 5 + Math.cos(this.aimAngle) * stride;
             sprite.y = this.y + Math.sin(this.aimAngle + Math.PI / 2) * 5 + Math.sin(this.aimAngle) * stride;
             sprite.z = 0.15;
@@ -115,7 +115,7 @@ class Character extends Entity {
             sprite.y = this.y + Math.sin(this.aimAngle + Math.PI / 2) * 5 + Math.sin(this.aimAngle) * stride;
             sprite.z = 0;
             sprite.anchorX = 0;
-            sprite.scaleX = 0.5;
+            sprite.scaleX = 0.8;
             sprite.character = '-';
             sprite.color = '#f80';
             sprite.rotation = this.aimAngle;
@@ -127,10 +127,44 @@ class Character extends Entity {
             sprite.y = this.y - Math.sin(this.aimAngle + Math.PI / 2) * 5 - Math.sin(this.aimAngle) * stride;
             sprite.z = 0;
             sprite.anchorX = 0;
-            sprite.scaleX = 0.5;
+            sprite.scaleX = 0.8;
             sprite.character = '-';
             sprite.color = '#f80';
             sprite.rotation = this.aimAngle;
+        });
+
+        // Gun
+        this.sprite(sprite => {
+            sprite.x = this.x + Math.cos(this.aimAngle) * 20;
+            sprite.y = this.y + Math.sin(this.aimAngle) * 20;
+            sprite.z = 0.7;
+            sprite.character = '-';
+            sprite.color = '#fff';
+            sprite.scaleX = sprite.scaleY = 1;
+            sprite.rotation = this.aimAngle;
+            sprite.alpha = this.weapon instanceof Pistol ? 1 : 0;
+        });
+        this.sprite(sprite => {
+            sprite.x = this.x + Math.cos(this.aimAngle) * 25;
+            sprite.y = this.y + Math.sin(this.aimAngle) * 25;
+            sprite.z = 0.7;
+            sprite.character = '-';
+            sprite.color = '#fff';
+            sprite.scaleX = 2;
+            sprite.scaleY = 0.5;
+            sprite.rotation = this.aimAngle;
+            sprite.alpha = this.weapon instanceof MachineGun ? 1 : 0;
+        });
+        this.sprite(sprite => {
+            sprite.x = this.x + Math.cos(this.aimAngle) * 20;
+            sprite.y = this.y + Math.sin(this.aimAngle) * 20;
+            sprite.z = 0.7;
+            sprite.character = '=';
+            sprite.color = '#fff';
+            sprite.scaleX = 2;
+            sprite.scaleY = 0.5;
+            sprite.rotation = this.aimAngle;
+            sprite.alpha = this.weapon instanceof Shotgun ? 1 : 0;
         });
     }
 

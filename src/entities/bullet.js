@@ -1,10 +1,11 @@
 class Bullet extends Entity {
-    constructor(x, y, angle) {
+    constructor(x, y, angle, targetBucket) {
         super();
 
         this.x = x;
         this.y = y;
         this.angle = angle;
+        this.targetBucket = targetBucket;
 
         this.sprite(sprite => {
             sprite.x = this.x;
@@ -24,6 +25,13 @@ class Bullet extends Entity {
         for (const wall of this.world.bucket('wall')) {
             if (wall.pushAway(this, 15)) {
                 wall.lastHit = wall.age;
+                this.world.remove(this);
+                return;
+            }
+        }
+
+        for (const target of this.world.bucket(this.targetBucket)) {
+            if (dist(target, this) < 15) {
                 this.world.remove(this);
                 return;
             }

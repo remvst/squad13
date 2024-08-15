@@ -13,6 +13,8 @@ class Character extends Entity {
 
         this.weapon = new MachineGun(this);
 
+        this.enemyBucket = 'player';
+
         // Head
         this.sprite(sprite => {
             sprite.x = this.x;

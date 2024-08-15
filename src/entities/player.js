@@ -3,6 +3,7 @@ class Player extends Character {
         super();
 
         this.speed = 350;
+        this.enemyBucket = 'enemy';
 
         this.buckets.push('player');
 

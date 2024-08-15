@@ -2,6 +2,7 @@ class Enemy extends Character {
 
     constructor() {
         super();
+        this.buckets.push('enemy');
         this.speed = 100;
     }
 

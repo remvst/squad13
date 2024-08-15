@@ -200,6 +200,9 @@ class Character extends Entity {
 
     canSee(target) {
         for (const wall of this.world.bucket('wall')) {
+            if (wall.zParams.fromZ > 0.5 || wall.zParams.toZ < 0.5) {
+                continue;
+            }
             if (intersects(
                 this.x, this.y, target.x, target.y,
                 wall.from.x, wall.from.y, wall.to.x, wall.to.y,

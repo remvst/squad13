@@ -6,6 +6,7 @@ class Enemy extends Character {
         this.speed = 100;
         this.lastSpottedPlayerCheck = 0;
         this.lastSpottedPlayer = 0;
+        this.age = random() * 100;
     }
 
     cycle(elapsed) {

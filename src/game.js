@@ -7,10 +7,12 @@ class Game {
         this.world.add(new Player());
         this.world.add(new Floor());
 
-        const enemy = new Enemy();
-        enemy.x = 200;
-        enemy.y = 200;
-        this.world.add(enemy);
+        for (let i = 0 ; i < 5 ; i++) {
+            const enemy = new Enemy();
+            enemy.x = 200;
+            enemy.y = 200;
+            this.world.add(enemy);
+        }
 
         const topLeft = { x: 0, y: 0 };
         const topRight = { x: 200, y: 0 };

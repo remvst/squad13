@@ -60,11 +60,10 @@ const CHARACTERS = {
 
 const AVAILABLE_CHARACTERS = Object.keys(CHARACTERS);
 
-function spriteForCharacterDefinition(characterDefinition, cellSize, color) {
+function spriteForCharacterDefinition(characterDefinition, cellSize, color, blur) {
     if (!characterDefinition) return;
 
     const maxRowLength = Math.max(...characterDefinition.map(line => line.toString(2).length));
-    const blur = 5;
 
     return createCanvas(maxRowLength * cellSize + blur * 2, characterDefinition.length * cellSize + blur * 2, ctx => {
         ctx.shadowBlur = blur;
@@ -87,12 +86,12 @@ function spriteForCharacterDefinition(characterDefinition, cellSize, color) {
 }
 
 const CACHE = new Map();
-function characterSprite(char, cellSize, color) {
+function characterSprite(char, cellSize, color, blur) {
     char = char.toUpperCase();
 
-    const key = `${char}:${cellSize}:${color}`;
+    const key = `${char}:${cellSize}:${color}:${blur}`;
     if (!CACHE.has(key)) {
-        CACHE.set(key, spriteForCharacterDefinition(CHARACTERS[char], cellSize, color));
+        CACHE.set(key, spriteForCharacterDefinition(CHARACTERS[char], cellSize, color, blur));
     }
     return CACHE.get(key);
 }

@@ -88,7 +88,7 @@ class Character extends Entity {
 
         // Knees
         this.sprite(sprite => {
-            const stride = this.controls.movement.force ? Math.sin(this.age * Math.PI * 4) * 8 : 0;
+            const stride = this.controls.movement.force ? Math.sin(this.age * Math.PI * 4) * 10 : 0;
             sprite.x = this.x + Math.cos(this.aimAngle + Math.PI / 2) * 5 + Math.cos(this.aimAngle) * stride;
             sprite.y = this.y + Math.sin(this.aimAngle + Math.PI / 2) * 5 + Math.sin(this.aimAngle) * stride;
             sprite.z = 0.15;
@@ -99,8 +99,8 @@ class Character extends Entity {
         });
         this.sprite(sprite => {
             const stride = this.controls.movement.force ? Math.sin(this.age * Math.PI * 4) * 8 : 0;
-            sprite.x = this.x + Math.cos(this.aimAngle + Math.PI / 2) * 5 - Math.cos(this.aimAngle) * stride;
-            sprite.y = this.y + Math.sin(this.aimAngle + Math.PI / 2) * 5 - Math.sin(this.aimAngle) * stride;
+            sprite.x = this.x - Math.cos(this.aimAngle + Math.PI / 2) * 5 - Math.cos(this.aimAngle) * stride;
+            sprite.y = this.y - Math.sin(this.aimAngle + Math.PI / 2) * 5 - Math.sin(this.aimAngle) * stride;
             sprite.z = 0.15;
             sprite.scaleX = sprite.scaleY = 1;
             sprite.character = '.';

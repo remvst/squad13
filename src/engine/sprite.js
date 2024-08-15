@@ -19,6 +19,7 @@ class Sprite {
         this.rotation = 0;
         this.character = 'A';
         this.alpha = 1;
+        this.blur = 5;
     }
 
     applyTransforms(camera) {
@@ -41,14 +42,19 @@ class Sprite {
 
         ctx.globalAlpha = this.alpha;
 
-        const sprite = characterSprite(this.character, 4, this.color);
-        if (sprite) ctx.drawImage(
-            sprite,
-            this.anchorX * -sprite.width,
-            this.anchorY * -sprite.height,
-            // interpolate(0, -sprite.width, this.anchorX),
-            // interpolate(0, -sprite.height, this.anchorY),
-        );
+        const sprite = characterSprite(this.character, 4, this.color, this.blur);
+        if (sprite) {
+            const spriteWidth = sprite.width - 2 * this.blur;
+            const spriteHeight = sprite.height - 2 * this.blur;
+
+            ctx.drawImage(
+                sprite,
+                this.anchorX * -spriteWidth - this.blur,
+                this.anchorY * -spriteHeight - this.blur,
+                // interpolate(0, -sprite.width, this.anchorX),
+                // interpolate(0, -sprite.height, this.anchorY),
+            );
+        }
 
         // ctx.fillStyle = '#f00';
         // ctx.fillRect(-2, -2, 4, 4);

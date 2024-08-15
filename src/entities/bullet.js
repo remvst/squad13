@@ -26,6 +26,7 @@ class Bullet extends Entity {
             if (wall.pushAway(this, 15)) {
                 wall.lastHit = wall.age;
                 this.world.remove(this);
+                this.impactParticles('#ff0');
                 return;
             }
         }
@@ -33,6 +34,7 @@ class Bullet extends Entity {
         for (const target of this.world.bucket(this.targetBucket)) {
             if (dist(target, this) < 15) {
                 this.world.remove(this);
+                this.impactParticles('#f00');
                 return;
             }
         }
@@ -47,6 +49,25 @@ class Bullet extends Entity {
             alpha: [1, 0],
             character: '.',
             rotation: this.angle,
+            color: '#fff',
         }));
+    }
+
+    impactParticles(color)  {
+        for (let i = 0 ; i < 5 ; i++) {
+            const angle = rnd(-PI / 2, PI / 2) + this.angle + PI;
+            this.world.add(new Particle({
+                maxAge: 0.3,
+                x: [this.x, this.x + cos(angle) * 40],
+                y: [this.y, this.y + sin(angle) * 40],
+                z: [0.35, 0.35],
+                scaleX: [1, 0],
+                scaleY: [1, 0],
+                alpha: [1, 0],
+                character: pick(AVAILABLE_CHARACTERS),
+                color: color,
+                rotation: this.angle,
+            }));
+        }
     }
 }

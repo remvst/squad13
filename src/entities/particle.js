@@ -13,6 +13,7 @@ class Particle extends Entity {
             sprite.scaleY = interpolate(opts.scaleY[0], opts.scaleY[1], this.age / opts.maxAge);
             sprite.rotation = interpolate(opts.rotation[0], opts.rotation[1], this.age / opts.maxAge);
             sprite.character = opts.character;
+            sprite.color = opts.color;
         });
     }
 

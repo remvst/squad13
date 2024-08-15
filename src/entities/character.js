@@ -197,4 +197,17 @@ class Character extends Entity {
     onObstacleHit(wall) {
 
     }
+
+    canSee(target) {
+        for (const wall of this.world.bucket('wall')) {
+            if (intersects(
+                this.x, this.y, target.x, target.y,
+                wall.from.x, wall.from.y, wall.to.x, wall.to.y,
+            )) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

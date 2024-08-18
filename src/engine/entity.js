@@ -1,7 +1,7 @@
 class Entity {
 
     constructor() {
-        this.x = this.y = this.age = 0;
+        this.x = this.y = this.age = this.angle = 0;
         this.buckets = [];
     }
 

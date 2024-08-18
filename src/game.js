@@ -2,12 +2,15 @@ class Game {
     constructor() {
         this.world = new World();
 
+        const landingPad = new Obstacle();
+        landingPad.points.push({x: -100, y: 100});
+        landingPad.points.push({x: 100, y: 100});
+        this.world.add(landingPad);
+
         const obst = new Obstacle();
-        obst.points.push(
-            { x: 100, y: 100 },
-            { x: 200, y: 50 },
-            // { x: 300, y: 100 },
-        );
+        for (let x = 0 ; x < 800 ; x+= 100)  {
+            obst.points.push({x: x + 200, y: sin(x / 800 * PI * 2 * 3) * 40 + 100});
+        }
         this.world.add(obst);
 
         this.world.add(new Player());

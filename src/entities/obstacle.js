@@ -32,6 +32,8 @@ class Obstacle extends Entity {
 
         hitbox.x = adjustedX - Math.cos(angle + PI / 2) * hitbox.radius;
         hitbox.y = adjustedY - Math.sin(angle + PI / 2) * hitbox.radius;
+
+        return true;
     }
 
     render() {

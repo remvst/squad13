@@ -3,6 +3,8 @@ class Hitbox {
         this.x = x;
         this.y = y;
         this.radius = radius;
+        this.isLanding = false;
+        this.readjusted = false;
     }
 }
 
@@ -25,6 +27,13 @@ class Chopper extends Entity {
             new Hitbox(-10, -10, 5),
         ];
 
+        for (const landingHitbox of [
+            this.hitBoxes[0],
+            this.hitBoxes[1],
+        ]) {
+            landingHitbox.isLanding = true;
+        }
+
         this.globalHitBoxes = [];
 
         this.propellerPower = 0;
@@ -45,6 +54,8 @@ class Chopper extends Entity {
             this.globalHitBoxes[i].x = this.x + Math.cos(this.angle + hitBoxAngle) * dist;
             this.globalHitBoxes[i].y = this.y + Math.sin(this.angle + hitBoxAngle) * dist;
             this.globalHitBoxes[i].radius = hitBox.radius;
+            this.globalHitBoxes[i].isLanding = hitBox.isLanding;
+            this.globalHitBoxes[i].readjusted = false;
         }
     }
 
@@ -62,6 +73,40 @@ class Chopper extends Entity {
 
     cycle(elapsed) {
         super.cycle(elapsed);
+
+        this.updateGlobalHitboxes();
+
+        const { averagePoint } = this;
+
+        for (const obstacle of this.world.bucket('obstacle')) {
+            for (const hitBox of this.globalHitBoxes) {
+                hitBox.readjusted = hitBox.readjusted || obstacle.pushAway(hitBox);
+            }
+        }
+
+        const landed = !this.globalHitBoxes.some(hitBox => hitBox.isLanding && !hitBox.readjusted);
+
+        const newAverage = this.averagePoint;
+
+        const dX = newAverage.x - averagePoint.x;
+        const dY = newAverage.y - averagePoint.y;
+
+        if (dX || dY) {
+            this.x += dX;
+            this.y += dY;
+
+            // this.momentum.x += dX / readjustedHitbboxes;
+            // this.momentum.y += dY / readjustedHitbboxes;
+
+            const angleOriginal = atan2(averagePoint.y, averagePoint.x);
+            const angleNew = atan2(newAverage.y, newAverage.x);
+
+            this.momentum.angle += angleOriginal - angleNew;
+        }
+
+        if (landed) {
+            // this.momentum.y = 0;
+        }
 
         let x = 0, y = 0;
         if (this.controls.left) x -= 1;
@@ -82,6 +127,7 @@ class Chopper extends Entity {
 
         if (angleDirection) {
             const targetAngle = angleDirection > 0 ? PI / 4 : -PI / 4;
+
             this.momentum.angle += between(
                 -elapsed * PI * 2,
                 targetAngle - this.angle,
@@ -94,6 +140,19 @@ class Chopper extends Entity {
                 elapsed * PI * 3,
             );
         }
+
+        let idealAngle = 0;
+        let angleVelocity = PI / 4;
+        if (this.controls.left) idealAngle = -PI / 4;
+        if (this.controls.right) idealAngle = PI / 4;
+        if (this.controls.left || this.controls.right) angleVelocity = PI / 2;
+
+        this.angle += between(
+            -elapsed * angleVelocity,
+            idealAngle - this.angle,
+            elapsed * angleVelocity
+        )
+        this.momentum.angle = 0;
 
         if (this.propellerPower) {
             this.momentum.x += this.propellerPower * Math.cos(this.angle - PI / 2) * elapsed * 200 * 1.5;
@@ -116,31 +175,6 @@ class Chopper extends Entity {
         this.angle += this.momentum.angle * elapsed;
 
         this.angle = between(-PI / 4, this.angle, PI / 4);
-
-        this.updateGlobalHitboxes();
-
-        const { averagePoint } = this;
-
-        for (const obstacle of this.world.bucket('obstacle')) {
-            for (const hitBox of this.globalHitBoxes) {
-                obstacle.pushAway(hitBox);
-            }
-        }
-
-        const newAverage = this.averagePoint;
-
-        const dX = newAverage.x - averagePoint.x;
-        const dY = newAverage.y - averagePoint.y;
-
-        if (dX || dY) {
-            this.x += dX;
-            this.y += dY;
-
-            const angleOriginal = atan2(averagePoint.y, averagePoint.x);
-            const angleNew = atan2(newAverage.y, newAverage.x);
-
-            this.momentum.angle += angleOriginal - angleNew;
-        }
     }
 
     render() {
@@ -172,8 +206,8 @@ class Chopper extends Entity {
             }
         });
 
-        ctx.fillStyle = '#0f0';
         for (const hitBox of this.globalHitBoxes) {
+            ctx.fillStyle = hitBox.readjusted ? '#ff0' : '#0f0';
             ctx.beginPath();
             ctx.arc(hitBox.x, hitBox.y, hitBox.radius, 0, Math.PI * 2);
             ctx.fill();

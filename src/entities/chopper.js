@@ -104,10 +104,6 @@ class Chopper extends Entity {
             this.momentum.angle += angleOriginal - angleNew;
         }
 
-        if (landed) {
-            // this.momentum.y = 0;
-        }
-
         let x = 0, y = 0;
         if (this.controls.left) x -= 1;
         if (this.controls.right) x += 1;
@@ -168,6 +164,10 @@ class Chopper extends Entity {
                 400 - this.momentum.y,
                 elapsed * 150,
             );
+        }
+
+        if (landed) {
+            this.momentum.y = 0;
         }
 
         this.x += this.momentum.x * elapsed;

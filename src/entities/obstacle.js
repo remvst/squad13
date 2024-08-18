@@ -4,6 +4,7 @@ class Obstacle extends Entity {
         super();
         this.buckets = ['obstacle'];
         this.points = [];
+        this.directionY = 1;
     }
 
     pushAway(hitbox) {
@@ -30,8 +31,8 @@ class Obstacle extends Entity {
         const adjustedX = a.x + ratio * (b.x - a.x);
         const adjustedY = a.y + ratio * (b.y - a.y);
 
-        hitbox.x = adjustedX - Math.cos(angle + PI / 2) * hitbox.radius;
-        hitbox.y = adjustedY - Math.sin(angle + PI / 2) * hitbox.radius;
+        hitbox.x = adjustedX - this.directionY * Math.cos(angle + PI / 2) * hitbox.radius;
+        hitbox.y = adjustedY - this.directionY * Math.sin(angle + PI / 2) * hitbox.radius;
 
         return true;
     }
@@ -41,11 +42,11 @@ class Obstacle extends Entity {
             ctx.fillStyle = '#fff';
             ctx.beginPath();
 
-            ctx.moveTo(this.points[0].x, this.points[0].y + 100);
+            ctx.moveTo(this.points[0].x, this.points[0].y + this.directionY * 100);
             for (const point of this.points) {
                 ctx.lineTo(point.x, point.y);
             }
-            ctx.lineTo(this.points[this.points.length - 1].x, this.points[this.points.length - 1].y + 100);
+            ctx.lineTo(this.points[this.points.length - 1].x, this.points[this.points.length - 1].y + this.directionY * 100);
 
             ctx.fill();
         });

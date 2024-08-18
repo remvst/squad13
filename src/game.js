@@ -1,6 +1,17 @@
 class Game {
     constructor() {
         this.world = new World();
+
+        this.world.add(new Player());
+
+        const obst = new Obstacle();
+        obst.points.push(
+            { x: 100, y: 100 },
+            { x: 200, y: 100 },
+            { x: 200, y: 200 },
+            { x: 100, y: 200 },
+        );
+        this.world.add(obst);
     }
 
     cycle(elapsed) {

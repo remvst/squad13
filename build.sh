@@ -22,6 +22,9 @@ for file in \
     engine/entity.js \
     engine/world.js \
     entities/camera.js \
+    entities/chopper.js \
+    entities/player.js \
+    entities/obstacle.js \
     graphics/wrap.js \
     graphics/create-canvas.js \
     graphics/font.js \

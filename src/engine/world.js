@@ -2,7 +2,6 @@ class World {
     constructor() {
         this.entities = new Set();
         this.buckets = new Map();
-        this.sprites = [];
 
         this.add(new Camera());
     }
@@ -20,11 +19,6 @@ class World {
             this.bucket(bucket).add(entity);
         }
         entity.world = this;
-
-        entity.prepareSprites();
-        for (const sprite of entity.sprites) {
-            this.sprites.push(sprite);
-        }
     }
 
     remove(entity) {
@@ -32,24 +26,12 @@ class World {
         for (const bucket of entity.buckets)  {
             this.bucket(bucket).delete(entity);
         }
-        for (const sprite of entity.sprites) {
-            const index = this.sprites.indexOf(sprite);
-            if (index >= 0) this.sprites.splice(index, 1);
-        }
     }
 
     cycle(elapsed) {
         for (const entity of this.entities) {
             entity.cycle(elapsed);
         }
-    }
-
-    prepareSprites() {
-        for (const entity of this.entities) {
-            entity.prepareSprites();
-        }
-
-        this.sprites.sort((a, b) => a.actualZ - b.actualZ);
     }
 
     render() {
@@ -62,8 +44,8 @@ class World {
         ctx.scale(camera.zoom, camera.zoom);
         ctx.translate(-camera.x, -camera.y);
 
-        for (const sprite of this.sprites) {
-            sprite.render(camera);
+        for (const entity of this.entities) {
+            entity.render(camera);
         }
 
         ctx.restore();

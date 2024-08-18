@@ -20,26 +20,13 @@ for file in \
     util/resizer.js \
     util/math.js \
     engine/entity.js \
-    engine/sprite.js \
     engine/world.js \
     entities/camera.js \
-    entities/character.js \
-    entities/player.js \
-    entities/enemy.js \
-    entities/structure.js \
-    entities/floor.js \
-    entities/bullet.js \
-    entities/particle.js \
-    weapon/weapon.js \
-    weapon/pistol.js \
-    weapon/machine-gun.js \
-    weapon/shotgun.js \
     graphics/wrap.js \
     graphics/create-canvas.js \
     graphics/font.js \
     input/keyboard.js \
     input/mouse.js \
-    map-generator.js \
     game.js \
     index.js \
 ; do

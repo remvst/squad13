@@ -5,6 +5,7 @@ class Hitbox {
         this.radius = radius;
         this.isLanding = false;
         this.readjusted = false;
+        this.vital = false;
     }
 }
 
@@ -21,10 +22,18 @@ class Chopper extends Entity {
         };
 
         this.hitBoxes = [
-            new Hitbox(-10, 10, 5),
-            new Hitbox(10, 10, 5),
-            new Hitbox(10, -10, 5),
-            new Hitbox(-10, -10, 5),
+            new Hitbox(-10, 18, 5),
+            new Hitbox(10, 18, 5),
+
+            // Top
+            new Hitbox(20, -15, 20),
+            new Hitbox(-20, -15, 20),
+
+            // Front (nose)
+            new Hitbox(15, 0, 15),
+
+            // Back propeller
+            new Hitbox(-55, -10, 10),
         ];
 
         for (const landingHitbox of [
@@ -32,6 +41,10 @@ class Chopper extends Entity {
             this.hitBoxes[1],
         ]) {
             landingHitbox.isLanding = true;
+        }
+
+        for (const hitbox of this.hitBoxes) {
+            hitbox.vital = !hitbox.isLanding;
         }
 
         this.globalHitBoxes = [];
@@ -55,6 +68,7 @@ class Chopper extends Entity {
             this.globalHitBoxes[i].y = this.y + Math.sin(this.angle + hitBoxAngle) * dist;
             this.globalHitBoxes[i].radius = hitBox.radius;
             this.globalHitBoxes[i].isLanding = hitBox.isLanding;
+            this.globalHitBoxes[i].vital = hitBox.vital;
             this.globalHitBoxes[i].readjusted = false;
         }
     }
@@ -79,12 +93,20 @@ class Chopper extends Entity {
         const { averagePoint } = this;
 
         for (const obstacle of this.world.bucket('obstacle')) {
+            if (!isBetween(obstacle.minX - 500, this.x, obstacle.maxX + 500)) continue;
+
             for (const hitBox of this.globalHitBoxes) {
                 hitBox.readjusted = hitBox.readjusted || obstacle.pushAway(hitBox);
             }
         }
 
         const landed = !this.globalHitBoxes.some(hitBox => hitBox.isLanding && !hitBox.readjusted);
+        const crashed = this.globalHitBoxes.some(hitBox => hitBox.vital && hitBox.readjusted);
+        if (crashed) {
+            console.log('boom');
+            this.world.remove(this);
+            return;
+        }
 
         const newAverage = this.averagePoint;
 

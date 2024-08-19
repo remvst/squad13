@@ -11,26 +11,9 @@ class Game {
         const bg = new Background('#f22f00', '#fa7f02');
         this.world.add(bg);
 
-        const landingPad = new Obstacle();
-        landingPad.points.push({x: -100, y: 100});
-        landingPad.points.push({x: 100, y: 100});
-        this.world.add(landingPad);
-
-        const targetPad = new Obstacle();
-        targetPad.points.push({x: 4500, y: 100});
-        targetPad.points.push({x: 4700, y: 100});
-        this.world.add(targetPad);
-
-        const obst = new Obstacle();
-        for (let x = 0 ; x < 4000 ; x+= 100)  {
-            obst.points.push({
-                x: x + 200,
-                y: 100
-                    + sin(x / 1600 * PI * 2) * 300
-                    + sin(x / 350 * PI * 2) * 150,
-            });
-        }
-        this.world.add(obst);
+        this.world.add(Obstacle.landingObstacle(0, 100, 200));
+        // this.world.add(Obstacle.mountain(300, 2000, -200, 200, 1));
+        // this.world.add(Obstacle.landingObstacle(2500, 100, 200));
 
         const ceiling = new Obstacle();
         ceiling.directionY = -1;

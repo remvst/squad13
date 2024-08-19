@@ -7,6 +7,40 @@ class Obstacle extends Entity {
         this.directionY = 1;
     }
 
+    get minX() { return this.points[0].x; }
+    get maxX() { return this.points[this.points.length - 1].x; }
+
+    static landingObstacle(x, y, length) {
+        const obstacle = new Obstacle();
+        obstacle.points = [
+            {x: x - length, y: y + 400},
+            {x: x - length / 2 - 50, y: y - 10},
+            {x: x - length / 2, y},
+            {x: x + length / 2, y},
+            {x: x + length / 2 + 50, y: y - 10},
+            {x: x + length, y: y + 400},
+        ];
+        return obstacle;
+    }
+
+    static mountain(startX, endX, minY, maxY, periodCount = 1) {
+        const length = endX - startX;
+        const amplitude = maxY - minY;
+
+        const obstacle = new Obstacle();
+        obstacle.points.push({ x: startX - 100, y: maxY + amplitude });
+        for (let x = startX ; x <= endX ; x += 100)  {
+            obstacle.points.push({
+                x: x,
+                y: minY + amplitude / 2
+                    + sin(x / length * PI * 2 * periodCount) * amplitude / 2
+                    + sin(x / length * PI * 2 * periodCount * 4) * amplitude / 4,
+            });
+        }
+        obstacle.points.push({ x: endX + 100, y: maxY + amplitude });
+        return obstacle;
+    }
+
     pushAway(hitbox) {
         let i = 0;
         while (this.points[i] && this.points[i].x < hitbox.x) {
@@ -37,7 +71,7 @@ class Obstacle extends Entity {
         return true;
     }
 
-    render() {
+    render(camera) {
         ctx.wrap(() => {
             ctx.fillStyle = '#000';
             ctx.beginPath();
@@ -51,14 +85,18 @@ class Obstacle extends Entity {
             }
 
             if (this.directionY > 0) {
-                ctx.lineTo(this.points[this.points.length - 1].x, maxY);
-                ctx.lineTo(this.points[0].x, maxY);
+                ctx.lineTo(this.points[this.points.length - 1].x, camera.maxY);
+                ctx.lineTo(this.points[0].x, camera.maxY);
             } else {
-                ctx.lineTo(this.points[this.points.length - 1].x, minY);
-                ctx.lineTo(this.points[0].x, minY);
+                ctx.lineTo(this.points[this.points.length - 1].x, camera.minY);
+                ctx.lineTo(this.points[0].x, camera.minY);
             }
 
             ctx.fill();
         });
+
+        ctx.fillStyle = '#f00';
+        ctx.fillRect(this.minX, 0, 2, 400);
+        ctx.fillRect(this.maxX, 0, 2, 400);
     }
 }

@@ -41,6 +41,25 @@ class Obstacle extends Entity {
         return obstacle;
     }
 
+    static ceiling(startX, endX, minY, maxY, periodCount = 1) {
+        const length = endX - startX;
+        const amplitude = maxY - minY;
+
+        const obstacle = new Obstacle();
+        obstacle.points.push({ x: startX - 100, y: maxY - amplitude });
+        for (let x = startX ; x <= endX ; x += 100)  {
+            obstacle.points.push({
+                x: x,
+                y: minY + amplitude / 2
+                    + sin(x / length * PI * 2 * periodCount) * amplitude / 2
+                    + sin(x / length * PI * 2 * periodCount * 4) * amplitude / 4,
+            });
+        }
+        obstacle.points.push({ x: endX + 100, y: maxY - amplitude });
+        obstacle.directionY = -1;
+        return obstacle;
+    }
+
     pushVertically(hitbox) {
         let i = 0;
         while (this.points[i] && this.points[i].x < hitbox.x) {

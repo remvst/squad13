@@ -33,12 +33,23 @@ class Game {
         // this.world.add(rebel);
 
         (async () => {
-            try {
-                await tutorialFly(this.world);
-                console.log('success');
-            } catch (err) {
-                console.log('failed');
+            const levels = [
+                // tutorialFly,
+                // firstMountain,
+                firstChallenge,
+            ]
+            let levelIndex = 0;
+            while (levelIndex < levels.length) {
+                this.world = new World();
+
+                const level = levels[levelIndex];
+                try {
+                    await level(this.world);
+                    levelIndex++;
+                } catch (err) {}
             }
+
+            alert('U FINISHED ZEE GAME')
         })();
     }
 

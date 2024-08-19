@@ -32,7 +32,14 @@ class Game {
         // rebel.x = 600;
         // this.world.add(rebel);
 
-        tutorialFly(this.world);
+        (async () => {
+            try {
+                await tutorialFly(this.world);
+                console.log('success');
+            } catch (err) {
+                console.log('failed');
+            }
+        })();
     }
 
     cycle(elapsed) {

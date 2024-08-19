@@ -34,6 +34,7 @@ for file in \
     entities/rebel.js \
     entities/landing-area.js \
     entities/instruction.js \
+    entities/condition.js \
     graphics/wrap.js \
     graphics/create-canvas.js \
     graphics/create-canvas-pattern.js \

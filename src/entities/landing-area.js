@@ -15,4 +15,12 @@ class LandingArea extends Entity {
             ctx.fillText('FINISH', 0, 25);
         });
     }
+
+    landed(chopper) {
+        return this.world.waitFor(() => {
+            return chopper.landed &&
+                isBetween(this.x - 100, chopper.x, this.x + 100) &&
+                isBetween(this.y - 100, chopper.y, this.y + 100);
+        });
+    }
 }

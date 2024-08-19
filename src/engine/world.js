@@ -13,6 +13,10 @@ class World {
         return this.buckets.get(bucket);
     }
 
+    contains(entity) {
+        return this.entities.has(entity);
+    }
+
     add(entity) {
         this.entities.add(entity);
         for (const bucket of entity.buckets)  {
@@ -46,5 +50,11 @@ class World {
         }
 
         ctx.restore();
+    }
+
+    waitFor(condition) {
+        const conditionEntity = new Condition(condition);
+        this.add(conditionEntity);
+        return conditionEntity.promise();
     }
 }

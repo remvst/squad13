@@ -199,6 +199,8 @@ class Chopper extends Entity {
         this.angle += this.momentum.angle * elapsed;
 
         this.angle = between(-PI / 4, this.angle, PI / 4);
+
+        this.landed = landed;
     }
 
     explode() {
@@ -290,5 +292,11 @@ class Chopper extends Entity {
         // const { averagePoint } = this;
         // ctx.fillStyle = '#00f';
         // ctx.fillRect(averagePoint.x - 2, averagePoint.y - 2, 4, 4);
+    }
+
+    crashed() {
+        return this.world.waitFor(() => {
+            if (!this.world.contains(this)) throw new Error();
+        })
     }
 }

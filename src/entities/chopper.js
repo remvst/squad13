@@ -13,6 +13,9 @@ class Chopper extends Entity {
 
     constructor() {
         super();
+
+        this.buckets.push('chopper');
+
         this.controls = {
             up: false,
             down: false,
@@ -20,6 +23,8 @@ class Chopper extends Entity {
             right: false,
             shoot: false,
         };
+
+        this.lastShot = 0;
 
         this.hitBoxes = [
             new Hitbox(-10, 18, 5),
@@ -88,12 +93,17 @@ class Chopper extends Entity {
     cycle(elapsed) {
         super.cycle(elapsed);
 
+        if (this.age - this.lastShot > 1 && this.controls.shoot) {
+            this.world.add(new Missile(this));
+            this.lastShot = this.age;
+        }
+
         this.updateGlobalHitboxes();
 
         const { averagePoint } = this;
 
         for (const obstacle of this.world.bucket('obstacle')) {
-            if (!isBetween(obstacle.minX - 500, this.x, obstacle.maxX + 500)) continue;
+            if (!isBetween(obstacle.minX - 100, this.x, obstacle.maxX + 100)) continue;
 
             for (const hitBox of this.globalHitBoxes) {
                 hitBox.readjusted = hitBox.readjusted || obstacle.pushAway(hitBox);
@@ -101,34 +111,16 @@ class Chopper extends Entity {
         }
 
         const landed = !this.globalHitBoxes.some(hitBox => hitBox.isLanding && !hitBox.readjusted);
-        const crashed = this.globalHitBoxes.some(hitBox => hitBox.vital && hitBox.readjusted);
+        let crashed = this.globalHitBoxes.some(hitBox => hitBox.vital && hitBox.readjusted);
+
+        for (const water of this.world.bucket('water')) {
+            if (this.y >= water.y) {
+                crashed = true;
+            }
+        }
+
         if (crashed) {
-            this.world.remove(this);
-
-
-            for (let i = 0 ; i < 10 ; i++) {
-                const fireball = new Fireball(
-                    this.x + rnd(-50, 50),
-                    this.y + rnd(-50, 50),
-                    -rnd(PI / 4, PI * 3 / 4),
-                    rnd(300, 600),
-                );
-                this.world.add(fireball);
-            }
-
-            for (let i = 0 ; i < 30 ; i++) {
-                const x = this.x + rnd(-50, 50);
-                const y = this.y + rnd(-50, 50);
-                const particle = new Particle(
-                    pick(['#000', '#ff0', '#f80', '#f00']),
-                    [rnd(25, 30), 0],
-                    [x, x + rnd(-100, 100)],
-                    [y, y - rnd(50, 150)],
-                    rnd(1.2, 3),
-                );
-                this.world.add(particle);
-            }
-
+            this.explode();
             return;
         }
 
@@ -209,6 +201,34 @@ class Chopper extends Entity {
         this.angle = between(-PI / 4, this.angle, PI / 4);
     }
 
+    explode() {
+        this.world.remove(this);
+
+        for (let i = 0 ; i < 10 ; i++) {
+            const fireball = new Fireball(
+                this.x + rnd(-50, 50),
+                this.y + rnd(-50, 50),
+                -rnd(PI / 4, PI * 3 / 4),
+                rnd(300, 600),
+            );
+            this.world.add(fireball);
+        }
+
+        for (let i = 0 ; i < 30 ; i++) {
+            const x = this.x + rnd(-50, 50);
+            const y = this.y + rnd(-50, 50);
+            const particle = new Particle(
+                pick(['#000', '#ff0', '#f80', '#f00']),
+                [rnd(25, 30), 0],
+                [x, x + rnd(-100, 100)],
+                [y, y - rnd(50, 150)],
+                rnd(1.2, 3),
+            );
+            this.world.add(particle);
+        }
+
+    }
+
     render() {
         ctx.wrap(() => {
             ctx.translate(this.x, this.y);
@@ -240,11 +260,11 @@ class Chopper extends Entity {
                 ctx.fillRect(-12, -2, 24, 4);
             });
 
-            ctx.strokeStyle = '#fff';
-            ctx.beginPath();
-            ctx.moveTo(0, 0);
-            ctx.lineTo(100, 0);
-            ctx.stroke();
+            // ctx.strokeStyle = '#fff';
+            // ctx.beginPath();
+            // ctx.moveTo(0, 0);
+            // ctx.lineTo(100, 0);
+            // ctx.stroke();
         });
 
         ctx.wrap(() => {
@@ -260,15 +280,15 @@ class Chopper extends Entity {
             }
         });
 
-        for (const hitBox of this.globalHitBoxes) {
-            ctx.fillStyle = hitBox.readjusted ? '#ff0' : '#0f0';
-            ctx.beginPath();
-            ctx.arc(hitBox.x, hitBox.y, hitBox.radius, 0, Math.PI * 2);
-            ctx.fill();
-        }
+        // for (const hitBox of this.globalHitBoxes) {
+        //     ctx.fillStyle = hitBox.readjusted ? '#ff0' : '#0f0';
+        //     ctx.beginPath();
+        //     ctx.arc(hitBox.x, hitBox.y, hitBox.radius, 0, Math.PI * 2);
+        //     ctx.fill();
+        // }
 
-        const { averagePoint } = this;
-        ctx.fillStyle = '#00f';
-        ctx.fillRect(averagePoint.x - 2, averagePoint.y - 2, 4, 4);
+        // const { averagePoint } = this;
+        // ctx.fillStyle = '#00f';
+        // ctx.fillRect(averagePoint.x - 2, averagePoint.y - 2, 4, 4);
     }
 }

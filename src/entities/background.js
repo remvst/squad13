@@ -8,7 +8,7 @@ class Background extends Entity {
         this.gradient.addColorStop(0, topColor);
         this.gradient.addColorStop(1, bottomColor);
 
-        this.mountains = [0.8, 0.5, 0.2].map(factor => {
+        this.mountains = [0.8, 0.5, 0.3].map(factor => {
             const color = multiplyColor(bottomColor, factor);
             const pattern = createCanvasPattern(400, 100, (ctx) => {
                 ctx.fillStyle = color;
@@ -22,8 +22,8 @@ class Background extends Entity {
                     ctx.lineTo(
                         x,
                         50
-                            + sin((x + offset1) / 400 * Math.PI * 2) * 50
-                            + sin((x + offset2) / 200 * Math.PI * 2) * 25
+                            + sin((x + offset1) / 400 * Math.PI * 2) * 25
+                            + sin((x + offset2) / 200 * Math.PI * 2) * 12
                     );
                 }
                 ctx.lineTo(800, 400);

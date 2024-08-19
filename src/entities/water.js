@@ -1,4 +1,10 @@
 class Water extends Entity {
+
+    constructor() {
+        super();
+        this.buckets.push('water');
+    }
+
     render(camera) {
         ctx.wrap(() => {
             ctx.translate(camera.x - CANVAS_WIDTH / 2, this.y);

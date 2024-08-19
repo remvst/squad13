@@ -2,7 +2,7 @@ class Player extends Chopper {
 
     constructor() {
         super();
-        this.buckets = ['player'];
+        this.buckets.push('player');
     }
 
     cycle(elapsed) {
@@ -12,5 +12,6 @@ class Player extends Chopper {
         this.controls.right = DOWN[39] || DOWN[68]
         this.controls.up = DOWN[38] || DOWN[87];
         this.controls.down = DOWN[40] || DOWN[83];
+        this.controls.shoot = DOWN[32];
     }
 }

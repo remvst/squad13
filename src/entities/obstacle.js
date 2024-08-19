@@ -61,6 +61,7 @@ class Obstacle extends Entity {
         const ratio = l / length;
 
         if (h > hitbox.radius) return;
+        if (!isBetween(0, ratio, 1) && dist(a, hitbox) > hitbox.radius && dist(b, hitbox) > hitbox.radius) return;
 
         const adjustedX = a.x + ratio * (b.x - a.x);
         const adjustedY = a.y + ratio * (b.y - a.y);

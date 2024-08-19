@@ -10,7 +10,7 @@ class Background extends Entity {
 
         this.mountains = [0.8, 0.5, 0.2].map(factor => {
             const color = multiplyColor(bottomColor, factor);
-            const pattern = createCanvasPattern(400, 200, (ctx) => {
+            const pattern = createCanvasPattern(400, 100, (ctx) => {
                 ctx.fillStyle = color;
 
                 const offset1 = Math.random() * 800;
@@ -21,7 +21,7 @@ class Background extends Entity {
                 for (let x = 0 ; x <= 800 ; x += 100) {
                     ctx.lineTo(
                         x,
-                        100
+                        50
                             + sin((x + offset1) / 400 * Math.PI * 2) * 50
                             + sin((x + offset2) / 200 * Math.PI * 2) * 25
                     );
@@ -66,7 +66,7 @@ class Background extends Entity {
                     const offsetX = camera.x * factorX;
                     ctx.translate(-offsetX, 0);
                     ctx.fillStyle = mountains;
-                    ctx.fillRect(offsetX, 0, CANVAS_WIDTH, 400);
+                    ctx.fillRect(offsetX, 0, CANVAS_WIDTH, mountains.height);
                 })
 
                 ctx.fillStyle = mountains.color;

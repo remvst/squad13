@@ -30,7 +30,7 @@ class Chopper extends Entity {
             new Hitbox(-20, -15, 20),
 
             // Front (nose)
-            new Hitbox(15, 0, 15),
+            new Hitbox(15, 0, 10),
 
             // Back propeller
             new Hitbox(-55, -10, 10),
@@ -103,8 +103,32 @@ class Chopper extends Entity {
         const landed = !this.globalHitBoxes.some(hitBox => hitBox.isLanding && !hitBox.readjusted);
         const crashed = this.globalHitBoxes.some(hitBox => hitBox.vital && hitBox.readjusted);
         if (crashed) {
-            console.log('boom');
             this.world.remove(this);
+
+
+            for (let i = 0 ; i < 10 ; i++) {
+                const fireball = new Fireball(
+                    this.x + rnd(-50, 50),
+                    this.y + rnd(-50, 50),
+                    -rnd(PI / 4, PI * 3 / 4),
+                    rnd(300, 600),
+                );
+                this.world.add(fireball);
+            }
+
+            for (let i = 0 ; i < 30 ; i++) {
+                const x = this.x + rnd(-50, 50);
+                const y = this.y + rnd(-50, 50);
+                const particle = new Particle(
+                    pick(['#000', '#ff0', '#f80', '#f00']),
+                    [rnd(25, 30), 0],
+                    [x, x + rnd(-100, 100)],
+                    [y, y - rnd(50, 150)],
+                    rnd(1.2, 3),
+                );
+                this.world.add(particle);
+            }
+
             return;
         }
 

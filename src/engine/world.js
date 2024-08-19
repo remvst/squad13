@@ -42,7 +42,7 @@ class World {
         ctx.translate(-~~camera.x, -~~camera.y);
 
         for (const entity of this.entities) {
-            entity.render(camera);
+            ctx.wrap(() => entity.render(camera));
         }
 
         ctx.restore();

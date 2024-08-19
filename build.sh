@@ -28,6 +28,8 @@ for file in \
     entities/obstacle.js \
     entities/water.js \
     entities/background.js \
+    entities/particle.js \
+    entities/fireball.js \
     graphics/wrap.js \
     graphics/create-canvas.js \
     graphics/create-canvas-pattern.js \

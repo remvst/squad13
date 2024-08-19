@@ -32,6 +32,7 @@ for file in \
     entities/fireball.js \
     entities/missile.js \
     entities/rebel.js \
+    entities/landing-area.js \
     graphics/wrap.js \
     graphics/create-canvas.js \
     graphics/create-canvas-pattern.js \

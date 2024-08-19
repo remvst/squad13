@@ -14,4 +14,9 @@ function tutorialFly(world) {
 
     world.add(new Player());
     world.add(new Water(400));
+
+    const la = new LandingArea();
+    la.x = 1000;
+    la.y = 100;
+    world.add(la);
 }

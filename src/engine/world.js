@@ -35,14 +35,11 @@ class World {
     }
 
     render() {
-        ctx.fillStyle = '#f22f00';
-        ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-
         const camera = firstItem(this.bucket('camera'));
         ctx.save();
         ctx.translate(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2)
         ctx.scale(camera.zoom, camera.zoom);
-        ctx.translate(-camera.x, -camera.y);
+        ctx.translate(-~~camera.x, -~~camera.y);
 
         for (const entity of this.entities) {
             entity.render(camera);

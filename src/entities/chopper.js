@@ -117,31 +117,13 @@ class Chopper extends Entity {
             elapsed * 4,
         );
 
-        let angleDirection = 0;
-        if (this.controls.left) angleDirection = -1;
-        if (this.controls.right) angleDirection = 1;
-
-        if (angleDirection) {
-            const targetAngle = angleDirection > 0 ? PI / 4 : -PI / 4;
-
-            this.momentum.angle += between(
-                -elapsed * PI * 2,
-                targetAngle - this.angle,
-                elapsed * PI / 2,
-            );
-        } else {
-            this.momentum.angle += between(
-                -elapsed * PI * 3,
-                -this.momentum.angle,
-                elapsed * PI * 3,
-            );
-        }
-
         let idealAngle = 0;
         let angleVelocity = PI / 6;
-        if (this.controls.left) idealAngle = -PI / 4;
-        if (this.controls.right) idealAngle = PI / 4;
-        if (this.controls.left || this.controls.right) angleVelocity = PI / 2;
+        if (!landed) {
+            if (this.controls.left) idealAngle = -PI / 4;
+            if (this.controls.right) idealAngle = PI / 4;
+            if (this.controls.left || this.controls.right) angleVelocity = PI / 2;
+        }
 
         this.angle += between(
             -elapsed * angleVelocity,

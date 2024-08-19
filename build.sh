@@ -19,6 +19,7 @@ for file in \
     util/first-item.js \
     util/resizer.js \
     util/math.js \
+    util/colors.js \
     engine/entity.js \
     engine/world.js \
     entities/camera.js \
@@ -26,8 +27,10 @@ for file in \
     entities/player.js \
     entities/obstacle.js \
     entities/water.js \
+    entities/background.js \
     graphics/wrap.js \
     graphics/create-canvas.js \
+    graphics/create-canvas-pattern.js \
     graphics/font.js \
     input/keyboard.js \
     input/mouse.js \

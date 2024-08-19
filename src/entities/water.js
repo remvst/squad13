@@ -3,8 +3,7 @@ class Water extends Entity {
         ctx.wrap(() => {
             ctx.translate(camera.x - CANVAS_WIDTH / 2, this.y);
 
-            ctx.fillStyle = ctx.strokeStyle = '#fff';
-            ctx.globalAlpha = 0.5;
+            ctx.fillStyle = ctx.strokeStyle = '#27c6dc';
             // ctx.fillRect(0, 0, CANVAS_WIDTH, 100);
 
             ctx.beginPath();

@@ -2,6 +2,15 @@ class Game {
     constructor() {
         this.world = new World();
 
+        const camera = firstItem(this.world.bucket('camera'));
+        camera.minX = -300;
+        camera.maxX = 5000;
+        camera.minY = -500;
+        camera.maxY = 500;
+
+        const bg = new Background('#f22f00', '#fa7f02');
+        this.world.add(bg);
+
         const landingPad = new Obstacle();
         landingPad.points.push({x: -100, y: 100});
         landingPad.points.push({x: 100, y: 100});
@@ -33,7 +42,7 @@ class Game {
         this.world.add(new Player());
 
         const water = new Water();
-        water.y = 200;
+        water.y = 400;
         this.world.add(water);
     }
 

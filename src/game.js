@@ -8,13 +8,18 @@ class Game {
         this.world.add(landingPad);
 
         const targetPad = new Obstacle();
-        targetPad.points.push({x: 1200, y: 100});
-        targetPad.points.push({x: 1400, y: 100});
+        targetPad.points.push({x: 4500, y: 100});
+        targetPad.points.push({x: 4700, y: 100});
         this.world.add(targetPad);
 
         const obst = new Obstacle();
-        for (let x = 0 ; x < 800 ; x+= 100)  {
-            obst.points.push({x: x + 200, y: sin(x / 800 * PI * 2 * 3) * 40 + 100});
+        for (let x = 0 ; x < 4000 ; x+= 100)  {
+            obst.points.push({
+                x: x + 200,
+                y: 100
+                    + sin(x / 1600 * PI * 2) * 300
+                    + sin(x / 350 * PI * 2) * 150,
+            });
         }
         this.world.add(obst);
 

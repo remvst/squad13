@@ -42,11 +42,21 @@ class Obstacle extends Entity {
             ctx.fillStyle = '#fff';
             ctx.beginPath();
 
-            ctx.moveTo(this.points[0].x, this.points[0].y + this.directionY * 100);
+            let maxY = this.points[0].y;
+            let minY = maxY;
             for (const point of this.points) {
                 ctx.lineTo(point.x, point.y);
+                maxY = max(maxY, point.y + 100);
+                minY = min(minY, point.y - 100);
             }
-            ctx.lineTo(this.points[this.points.length - 1].x, this.points[this.points.length - 1].y + this.directionY * 100);
+
+            if (this.directionY > 0) {
+                ctx.lineTo(this.points[this.points.length - 1].x, maxY);
+                ctx.lineTo(this.points[0].x, maxY);
+            } else {
+                ctx.lineTo(this.points[this.points.length - 1].x, minY);
+                ctx.lineTo(this.points[0].x, minY);
+            }
 
             ctx.fill();
         });

@@ -138,7 +138,7 @@ class Chopper extends Entity {
         }
 
         let idealAngle = 0;
-        let angleVelocity = PI / 4;
+        let angleVelocity = PI / 6;
         if (this.controls.left) idealAngle = -PI / 4;
         if (this.controls.right) idealAngle = PI / 4;
         if (this.controls.left || this.controls.right) angleVelocity = PI / 2;
@@ -154,10 +154,14 @@ class Chopper extends Entity {
             this.momentum.x += this.propellerPower * Math.cos(this.angle - PI / 2) * elapsed * 200 * 1.5;
             this.momentum.y += this.propellerPower * Math.sin(this.angle - PI / 2) * elapsed * 200;
         } else {
+            const opposition = Math.sign(Math.sin(this.angle)) !== Math.sign(this.momentum.x)
+                ? 150
+                : 50;
+
             this.momentum.x += between(
-                -elapsed * 50,
+                -elapsed * opposition,
                 -this.momentum.x,
-                elapsed * 50,
+                elapsed * opposition,
             );
             this.momentum.y += between(
                 -elapsed * 200,
@@ -166,7 +170,7 @@ class Chopper extends Entity {
             );
         }
 
-        if (landed) {
+        if (landed && !this.propellerPower) {
             this.momentum.y = 0;
         }
 

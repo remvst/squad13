@@ -31,6 +31,7 @@ for file in \
     entities/particle.js \
     entities/fireball.js \
     entities/missile.js \
+    entities/rebel.js \
     graphics/wrap.js \
     graphics/create-canvas.js \
     graphics/create-canvas-pattern.js \

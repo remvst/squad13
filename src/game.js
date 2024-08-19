@@ -12,7 +12,7 @@ class Game {
         this.world.add(bg);
 
         this.world.add(Obstacle.landingObstacle(0, 100, 200));
-        // this.world.add(Obstacle.mountain(300, 2000, -200, 200, 1));
+        this.world.add(Obstacle.mountain(300, 2000, -200, 200, 1));
         // this.world.add(Obstacle.landingObstacle(2500, 100, 200));
 
         const ceiling = new Obstacle();
@@ -27,6 +27,10 @@ class Game {
         const water = new Water();
         water.y = 400;
         this.world.add(water);
+
+        const rebel = new Rebel();
+        rebel.x = 600;
+        this.world.add(rebel);
     }
 
     cycle(elapsed) {

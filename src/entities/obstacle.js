@@ -41,6 +41,28 @@ class Obstacle extends Entity {
         return obstacle;
     }
 
+    pushVertically(hitbox) {
+        let i = 0;
+        while (this.points[i] && this.points[i].x < hitbox.x) {
+            i++;
+        }
+
+        const a = this.points[i - 1];
+        const b = this.points[i];
+
+        if (!a || !b) return;
+
+        const ratio = (hitbox.x - a.x) / (b.x - a.x) + a.x;
+
+        const yOnLine = interpolate(a.y, b.y, ratio);
+        const idealY = interpolate(a.y, b.y, ratio) - this.directionY * hitbox.radius;
+        if (!isBetween(idealY, hitbox.y, idealY + this.directionY * 100)) return;
+
+        hitbox.y = idealY;
+
+        return true;
+    }
+
     pushAway(hitbox) {
         let i = 0;
         while (this.points[i] && this.points[i].x < hitbox.x) {

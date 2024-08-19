@@ -37,6 +37,17 @@ class Missile extends Entity {
             );
             this.world.add(particle);
         }
+
+        for (const target of this.targets()) {
+            if (target === this.owner) continue;
+            if (dist(target, this) > 50) continue;
+            target.explode();
+        }
+    }
+
+    * targets() {
+        yield* this.world.bucket('human');
+        yield* this.world.bucket('chopper');
     }
 
     cycle(elapsed) {
@@ -54,6 +65,22 @@ class Missile extends Entity {
             if (obstacle.pushAway(this)) {
                 this.explode();
             }
+        }
+
+        for (const chopper of this.world.bucket('chopper')) {
+            if (chopper === this.owner) continue;
+            if (!isBetween(chopper.x - 25, this.x, chopper.x + 25)) continue;
+            if (!isBetween(chopper.y - 25, this.y, chopper.y + 25)) continue;
+
+            this.explode();
+        }
+
+        for (const human of this.world.bucket('human')) {
+            if (human === this.owner) continue;
+            if (!isBetween(human.x - 10, this.x, human.x + 10)) continue;
+            if (!isBetween(human.y - 10, this.y, human.y + 10)) continue;
+
+            this.explode();
         }
 
         let angleSin = sin(this.angle);

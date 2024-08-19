@@ -1,8 +1,9 @@
 class Water extends Entity {
 
-    constructor() {
+    constructor(y) {
         super();
         this.buckets.push('water');
+        this.y = y;
     }
 
     render(camera) {

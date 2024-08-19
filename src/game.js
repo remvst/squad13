@@ -2,35 +2,37 @@ class Game {
     constructor() {
         this.world = new World();
 
-        const camera = firstItem(this.world.bucket('camera'));
-        camera.minX = -300;
-        camera.maxX = 5000;
-        camera.minY = -500;
-        camera.maxY = 500;
+        // const camera = firstItem(this.world.bucket('camera'));
+        // camera.minX = -300;
+        // camera.maxX = 5000;
+        // camera.minY = -500;
+        // camera.maxY = 500;
 
-        const bg = new Background('#f22f00', '#fa7f02');
-        this.world.add(bg);
+        // const bg = new Background('#f22f00', '#fa7f02');
+        // this.world.add(bg);
 
-        this.world.add(Obstacle.landingObstacle(0, 100, 200));
-        this.world.add(Obstacle.mountain(300, 2000, -200, 200, 1));
-        // this.world.add(Obstacle.landingObstacle(2500, 100, 200));
+        // this.world.add(Obstacle.landingObstacle(0, 100, 200));
+        // this.world.add(Obstacle.mountain(300, 2000, -200, 200, 1));
+        // // this.world.add(Obstacle.landingObstacle(2500, 100, 200));
 
-        const ceiling = new Obstacle();
-        ceiling.directionY = -1;
-        for (let x = 0 ; x < 800 ; x+= 100)  {
-            ceiling.points.push({x: x + 200, y: sin(x / 800 * PI * 2 * 3) * 40 - 400});
-        }
-        this.world.add(ceiling);
+        // const ceiling = new Obstacle();
+        // ceiling.directionY = -1;
+        // for (let x = 0 ; x < 800 ; x+= 100)  {
+        //     ceiling.points.push({x: x + 200, y: sin(x / 800 * PI * 2 * 3) * 40 - 400});
+        // }
+        // this.world.add(ceiling);
 
-        this.world.add(new Player());
+        // this.world.add(new Player());
 
-        const water = new Water();
-        water.y = 400;
-        this.world.add(water);
+        // const water = new Water();
+        // water.y = 400;
+        // this.world.add(water);
 
-        const rebel = new Rebel();
-        rebel.x = 600;
-        this.world.add(rebel);
+        // const rebel = new Rebel();
+        // rebel.x = 600;
+        // this.world.add(rebel);
+
+        tutorialFly(this.world);
     }
 
     cycle(elapsed) {

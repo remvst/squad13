@@ -39,6 +39,7 @@ for file in \
     input/keyboard.js \
     input/mouse.js \
     game.js \
+    levels.js \
     index.js \
 ; do
     cat src/$file >> $OUT_JS

@@ -35,7 +35,7 @@ class World {
     }
 
     render() {
-        ctx.fillStyle = '#000';
+        ctx.fillStyle = '#f22f00';
         ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
         const camera = firstItem(this.bucket('camera'));

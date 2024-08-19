@@ -31,6 +31,10 @@ class Game {
         this.world.add(ceiling);
 
         this.world.add(new Player());
+
+        const water = new Water();
+        water.y = 200;
+        this.world.add(water);
     }
 
     cycle(elapsed) {

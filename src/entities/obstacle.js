@@ -39,7 +39,7 @@ class Obstacle extends Entity {
 
     render() {
         ctx.wrap(() => {
-            ctx.fillStyle = '#fff';
+            ctx.fillStyle = '#000';
             ctx.beginPath();
 
             let maxY = this.points[0].y;

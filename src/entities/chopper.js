@@ -186,9 +186,31 @@ class Chopper extends Entity {
             ctx.translate(this.x, this.y);
             ctx.rotate(this.angle);
 
-            ctx.fillStyle = '#f00';
-            ctx.fillRect(-20, -10, 40, 20);
+            ctx.fillStyle = '#000';
+            ctx.fillRect(-20, -15, 40, 30);
 
+            ctx.fillRect(0, -10, -50, 5);
+            ctx.fillRect(-60, -20, 10, 15);
+
+            ctx.fillRect(-20, 20, 40, 2);
+            ctx.fillRect(-10, 15, 2, 5);
+            ctx.fillRect(10, 15, 2, 5);
+
+
+            ctx.fillRect(-2, 0, 4, -22);
+
+            ctx.wrap(() => {
+                ctx.translate(0, -22);
+                ctx.scale(1, 0.45);
+                ctx.rotate(this.age * PI * 4);
+                ctx.fillRect(-50, -3, 100, 6);
+            });
+
+            ctx.wrap(() => {
+                ctx.translate(-55, -15);
+                ctx.rotate(this.age * PI * 4);
+                ctx.fillRect(-12, -2, 24, 4);
+            });
 
             ctx.strokeStyle = '#fff';
             ctx.beginPath();

@@ -25,6 +25,7 @@ for file in \
     entities/chopper.js \
     entities/player.js \
     entities/obstacle.js \
+    entities/water.js \
     graphics/wrap.js \
     graphics/create-canvas.js \
     graphics/font.js \

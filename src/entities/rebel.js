@@ -13,15 +13,19 @@ class Rebel extends Entity {
     cycle(elapsed) {
         super.cycle(elapsed);
 
+        this.angle = 0;
+
         const player = firstItem(this.world.bucket('player'));
         if (player) {
-            this.angle = angleBetween(this, player);
+            if (dist(player, this) < 500) {
+                this.angle = angleBetween(this, player);
 
-            if (this.age - this.lastShot > 4 && dist(player, this) < 500) {
-                const missile = new Missile(this);
-                missile.speed *= 0.5;
-                this.world.add(missile);
-                this.lastShot = this.age;
+                if (this.age - this.lastShot > 4) {
+                    const missile = new Missile(this);
+                    missile.speed *= 0.5;
+                    this.world.add(missile);
+                    this.lastShot = this.age;
+                }
             }
         }
 
@@ -46,7 +50,7 @@ class Rebel extends Entity {
                 ctx.rotate(this.angle);
 
                 ctx.fillStyle = '#000';
-                ctx.fillRect(-10, -5, 20, 5);
+                ctx.fillRect(-10, -2.5, 20, 5);
             });
         })
     }

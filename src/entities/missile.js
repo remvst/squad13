@@ -2,12 +2,12 @@ class Missile extends Entity {
     constructor(owner) {
         super();
 
-        this.x = owner.x;
-        this.y = owner.y;
+        this.x = owner.x + cos(owner.angle) * 20;
+        this.y = owner.y + sin(owner.angle) * 20;
         this.angle = owner.angle;
         this.owner = owner;
         this.speed = 500;
-        this.radius = 5;
+        this.radius = 10;
 
         this.nextParticle = 0;
     }

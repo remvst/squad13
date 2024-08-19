@@ -19,4 +19,8 @@ function tutorialFly(world) {
     la.x = 1000;
     la.y = 100;
     world.add(la);
+
+    const instruction = new Instruction('HOLD [UP] TO FLY');
+    instruction.y = -200;
+    world.add(instruction);
 }

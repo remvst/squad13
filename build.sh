@@ -35,6 +35,7 @@ for file in \
     entities/landing-area.js \
     entities/instruction.js \
     entities/condition.js \
+    entities/transition.js \
     graphics/wrap.js \
     graphics/create-canvas.js \
     graphics/create-canvas-pattern.js \

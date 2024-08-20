@@ -47,10 +47,19 @@ class Game {
 
                 const level = levels[levelIndex];
                 try {
-                    await level(this.world);
+                    const levelPromise = level(this.world);
+
+                    this.world.add(new Transition(-1));
+
+                    await levelPromise;
                     levelIndex++;
                 } catch (err) {
+                    await new Promise(r => setTimeout(r, 1000));
                 }
+
+                const transitionOut = new Transition(1);
+                this.world.add(transitionOut);
+                await this.world.waitFor(() => transitionOut.age > 0.3);
             }
 
             alert('U FINISHED ZEE GAME')

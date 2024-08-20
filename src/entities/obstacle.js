@@ -113,6 +113,9 @@ class Obstacle extends Entity {
     }
 
     render(camera) {
+        if (camera.x + CANVAS_WIDTH / 2 < this.minX) return;
+        if (camera.x - CANVAS_WIDTH / 2 > this.maxX) return;
+
         ctx.wrap(() => {
             ctx.fillStyle = '#000';
             ctx.beginPath();

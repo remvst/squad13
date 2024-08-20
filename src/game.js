@@ -38,7 +38,8 @@ class Game {
                 // firstMountain,
                 // mountainThenCeiling,
                 // tutorialShoot,
-                caveThenCeiling,
+                // caveThenCeiling,
+                lowCeiling,
             ]
             let levelIndex = 0;
             while (levelIndex < levels.length) {

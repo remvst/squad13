@@ -158,3 +158,36 @@ caveThenCeiling = (world) => {
         target.landed(player),
     ]);
 };
+
+lowCeiling = (world) => {const camera = firstItem(world.bucket('camera'));
+    camera.minX = -300;
+    camera.maxX = 5000;
+    camera.minY = -500;
+    camera.maxY = 500;
+
+    world.add(sunset());
+    world.add(Obstacle.landingObstacle(0, 100, 200));
+    world.add(Obstacle.ceiling(500, 1500, -200, 100, 0.5));
+    world.add(Obstacle.landingObstacle(2000, 80, 200));
+    world.add(Obstacle.ceiling(2500, 4000, -200, 100, 1));
+    world.add(Obstacle.landingObstacle(4500, 100, 200));
+
+    const player = new Player();
+    world.add(player);
+
+    const target = new LandingArea();
+    target.x = 4500;
+    target.y = 100;
+    world.add(target);
+    world.add(new Water(400));
+
+    for (const x of [2050]) {
+        const rebel = new Rebel();
+        rebel.x = x;
+        world.add(rebel);
+    }
+    return Promise.race([
+        player.crashed(),
+        target.landed(player),
+    ]);
+}

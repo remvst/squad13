@@ -13,12 +13,12 @@ class Obstacle extends Entity {
     static landingObstacle(x, y, length) {
         const obstacle = new Obstacle();
         obstacle.points = [
-            {x: x - length, y: y + 400},
+            {x: x - length, y: y + 2000},
             {x: x - length / 2 - 50, y: y - 10},
             {x: x - length / 2, y},
             {x: x + length / 2, y},
             {x: x + length / 2 + 50, y: y - 10},
-            {x: x + length, y: y + 400},
+            {x: x + length, y: y + 2000},
         ];
         return obstacle;
     }
@@ -28,7 +28,7 @@ class Obstacle extends Entity {
         const amplitude = maxY - minY;
 
         const obstacle = new Obstacle();
-        obstacle.points.push({ x: startX - 100, y: maxY + amplitude });
+        obstacle.points.push({ x: startX - 100, y: maxY + 2000 });
         for (let x = startX ; x <= endX ; x += 100)  {
             obstacle.points.push({
                 x: x,
@@ -37,7 +37,7 @@ class Obstacle extends Entity {
                     + sin(x / length * PI * 2 * periodCount * 4) * amplitude / 4,
             });
         }
-        obstacle.points.push({ x: endX + 100, y: maxY + amplitude });
+        obstacle.points.push({ x: endX + 100, y: maxY + 2000 });
         return obstacle;
     }
 
@@ -46,7 +46,7 @@ class Obstacle extends Entity {
         const amplitude = maxY - minY;
 
         const obstacle = new Obstacle();
-        obstacle.points.push({ x: startX - 100, y: maxY - amplitude });
+        obstacle.points.push({ x: startX - 100, y: maxY - 2000 });
         for (let x = startX ; x <= endX ; x += 100)  {
             obstacle.points.push({
                 x: x,
@@ -55,7 +55,7 @@ class Obstacle extends Entity {
                     + sin(x / length * PI * 2 * periodCount * 4) * amplitude / 4,
             });
         }
-        obstacle.points.push({ x: endX + 100, y: maxY - amplitude });
+        obstacle.points.push({ x: endX + 100, y: maxY - 2000 });
         obstacle.directionY = -1;
         return obstacle;
     }

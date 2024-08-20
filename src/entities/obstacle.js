@@ -71,7 +71,7 @@ class Obstacle extends Entity {
 
         if (!a || !b) return;
 
-        const ratio = (hitbox.x - a.x) / (b.x - a.x) + a.x;
+        const ratio = (hitbox.x - a.x) / (b.x - a.x);
 
         const idealY = interpolate(a.y, b.y, ratio) - this.directionY * hitbox.radius;
         if (!isBetween(idealY, hitbox.y, idealY + this.directionY * 100)) return;

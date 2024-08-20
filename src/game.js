@@ -36,7 +36,9 @@ class Game {
             const levels = [
                 // tutorialFly,
                 // firstMountain,
-                firstChallenge,
+                // mountainThenCeiling,
+                // tutorialShoot,
+                caveThenCeiling,
             ]
             let levelIndex = 0;
             while (levelIndex < levels.length) {
@@ -46,7 +48,8 @@ class Game {
                 try {
                     await level(this.world);
                     levelIndex++;
-                } catch (err) {}
+                } catch (err) {
+                }
             }
 
             alert('U FINISHED ZEE GAME')

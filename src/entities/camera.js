@@ -38,5 +38,17 @@ class Camera extends Entity {
             targetY - this.y,
             elapsed * velY,
         );
+
+        this.x = between(
+            this.minX + CANVAS_WIDTH / 2,
+            this.x,
+            this.maxX - CANVAS_WIDTH / 2,
+        );
+
+        this.y = between(
+            this.minY + CANVAS_HEIGHT / 2,
+            this.y,
+            this.maxY - CANVAS_HEIGHT / 2,
+        );
     }
 }

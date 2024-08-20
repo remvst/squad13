@@ -54,6 +54,7 @@ class Game {
                     await levelPromise;
                     levelIndex++;
                 } catch (err) {
+                    console.error(err);
                     await new Promise(r => setTimeout(r, 1000));
                 }
 

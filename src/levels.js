@@ -276,3 +276,41 @@ smallMountainSuccession = world => {
         target.landed(player),
     ]);
 }
+
+upAndDown = (world) => {
+    const camera = firstItem(world.bucket('camera'));
+    camera.minX = -300;
+    camera.maxX = 5500;
+    camera.minY = -500;
+    camera.maxY = 500;
+
+    world.add(sunset());
+    world.add(Obstacle.landingObstacle(0, 100, 200));
+    world.add(Obstacle.mountain(500, 1000, 0, 200, 2));
+    world.add(Obstacle.ceiling(900, 1500, -500, -300, 2));
+    world.add(Obstacle.mountain(1400, 2500, -150, 200, 2));
+    world.add(Obstacle.ceiling(2400, 3500, -400, -200, 2));
+    world.add(Obstacle.mountain(2800, 4000, -50, 200, 1.5));
+    // world.add(Obstacle.mountain(1500, 2000, -200, 0, 1.5));
+    // world.add(Obstacle.ceiling(1800, 2600, -400, -500, 2.5));
+    // world.add(Obstacle.mountain(2500, 3500, -200, 200, 3));
+    // world.add(Obstacle.ceiling(3000, 4000, -400, -550, 4));
+    world.add(Obstacle.landingObstacle(4500, 100, 200));
+
+    const player = new Player();
+    world.add(player);
+
+    const target = new LandingArea();
+    target.x = 4500;
+    target.y = 100;
+    world.add(target);
+    world.add(new Water(400));
+
+    for (const x of [850, 1600, 1850, 2600, 2900, 3350, 3450, 3900]) {
+        rebel(world, x)
+    }
+    return Promise.race([
+        player.crashed(),
+        target.landed(player),
+    ]);
+}

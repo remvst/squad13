@@ -34,12 +34,13 @@ class Game {
 
         (async () => {
             const levels = [
-                tutorialFly,
-                firstMountain,
-                mountainThenCeiling,
-                tutorialShoot,
-                caveThenCeiling,
-                lowCeiling,
+                // tutorialFly,
+                // firstMountain,
+                // mountainThenCeiling,
+                // tutorialShoot,
+                // caveThenCeiling,
+                // lowCeiling,
+                hardMountains,
             ]
             let levelIndex = 0;
             let attemptIndex = 0;

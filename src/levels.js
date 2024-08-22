@@ -1,4 +1,37 @@
 sunset = () => new Background('#f22f00', '#fa7f02');
+spawn = (world, x) => {
+    const landing = Obstacle.landingObstacle(x, 100, 200);
+    world.add(landing);
+
+    const player = new Player();
+    player.x = x;
+    player.y = landing.yAt(player.x) - 50;
+    world.add(player);
+
+    const camera = firstItem(world.bucket('camera'));
+    camera.cycle(2);
+
+    return player;
+}
+setTarget = (world, x) => {
+    world.add(Obstacle.landingObstacle(x, 100, 200));
+
+    const target = new LandingArea();
+    target.x = x;
+    target.y = 100;
+    world.add(target);
+
+    return target;
+}
+promise = (world) => {
+    const player = firstItem(world.bucket('player'));
+    const target = firstItem(world.bucket('landing-area'));
+
+    return Promise.race([
+        player.crashed(),
+        target.landed(player),
+    ]);
+}
 rebel = (world, x) => {
     const rebel = new Rebel();
     rebel.x = x;
@@ -25,26 +58,29 @@ tutorialFly = (world) => {
 
     world.add(sunset());
 
-    world.add(Obstacle.landingObstacle(0, 100, 200));
     world.add(Obstacle.landingObstacle(1000, 100, 200));
 
-    const player = new Player();
-    world.add(player);
+    const player = spawn(world, 0);
+    setTarget(world, 1000);
+
     world.add(new Water(400));
 
-    const target = new LandingArea();
-    target.x = 1000;
-    target.y = 100;
-    world.add(target);
+    const upInstruction = new Instruction('HOLD [UP] TO FLY');
+    upInstruction.y = -200;
+    world.add(upInstruction);
 
-    const instruction = new Instruction('HOLD [UP] TO FLY');
-    instruction.y = -200;
-    world.add(instruction);
+    const tiltInstruction = new Instruction('HOLD [LEFT/RIGHT] TO TILT');
+    tiltInstruction.x = 500;
+    tiltInstruction.y = -200;
+    world.add(tiltInstruction);
 
-    return Promise.race([
-        player.crashed(),
-        target.landed(player),
-    ]);
+    world.waitFor(() => {
+        const tilt = distP(player.x, player.y, 0, 100) > 200;
+        upInstruction.instruction = tilt ? '' : 'HOLD [UP] TO FLY';
+        tiltInstruction.instruction = tilt ? 'HOLD [LEFT/RIGHT] TO TILT' : '';
+    });
+
+    return promise(world);
 }
 
 firstMountain = (world) => {
@@ -55,12 +91,11 @@ firstMountain = (world) => {
     camera.maxY = 500;
 
     world.add(sunset());
-    world.add(Obstacle.landingObstacle(0, 100, 200));
+    spawn(world, 0);
     world.add(Obstacle.mountain(500, 2500, -200, 200, 1));
     world.add(Obstacle.landingObstacle(3000, 100, 200));
 
-    const player = new Player();
-    world.add(player);
+    spawn(world, 0);
 
     const target = new LandingArea();
     target.x = 3000;
@@ -68,10 +103,7 @@ firstMountain = (world) => {
     world.add(target);
     world.add(new Water(400));
 
-    return Promise.race([
-        player.crashed(),
-        target.landed(player),
-    ]);
+    return promise(world)
 };
 
 mountainThenCeiling = (world) => {
@@ -82,13 +114,13 @@ mountainThenCeiling = (world) => {
     camera.maxY = 500;
 
     world.add(sunset());
-    world.add(Obstacle.landingObstacle(0, 100, 200));
+    spawn(world, 0);
+
     world.add(Obstacle.mountain(500, 2500, -200, 200, 1));
     world.add(Obstacle.ceiling(3000, 5500, -200, 100, 1));
+    world.add(Obstacle.mountain(4000, 5000, 100, 300, 0.5));
+    world.add(Obstacle.mountain(5700, 6000, 200, 300, 0.5));
     world.add(Obstacle.landingObstacle(6500, 100, 200));
-
-    const player = new Player();
-    world.add(player);
 
     const target = new LandingArea();
     target.x = 6500;
@@ -96,10 +128,7 @@ mountainThenCeiling = (world) => {
     world.add(target);
     world.add(new Water(400));
 
-    return Promise.race([
-        player.crashed(),
-        target.landed(player),
-    ]);
+    return promise(world)
 };
 
 tutorialShoot = (world) => {
@@ -110,12 +139,11 @@ tutorialShoot = (world) => {
     camera.maxY = 500;
 
     world.add(sunset());
-    world.add(Obstacle.landingObstacle(0, 100, 200));
-    world.add(Obstacle.mountain(500, 2500, -150, 100, 0.5));
+    spawn(world, 0);
+    world.add(Obstacle.mountain(500, 2500, -150, 100, 1.5));
+    world.add(Obstacle.mountain(2700, 3000, 0, 200, 2));
+    world.add(Obstacle.ceiling(2000, 3000, -500, -350, 2));
     world.add(Obstacle.landingObstacle(3500, 100, 200));
-
-    const player = new Player();
-    world.add(player);
 
     const target = new LandingArea();
     target.x = 3500;
@@ -123,10 +151,8 @@ tutorialShoot = (world) => {
     world.add(target);
     world.add(new Water(400));
 
-    for (const x of [1500, 2400]) {
-        const rebel = new Rebel();
-        rebel.x = x;
-        world.add(rebel);
+    for (const x of [800, 850, 1500, 2300]) {
+        rebel(world, x);
     }
 
     const instruction = new Instruction('PRESS [SPACE] TO SHOOT');
@@ -134,10 +160,7 @@ tutorialShoot = (world) => {
     instruction.y = -200;
     world.add(instruction);
 
-    return Promise.race([
-        player.crashed(),
-        target.landed(player),
-    ]);
+    return promise(world)
 };
 
 
@@ -149,14 +172,12 @@ caveThenCeiling = (world) => {
     camera.maxY = 500;
 
     world.add(sunset());
-    world.add(Obstacle.landingObstacle(0, 100, 200));
+    spawn(world, 0);
     world.add(Obstacle.mountain(500, 2000, -200, 200, 0.5));
-    world.add(Obstacle.ceiling(500, 1500, -500, -200, 0.5));
+    world.add(Obstacle.ceiling(400, 1500, -500, -200, 0.5));
     world.add(Obstacle.ceiling(2500, 3500, -600, 0, 1));
+    world.add(Obstacle.mountain(2300, 2700, 200, 300, 0.5));
     world.add(Obstacle.landingObstacle(4000, 100, 200));
-
-    const player = new Player();
-    world.add(player);
 
     const target = new LandingArea();
     target.x = 4000;
@@ -164,15 +185,10 @@ caveThenCeiling = (world) => {
     world.add(target);
     world.add(new Water(400));
 
-    for (const x of [1750, 1850]) {
-        const rebel = new Rebel();
-        rebel.x = x;
-        world.add(rebel);
+    for (const x of [1200, 1750, 1850, 2650]) {
+        rebel(world, x);
     }
-    return Promise.race([
-        player.crashed(),
-        target.landed(player),
-    ]);
+    return promise(world)
 };
 
 lowCeiling = (world) => {
@@ -183,14 +199,17 @@ lowCeiling = (world) => {
     camera.maxY = 500;
 
     world.add(sunset());
-    world.add(Obstacle.landingObstacle(0, 100, 200));
-    world.add(Obstacle.ceiling(500, 1500, -200, 100, 0.5));
-    world.add(Obstacle.landingObstacle(2000, 80, 200));
-    world.add(Obstacle.ceiling(2500, 4000, -200, 100, 1));
-    world.add(Obstacle.landingObstacle(4500, 100, 200));
+    spawn(world, 0);
 
-    const player = new Player();
-    world.add(player);
+    world.add(Obstacle.ceiling(500, 1500, -200, 100, 0.5));
+    world.add(Obstacle.mountain(900, 1500, 300, 400, 1));
+    // world.add(Obstacle.landingObstacle(2000, 80, 200));
+    world.add(Obstacle.mountain(1800, 2200, 50, 150, 1));
+
+    world.add(Obstacle.mountain(2300, 2800, 300, 350, 2));
+    world.add(Obstacle.ceiling(2500, 4000, -200, 100, 1));
+    world.add(Obstacle.mountain(3800, 4200, 250, 350, 3));
+    world.add(Obstacle.landingObstacle(4500, 100, 200));
 
     const target = new LandingArea();
     target.x = 4500;
@@ -198,15 +217,12 @@ lowCeiling = (world) => {
     world.add(target);
     world.add(new Water(400));
 
-    for (const x of [2050]) {
+    for (const x of [1450, 2050, 2650, 4050]) {
         const rebel = new Rebel();
         rebel.x = x;
         world.add(rebel);
     }
-    return Promise.race([
-        player.crashed(),
-        target.landed(player),
-    ]);
+    return promise(world)
 }
 
 hardMountains = (world) => {
@@ -217,13 +233,10 @@ hardMountains = (world) => {
     camera.maxY = 500;
 
     world.add(sunset());
-    world.add(Obstacle.landingObstacle(0, 100, 200));
+    spawn(world, 0);
     world.add(Obstacle.mountain(500, 4500, -200, 200, 2));
     world.add(Obstacle.ceiling(2500, 3500, -600, -200, 0.5));
     world.add(Obstacle.landingObstacle(5500, 100, 200));
-
-    const player = new Player();
-    world.add(player);
 
     const target = new LandingArea();
     target.x = 5500;
@@ -236,10 +249,7 @@ hardMountains = (world) => {
         rebel.x = x;
         world.add(rebel);
     }
-    return Promise.race([
-        player.crashed(),
-        target.landed(player),
-    ]);
+    return promise(world)
 }
 
 smallMountainSuccession = world => {
@@ -250,7 +260,7 @@ smallMountainSuccession = world => {
     camera.maxY = 500;
 
     world.add(sunset());
-    world.add(Obstacle.landingObstacle(0, 100, 200));
+    spawn(world, 0);
     world.add(Obstacle.mountain(500, 1000, 0, 200, 2));
     world.add(Obstacle.ceiling(900, 1500, -400, -500, 2));
     world.add(Obstacle.mountain(1500, 2000, -200, 0, 1.5));
@@ -258,9 +268,6 @@ smallMountainSuccession = world => {
     world.add(Obstacle.mountain(2500, 3500, -200, 200, 3));
     world.add(Obstacle.ceiling(3000, 4000, -400, -550, 4));
     world.add(Obstacle.landingObstacle(4000, 100, 200));
-
-    const player = new Player();
-    world.add(player);
 
     const target = new LandingArea();
     target.x = 4000;
@@ -271,10 +278,7 @@ smallMountainSuccession = world => {
     for (const x of [850, 1600, 1850, 2600, 2900, 3350, 3450]) {
         rebel(world, x)
     }
-    return Promise.race([
-        player.crashed(),
-        target.landed(player),
-    ]);
+    return promise(world)
 }
 
 upAndDown = (world) => {
@@ -285,7 +289,7 @@ upAndDown = (world) => {
     camera.maxY = 500;
 
     world.add(sunset());
-    world.add(Obstacle.landingObstacle(0, 100, 200));
+    spawn(world, 0);
     world.add(Obstacle.mountain(500, 1000, 0, 200, 2));
     world.add(Obstacle.ceiling(900, 1500, -500, -300, 2));
     world.add(Obstacle.mountain(1400, 2500, -150, 200, 2));
@@ -297,9 +301,6 @@ upAndDown = (world) => {
     // world.add(Obstacle.ceiling(3000, 4000, -400, -550, 4));
     world.add(Obstacle.landingObstacle(4500, 100, 200));
 
-    const player = new Player();
-    world.add(player);
-
     const target = new LandingArea();
     target.x = 4500;
     target.y = 100;
@@ -309,8 +310,5 @@ upAndDown = (world) => {
     for (const x of [850, 1600, 1850, 2600, 2900, 3350, 3450, 3900]) {
         rebel(world, x)
     }
-    return Promise.race([
-        player.crashed(),
-        target.landed(player),
-    ]);
+    return promise(world)
 }

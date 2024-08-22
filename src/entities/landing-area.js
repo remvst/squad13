@@ -18,7 +18,7 @@ class LandingArea extends Entity {
 
     landed(chopper) {
         return this.world.waitFor(() => {
-            return chopper.landed &&
+            return chopper.landedTime > 1 &&
                 isBetween(this.x - 100, chopper.x, this.x + 100) &&
                 isBetween(this.y - 100, chopper.y, this.y + 100);
         });

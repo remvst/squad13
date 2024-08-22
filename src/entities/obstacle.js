@@ -155,8 +155,8 @@ class Obstacle extends Entity {
             ctx.fill();
         });
 
-        ctx.fillStyle = '#f00';
-        ctx.fillRect(this.minX, 0, 2, 400);
-        ctx.fillRect(this.maxX, 0, 2, 400);
+        // ctx.fillStyle = '#f00';
+        // ctx.fillRect(this.minX, 0, 2, 400);
+        // ctx.fillRect(this.maxX, 0, 2, 400);
     }
 }

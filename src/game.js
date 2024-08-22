@@ -2,17 +2,19 @@ class Game {
     constructor() {
         this.world = new World();
 
+        this.age = 0;
+
         (async () => {
             const levels = [
                 tutorialFly,
-                firstMountain,
-                mountainThenCeiling,
-                tutorialShoot,
-                caveThenCeiling,
-                lowCeiling,
-                hardMountains,
-                smallMountainSuccession,
-                upAndDown,
+                // firstMountain,
+                // mountainThenCeiling,
+                // tutorialShoot,
+                // caveThenCeiling,
+                // lowCeiling,
+                // hardMountains,
+                // smallMountainSuccession,
+                // upAndDown,
             ]
             let levelIndex = 0;
             let attemptIndex = 0;
@@ -44,12 +46,14 @@ class Game {
                 await this.world.waitFor(() => transitionOut.age > 0.3);
             }
 
-            alert('U FINISHED ZEE GAME');
+            alert('Thanks for playing! Final time: ' + formatTime(this.age));
             location.reload();
         })();
     }
 
     cycle(elapsed) {
+        this.age += elapsed;
+
         this.world.cycle(elapsed);
         this.world.render();
 

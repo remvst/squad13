@@ -20,6 +20,7 @@ for file in \
     util/resizer.js \
     util/math.js \
     util/colors.js \
+    util/format-time.js \
     engine/entity.js \
     engine/world.js \
     entities/camera.js \

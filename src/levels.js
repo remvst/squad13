@@ -19,7 +19,7 @@ rebel = (world, x) => {
 tutorialFly = (world) => {
     const camera = firstItem(world.bucket('camera'));
     camera.minX = -300;
-    camera.maxX = 5000;
+    camera.maxX = 1500;
     camera.minY = -500;
     camera.maxY = 500;
 

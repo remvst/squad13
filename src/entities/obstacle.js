@@ -81,6 +81,22 @@ class Obstacle extends Entity {
         return true;
     }
 
+    yAt(x) {
+        let i = 0;
+        while (this.points[i] && this.points[i].x < x) {
+            i++;
+        }
+
+        const a = this.points[i - 1];
+        const b = this.points[i];
+
+        if (!a || !b) return null;
+
+        const ratio = (x - a.x) / (b.x - a.x);
+
+        return interpolate(a.y, b.y, ratio);
+    }
+
     pushAway(hitbox) {
         let i = 0;
         while (this.points[i] && this.points[i].x < hitbox.x) {

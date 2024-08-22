@@ -40,7 +40,8 @@ class Game {
                 // tutorialShoot,
                 // caveThenCeiling,
                 // lowCeiling,
-                hardMountains,
+                // hardMountains,
+                smallMountainSuccession,
             ]
             let levelIndex = 0;
             let attemptIndex = 0;

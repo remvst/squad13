@@ -34,7 +34,7 @@ class Game {
 
         (async () => {
             const levels = [
-                // tutorialFly,
+                tutorialFly,
                 // firstMountain,
                 // mountainThenCeiling,
                 // tutorialShoot,
@@ -52,6 +52,8 @@ class Game {
                     this.world.add(new Transition(-1));
 
                     await levelPromise;
+                    this.world.add(new Title('MISSION\nSUCCESS', true).fade(0, 1, 0.2, 0));
+                    await new Promise(r => setTimeout(r, 2000));
                     levelIndex++;
                 } catch (err) {
                     console.error(err);

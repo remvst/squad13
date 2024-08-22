@@ -198,6 +198,10 @@ class Chopper extends Entity {
         this.y += this.momentum.y * elapsed;
         this.angle += this.momentum.angle * elapsed;
 
+        const camera = firstItem(this.world.bucket('camera'));
+        this.x = between(camera.minX, this.x, camera.maxX);
+        this.y = between(camera.minY, this.y, camera.maxY);
+
         this.angle = between(-PI / 4, this.angle, PI / 4);
 
         this.landed = landed;

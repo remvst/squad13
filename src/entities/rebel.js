@@ -28,14 +28,6 @@ class Rebel extends Entity {
                 }
             }
         }
-
-        for (const obstacle of this.world.bucket('obstacle')) {
-            if (obstacle.directionY < 0) continue;
-            if (!isBetween(obstacle.minX - 100, this.x, obstacle.maxX + 100)) continue;
-            obstacle.pushVertically(this);
-        }
-
-        this.y += elapsed * 100;
     }
 
     render() {

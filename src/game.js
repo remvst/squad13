@@ -35,13 +35,14 @@ class Game {
         (async () => {
             const levels = [
                 tutorialFly,
-                // firstMountain,
-                // mountainThenCeiling,
-                // tutorialShoot,
-                // caveThenCeiling,
+                firstMountain,
+                mountainThenCeiling,
+                tutorialShoot,
+                caveThenCeiling,
                 lowCeiling,
             ]
             let levelIndex = 0;
+            let attemptIndex = 0;
             while (levelIndex < levels.length) {
                 this.world = new World();
 
@@ -49,14 +50,19 @@ class Game {
                 try {
                     const levelPromise = level(this.world);
 
+                    if (attemptIndex++ === 0) {
+                        this.world.add(new Title('THE 13TH SQUAD').fade(1, 0, 1, 2));
+                    }
+
                     this.world.add(new Transition(-1));
 
                     await levelPromise;
-                    this.world.add(new Title('MISSION\nSUCCESS', true).fade(0, 1, 0.2, 0));
+                    this.world.add(new Title('MISSION\nSUCCESS', '#fff').fade(0, 1, 0.2, 0));
                     await new Promise(r => setTimeout(r, 2000));
                     levelIndex++;
                 } catch (err) {
                     console.error(err);
+                    this.world.add(new Title('MISSION\nFAILED', '#f00').fade(0, 1, 0.2, 0));
                     await new Promise(r => setTimeout(r, 1000));
                 }
 
@@ -65,7 +71,8 @@ class Game {
                 await this.world.waitFor(() => transitionOut.age > 0.3);
             }
 
-            alert('U FINISHED ZEE GAME')
+            alert('U FINISHED ZEE GAME');
+            location.reload();
         })();
     }
 

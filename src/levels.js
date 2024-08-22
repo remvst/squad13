@@ -25,8 +25,6 @@ tutorialFly = (world) => {
     instruction.y = -200;
     world.add(instruction);
 
-    world.add(new Title('THE 13TH SQUAD').fade(1, 0, 1, 2));
-
     return Promise.race([
         player.crashed(),
         target.landed(player),

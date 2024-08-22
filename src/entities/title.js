@@ -1,6 +1,6 @@
 class Title extends Entity {
 
-    constructor(title, background) {
+    constructor(title, background = 'rgba(0,0,0,0)') {
         super();
 
         this.background = background;
@@ -37,10 +37,8 @@ class Title extends Entity {
 
         ctx.translate(~~camera.x - CANVAS_WIDTH / 2, ~~camera.y - CANVAS_HEIGHT / 2);
 
-        if (this.background) {
-            ctx.fillStyle = '#fff';
-            ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        }
+        ctx.fillStyle = this.background;
+        ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
         ctx.drawImage(this.canvas, 0, 0);
     }

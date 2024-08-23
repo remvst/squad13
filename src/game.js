@@ -6,8 +6,8 @@ class Game {
 
         (async () => {
             const levels = [
-                // tutorialFly,
-                // firstMountain,
+                tutorialFly,
+                firstMountain,
                 mountainThenCeiling,
                 tutorialShoot,
                 caveThenCeiling,
@@ -54,7 +54,7 @@ class Game {
     cycle(elapsed) {
         this.age += elapsed;
 
-        this.world.cycle(elapsed);
+        this.world.cycle(Math.min(elapsed, 1 / 30));
         this.world.render();
 
         // if (DEBUG) {

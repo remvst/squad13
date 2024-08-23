@@ -95,7 +95,27 @@ class Chopper extends Entity {
         super.cycle(elapsed);
 
         if (this.age - this.lastShot > 1 && this.controls.shoot) {
-            this.world.add(new Missile(this));
+            const missile = new Missile(this);
+            this.world.add(missile);
+
+            let bestTarget;
+            let bestTargetAngleDiff = PI / 8;
+            for (const target of this.world.bucket('human')) {
+                if (target === this.owner) continue;
+                if (dist(target, this) > 400) continue;
+
+                const angleDiff = Math.abs(normalize(normalize(missile.angle) - normalize(this.angle)));
+                if (angleDiff < bestTargetAngleDiff) {
+                    bestTarget = target;
+                    bestTargetAngleDiff = angleDiff;
+                }
+            }
+
+            if (bestTarget) {
+                console.log('FOUND A TARGET!');;
+                missile.angle = angleBetween(this, bestTarget);
+            }
+
             this.lastShot = this.age;
         }
 

@@ -156,6 +156,11 @@ tutorialShoot = (world) => {
     instruction.y = -200;
     world.add(instruction);
 
+    const optionalInstruction = new Instruction('SHOOTING IS ALWAYS OPTIONAL');
+    optionalInstruction.x = 1500;
+    optionalInstruction.y = -200;
+    world.add(optionalInstruction);
+
     return promise(world)
 };
 

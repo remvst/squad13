@@ -19,6 +19,8 @@ class Missile extends Entity {
 
         sound(...[,,74,.06,.29,.54,4,3.1,,-8,,,,1.3,,.2,,.4,.24]);
 
+        const radius = this.owner.buckets.indexOf('chopper') >= 0 ? 80 : 50;
+
         for (let i = 0 ; i < 10 ; i++) {
             const fireball = new Fireball(
                 this.x + rnd(-50, 50),
@@ -29,6 +31,7 @@ class Missile extends Entity {
             this.world.add(fireball);
         }
 
+        // Particles
         for (let i = 0 ; i < 30 ; i++) {
             const x = this.x + rnd(-50, 50);
             const y = this.y + rnd(-50, 50);
@@ -42,12 +45,14 @@ class Missile extends Entity {
             this.world.add(particle);
         }
 
+        // Damage targets
         for (const target of this.targets()) {
             if (target === this.owner) continue;
-            if (dist(target, this) > 50) continue;
+            if (dist(target, this) > radius) continue;
             target.explode();
         }
 
+        // Camera shake
         for (const player of this.world.bucket('player')) {
             const power = 1 - dist(player, this) / (CANVAS_WIDTH / 2);
             if (power <= 0) continue;

@@ -38,6 +38,7 @@ for file in \
     entities/condition.js \
     entities/transition.js \
     entities/title.js \
+    entities/progress-indicator.js \
     graphics/wrap.js \
     graphics/create-canvas.js \
     graphics/create-canvas-pattern.js \

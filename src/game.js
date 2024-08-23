@@ -18,6 +18,9 @@ class Game {
             ]
             let levelIndex = 0;
             let attemptIndex = 0;
+            let startTime = this.age;
+            let missionStartTime = this.age;
+
             while (levelIndex < levels.length) {
                 this.world = new World();
 
@@ -25,16 +28,22 @@ class Game {
                 try {
                     const levelPromise = level(this.world);
 
+                    this.world.add(new ProgressIndicator(() => ([
+                        ['MISSION', `${levelIndex + 1}/${levels.length}`],
+                        ['TIME', formatTime(this.age - missionStartTime)],
+                        ['OVERALL', formatTime(this.age - startTime)],
+                    ])));
+                    this.world.add(new Transition(-1));
+
                     if (attemptIndex++ === 0) {
                         this.world.add(new Title('THE 13TH SQUAD').fade(1, 0, 1, 2));
                     }
-
-                    this.world.add(new Transition(-1));
 
                     await levelPromise;
                     this.world.add(new Title('MISSION\nSUCCESS', '#fff').fade(0, 1, 0.2, 0));
                     await new Promise(r => setTimeout(r, 2000));
                     levelIndex++;
+                    missionStartTime = this.age;
                 } catch (err) {
                     console.error(err);
                     this.world.add(new Title('MISSION\nFAILED', '#f00').fade(0, 1, 0.2, 0));

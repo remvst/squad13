@@ -93,6 +93,7 @@ firstMountain = (world) => {
     world.add(sunset());
     spawn(world, 0);
     world.add(Obstacle.mountain(500, 2500, -200, 200, 1));
+    world.add(Obstacle.ceiling(2700, 3500, -400, -300, 2));
 
     setTarget(world, 3000);
 

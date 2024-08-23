@@ -235,7 +235,7 @@ class Chopper extends Entity {
             this.landedTime = 0;
         }
 
-        if (this.landed && !wasLanded) {
+        if (this.landed && !wasLanded && this.age > 0.5) {
             const [a, b] = this.globalHitBoxes.filter(hitBox => hitBox.isLanding);
 
             for (let i = 0 ; i < 10 ; i++) {

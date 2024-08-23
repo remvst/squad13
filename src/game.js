@@ -55,7 +55,7 @@ class Game {
                     levelIndex++;
                     missionStartTime = this.age;
                 } catch (err) {
-                    console.error(err);
+                    console.log(err);
                     this.world.add(new Title('MISSION\nFAILED', '#f00').fade(0, 1, 0.2, 0));
                     await new Promise(r => setTimeout(r, 1000));
                 }

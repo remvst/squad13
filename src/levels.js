@@ -218,9 +218,7 @@ lowCeiling = (world) => {
     world.add(new Water(400));
 
     for (const x of [1450, 2050, 2650, 4050]) {
-        const rebel = new Rebel();
-        rebel.x = x;
-        world.add(rebel);
+        rebel(world, x);
     }
     return promise(world)
 }
@@ -245,9 +243,7 @@ hardMountains = (world) => {
     world.add(new Water(400));
 
     for (const x of [1000, 1900, 2050, 2500, 3000, 3500, 4400, 4200]) {
-        const rebel = new Rebel();
-        rebel.x = x;
-        world.add(rebel);
+        rebel(world, x);
     }
     return promise(world)
 }

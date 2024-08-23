@@ -94,8 +94,6 @@ firstMountain = (world) => {
     spawn(world, 0);
     world.add(Obstacle.mountain(500, 2500, -200, 200, 1));
 
-    spawn(world, 0);
-
     setTarget(world, 3000);
 
     world.add(new Water(400));

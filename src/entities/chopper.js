@@ -105,8 +105,9 @@ class Chopper extends Entity {
             for (const target of this.world.bucket('human')) {
                 if (target === this.owner) continue;
                 if (dist(target, this) > 400) continue;
+                const angleToTarget = normalize(angleBetween(this, target));
 
-                const angleDiff = Math.abs(normalize(normalize(missile.angle) - normalize(this.angle)));
+                const angleDiff = Math.abs(normalize(angleToTarget - normalize(this.angle)));
                 if (angleDiff < bestTargetAngleDiff) {
                     bestTarget = target;
                     bestTargetAngleDiff = angleDiff;

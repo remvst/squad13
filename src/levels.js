@@ -93,14 +93,11 @@ firstMountain = (world) => {
     world.add(sunset());
     spawn(world, 0);
     world.add(Obstacle.mountain(500, 2500, -200, 200, 1));
-    world.add(Obstacle.landingObstacle(3000, 100, 200));
 
     spawn(world, 0);
 
-    const target = new LandingArea();
-    target.x = 3000;
-    target.y = 100;
-    world.add(target);
+    setTarget(world, 3000);
+
     world.add(new Water(400));
 
     return promise(world)
@@ -177,12 +174,9 @@ caveThenCeiling = (world) => {
     world.add(Obstacle.ceiling(400, 1500, -500, -200, 0.5));
     world.add(Obstacle.ceiling(2500, 3500, -600, 0, 1));
     world.add(Obstacle.mountain(2300, 2700, 200, 300, 0.5));
-    world.add(Obstacle.landingObstacle(4000, 100, 200));
 
-    const target = new LandingArea();
-    target.x = 4000;
-    target.y = 100;
-    world.add(target);
+    setTarget(world, 4000);
+
     world.add(new Water(400));
 
     for (const x of [1200, 1750, 1850, 2650]) {
@@ -209,12 +203,9 @@ lowCeiling = (world) => {
     world.add(Obstacle.mountain(2300, 2800, 300, 350, 2));
     world.add(Obstacle.ceiling(2500, 4000, -200, 100, 1));
     world.add(Obstacle.mountain(3800, 4200, 250, 350, 3));
-    world.add(Obstacle.landingObstacle(4500, 100, 200));
 
-    const target = new LandingArea();
-    target.x = 4500;
-    target.y = 100;
-    world.add(target);
+    setTarget(world, 4500);
+
     world.add(new Water(400));
 
     for (const x of [1450, 2050, 2650, 4050]) {
@@ -234,12 +225,9 @@ hardMountains = (world) => {
     spawn(world, 0);
     world.add(Obstacle.mountain(500, 4500, -200, 200, 2));
     world.add(Obstacle.ceiling(2500, 3500, -600, -200, 0.5));
-    world.add(Obstacle.landingObstacle(5500, 100, 200));
 
-    const target = new LandingArea();
-    target.x = 5500;
-    target.y = 100;
-    world.add(target);
+    setTarget(world, 5500);
+
     world.add(new Water(400));
 
     for (const x of [1000, 1900, 2050, 2500, 3000, 3500, 4400, 4200]) {
@@ -263,12 +251,9 @@ smallMountainSuccession = world => {
     world.add(Obstacle.ceiling(1800, 2600, -400, -500, 2.5));
     world.add(Obstacle.mountain(2500, 3500, -200, 200, 3));
     world.add(Obstacle.ceiling(3000, 4000, -400, -550, 4));
-    world.add(Obstacle.landingObstacle(4000, 100, 200));
 
-    const target = new LandingArea();
-    target.x = 4000;
-    target.y = 100;
-    world.add(target);
+    setTarget(world, 4000);
+
     world.add(new Water(400));
 
     for (const x of [850, 1600, 1850, 2600, 2900, 3350, 3450]) {
@@ -295,12 +280,9 @@ upAndDown = (world) => {
     // world.add(Obstacle.ceiling(1800, 2600, -400, -500, 2.5));
     // world.add(Obstacle.mountain(2500, 3500, -200, 200, 3));
     // world.add(Obstacle.ceiling(3000, 4000, -400, -550, 4));
-    world.add(Obstacle.landingObstacle(4500, 100, 200));
 
-    const target = new LandingArea();
-    target.x = 4500;
-    target.y = 100;
-    world.add(target);
+    setTarget(world, 4500);
+
     world.add(new Water(400));
 
     for (const x of [850, 1600, 1850, 2600, 2900, 3350, 3450, 3900]) {

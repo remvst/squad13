@@ -13,7 +13,7 @@ class Camera extends Entity {
 
         const targetX = between(
             this.minX + CANVAS_WIDTH / 2,
-            player.x,
+            player.x + 500,
             this.maxX - CANVAS_WIDTH / 2,
         );
 

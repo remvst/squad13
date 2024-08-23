@@ -5,11 +5,30 @@ class Camera extends Entity {
         this.buckets = ['camera'];
 
         this.minX = this.minY = this.maxX = this.maxY = 0;
+        this.shakeEnd = 0;
+        this.nextShake = 0;
+        this.shakePower = 1;
+    }
+
+    shake(power) {
+        this.shakePower = power;
+        this.shakeEnd = this.age + 0.4;
     }
 
     cycle(elapsed) {
+        super.cycle(elapsed);
+
         const player = firstItem(this.world.bucket('player'));
         if (!player) return;
+
+        this.nextShake -= elapsed;
+        if (this.age < this.shakeEnd) {
+            if (this.nextShake <= 0) {
+                this.nextShake = 1 / 60;
+                this.x += rnd(-this.shakePower, this.shakePower) * 20;
+                this.y += rnd(-this.shakePower, this.shakePower) * 20;
+            }
+        }
 
         const targetX = between(
             this.minX + CANVAS_WIDTH / 2,

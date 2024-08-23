@@ -43,6 +43,13 @@ class Missile extends Entity {
             if (dist(target, this) > 50) continue;
             target.explode();
         }
+
+        for (const player of this.world.bucket('player')) {
+            const power = 1 - dist(player, this) / (CANVAS_WIDTH / 2);
+            if (power <= 0) continue;
+            const camera = firstItem(this.world.bucket('camera'));
+            camera.shake(power);
+        }
     }
 
     * targets() {

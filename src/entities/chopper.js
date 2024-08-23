@@ -251,6 +251,8 @@ class Chopper extends Entity {
                 );
                 this.world.add(particle);
             }
+
+            sound(...[0.5,,400,.02,.08,.09,4,2.5,-1,9,,,,.3,,.1,.14,.63,.02,,-2063]); // Hit 200
         }
 
         if (!isBetween(camera.minX, this.x, camera.maxX)) {

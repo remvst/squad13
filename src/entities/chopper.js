@@ -227,11 +227,30 @@ class Chopper extends Entity {
 
         this.angle = between(-PI / 4, this.angle, PI / 4);
 
+        const wasLanded = this.landed;
         this.landed = landed;
         if (this.landed) {
             this.landedTime += elapsed;
         } else {
             this.landedTime = 0;
+        }
+
+        if (this.landed && !wasLanded) {
+            const [a, b] = this.globalHitBoxes.filter(hitBox => hitBox.isLanding);
+
+            for (let i = 0 ; i < 10 ; i++) {
+                const ratio = rnd(-0.5, 1.5);
+                const x = a.x + ratio * (b.x - a.x);
+                const y = a.y + ratio * (b.y - a.y);
+                const particle = new Particle(
+                    '#fff',
+                    [rnd(10, 15), 0],
+                    [x, x + rnd(-30, 30)],
+                    [y, y + rnd(-20, -10)],
+                    rnd(0.8, 1.5),
+                );
+                this.world.add(particle);
+            }
         }
 
         if (!isBetween(camera.minX, this.x, camera.maxX)) {

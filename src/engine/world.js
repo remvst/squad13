@@ -17,6 +17,12 @@ class World {
         return this.entities.has(entity);
     }
 
+    destroy() {
+        for (const entity of this.entities) {
+            entity.destroy();
+        }
+    }
+
     add(entity) {
         if (this.contains(entity)) return;
 

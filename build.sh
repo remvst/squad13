@@ -43,6 +43,7 @@ for file in \
     graphics/create-canvas.js \
     graphics/create-canvas-pattern.js \
     graphics/font.js \
+    sound/ZzFXMicro.js \
     input/keyboard.js \
     input/mouse.js \
     game.js \

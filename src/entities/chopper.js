@@ -6,6 +6,8 @@ class Hitbox {
         this.isLanding = false;
         this.readjusted = false;
         this.vital = false;
+
+        this.sound = null;
     }
 }
 
@@ -112,7 +114,6 @@ class Chopper extends Entity {
             }
 
             if (bestTarget) {
-                console.log('FOUND A TARGET!');;
                 missile.angle = angleBetween(this, bestTarget);
             }
 
@@ -241,10 +242,30 @@ class Chopper extends Entity {
             this.momentum.y = 0;
             this.y = between(camera.minY, this.y, camera.maxY);
         }
+
+        if (!this.sound) {
+            this.sound = new FunZZfx(zzfxG(...[,,317,,3,0,,3.2,-12,16,,,.07,.1,,,,.59,.18,.12])); // Shoot 71
+            this.sound.source.loop = true;
+            this.sound.start();
+        }
+
+        if (this.sound) {
+            this.sound.setVolume(interpolate(0.5, 1, this.propellerPower));
+            this.sound.setRate(interpolate(0.5, 1, this.propellerPower));
+        }
+    }
+
+    destroy() {
+        if (this.sound) {
+            this.sound.stop();
+        }
     }
 
     explode() {
         this.world.remove(this);
+
+        this.destroy();
+        sound(...[,,74,.06,.29,.54,4,3.1,,-8,,,,1.3,,.2,,.4,.24]);
 
         for (let i = 0 ; i < 10 ; i++) {
             const fireball = new Fireball(

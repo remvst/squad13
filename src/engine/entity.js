@@ -12,4 +12,8 @@ class Entity {
     render(camera) {
 
     }
+
+    destroy() {
+
+    }
 }

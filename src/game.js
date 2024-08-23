@@ -22,6 +22,7 @@ class Game {
             let missionStartTime = this.age;
 
             while (levelIndex < levels.length) {
+                if (this.world) this.world.destroy();
                 this.world = new World();
 
                 const level = levels[levelIndex];

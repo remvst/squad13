@@ -10,10 +10,14 @@ class Missile extends Entity {
         this.radius = 10;
 
         this.nextParticle = 0;
+
+        sound(...[2.1,,51,.01,.12,.15,2,2.7,17,-19,,,,,,.2,.29,.93,.16]);
     }
 
     explode() {
         this.world.remove(this);
+
+        sound(...[,,74,.06,.29,.54,4,3.1,,-8,,,,1.3,,.2,,.4,.24]);
 
         for (let i = 0 ; i < 10 ; i++) {
             const fireball = new Fireball(

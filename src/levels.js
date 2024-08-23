@@ -5,7 +5,7 @@ spawn = (world, x) => {
 
     const player = new Player();
     player.x = x;
-    player.y = landing.yAt(player.x) - 50;
+    player.y = landing.yAt(player.x) - 20;
     world.add(player);
 
     const camera = firstItem(world.bucket('camera'));
@@ -86,7 +86,7 @@ tutorialFly = (world) => {
 firstMountain = (world) => {
     const camera = firstItem(world.bucket('camera'));
     camera.minX = -300;
-    camera.maxX = 5000;
+    camera.maxX = 3500;
     camera.minY = -500;
     camera.maxY = 500;
 

@@ -39,6 +39,7 @@ for file in \
     entities/transition.js \
     entities/title.js \
     entities/progress-indicator.js \
+    entities/start-prompt.js \
     graphics/wrap.js \
     graphics/create-canvas.js \
     graphics/create-canvas-pattern.js \

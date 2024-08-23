@@ -3,6 +3,8 @@ class Title extends Entity {
     constructor(title, background = 'rgba(0,0,0,0)') {
         super();
 
+        this.buckets.push('title');
+
         this.background = background;
 
         this.canvas = createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT, (ctx) => {
@@ -20,6 +22,8 @@ class Title extends Entity {
                 y += 200;
             }
         });
+
+        this.fade(1, 1, 9999, 0);
     }
 
     fade(fromAlpha, toAlpha, duration, delay) {
@@ -32,8 +36,12 @@ class Title extends Entity {
         return this;
     }
 
+    get alpha() {
+        return interpolate(this.fromAlpha, this.toAlpha, (this.age - this.fromAge) / (this.toAge - this.fromAge));
+    }
+
     render(camera) {
-        ctx.globalAlpha = interpolate(this.fromAlpha, this.toAlpha, (this.age - this.fromAge) / (this.toAge - this.fromAge));
+        ctx.globalAlpha = this.alpha;
 
         ctx.translate(~~camera.x - CANVAS_WIDTH / 2, ~~camera.y - CANVAS_HEIGHT / 2);
 

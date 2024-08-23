@@ -37,7 +37,16 @@ class Game {
                     this.world.add(new Transition(-1));
 
                     if (attemptIndex++ === 0) {
-                        this.world.add(new Title('THE 13TH SQUAD').fade(1, 0, 1, 2));
+                        const title = new Title('THE 13TH SQUAD')
+                        this.world.add(title);
+
+                        const prompt = new StartPrompt();
+                        this.world.add(prompt);
+
+                        await this.world.waitFor(() => !this.world.contains(prompt));
+                        title.fade(1, 0, 1, 0.3);
+
+                        startTime = this.age;
                     }
 
                     await levelPromise;
@@ -56,7 +65,7 @@ class Game {
                 await this.world.waitFor(() => transitionOut.age > 0.3);
             }
 
-            alert('Thanks for playing! Final time: ' + formatTime(this.age));
+            alert('Thanks for playing! Final time: ' + formatTime(this.age - startTime));
             location.reload();
         })();
     }

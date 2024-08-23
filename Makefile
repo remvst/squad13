@@ -9,9 +9,19 @@ update: install
 
 install:
 	git submodule update --init --recursive
-	brew install node || sudo apt-get install -y nodejs
-	brew install advancecomp || sudo apt-get install -y advancecomp
-	brew install cmake || sudo apt-get install -y cmake
+
+	if which brew ; then
+		brew install \
+			node \
+			advancecomp \
+			cmake
+	else
+		sudo apt-get install -y \
+			nodejs \
+			advancecomp \
+			cmake
+	fi
+
 	cd js13k-compiler && npm install
 	./install-ect.sh
 	mkdir -p build

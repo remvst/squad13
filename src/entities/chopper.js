@@ -176,7 +176,7 @@ class Chopper extends Entity {
             this.momentum.y += this.propellerPower * Math.sin(this.angle - PI / 2) * elapsed * 200;
         } else {
             const opposition = Math.sign(Math.sin(this.angle)) !== Math.sign(this.momentum.x)
-                ? 150
+                ? 200
                 : 50;
 
             this.momentum.x += between(

@@ -18,7 +18,7 @@ class Rain extends Entity {
         }
 
         this.rng.reset();
-        for (let i = 0 ; i < 100 ; i++)  {
+        for (let i = 0 ; i < 200 ; i++)  {
             const baseX = this.rng.next(0, CANVAS_WIDTH);
             const finalX = baseX + this.rng.next(20, 50);
             const period = this.rng.next(0.5, 1.5);

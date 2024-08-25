@@ -81,10 +81,20 @@ class Prisoner extends Entity {
         ctx.wrap(() => {
             ctx.translate(this.x, this.y);
 
-            ctx.fillStyle = '#0f0'
-            ctx.fillRect(-5, -10, 10, 20);
-            ctx.fillRect(-5, 10, 3, 4);
-            ctx.fillRect(5, 10, -3, 4);
+            ctx.fillStyle = '#0c0';
+
+            ctx.beginPath();
+            ctx.moveTo(-4, 8);
+            ctx.lineTo(4, 8);
+            ctx.arc(0, 0, 4, 0, Math.PI, true);
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.arc(0, -6, 3, 0, PI * 2);
+            ctx.fill();
+
+            ctx.fillRect(-4, 8, 3.5, 6);
+            ctx.fillRect(4, 8, -3.5, 6);
         })
     }
 }

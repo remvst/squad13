@@ -171,6 +171,8 @@ tutorialShoot = (world) => {
         rebel(world, x);
     }
 
+    prisoner(world, 2000);
+
     const instruction = new Instruction('PRESS [SPACE] TO SHOOT');
     instruction.x = 500;
     instruction.y = -200;

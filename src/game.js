@@ -28,12 +28,17 @@ class Game {
                 const level = levels[levelIndex];
                 try {
                     const levelPromise = level(this.world);
+                    const missionPrisoners = Array.from(this.world.bucket('prisoner')).length;
 
-                    this.world.add(new ProgressIndicator(() => ([
-                        ['MISSION', `${levelIndex + 1}/${levels.length}`],
-                        ['TIME', formatTime(this.age - missionStartTime)],
-                        ['OVERALL', formatTime(this.age - startTime)],
-                    ])));
+                    this.world.add(new ProgressIndicator(() => {
+                        const player = firstItem(this.world.bucket('player'));
+                        return [
+                            ['MISSION', `${levelIndex + 1}/${levels.length}`],
+                            ['PRISONERS', (player ? player.rescuedPrisoners : 0) + '/' + missionPrisoners],
+                            ['TIME', formatTime(this.age - missionStartTime)],
+                            ['OVERALL', formatTime(this.age - startTime)],
+                        ];
+                    }));
                     this.world.add(new Transition(-1));
 
                     if (attemptIndex++ === 0) {

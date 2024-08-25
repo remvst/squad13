@@ -64,6 +64,7 @@ class Chopper extends Entity {
 
         this.ladderLength = 0;
         this.hangingPrisoner = null;
+        this.rescuedPrisoners = 0;
     }
 
     updateGlobalHitboxes() {
@@ -277,9 +278,9 @@ class Chopper extends Entity {
 
         const targetLadderLength = hasPrisoner && !this.hangingPrisoner ? 100 : 0;
         this.ladderLength += between(
-            -elapsed * 50,
+            -elapsed * 100,
             targetLadderLength - this.ladderLength,
-            elapsed * 50,
+            elapsed * 100,
         );
 
         if (!this.sound) {

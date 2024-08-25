@@ -1,6 +1,7 @@
 class StartPrompt extends Entity {
-    constructor() {
+    constructor(text) {
         super();
+        this.text = text;
         this.buckets.push('start-prompt');
     }
 
@@ -11,7 +12,7 @@ class StartPrompt extends Entity {
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillStyle = '#fff';
-        ctx.fillText('PRESS [SPACE] TO DEPLOY', 0, 0);
+        ctx.fillText(this.text, 0, 0);
     }
 
     cycle(elapsed) {

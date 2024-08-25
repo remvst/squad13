@@ -5,98 +5,110 @@ class Game {
         this.age = 0;
 
         (async () => {
-            const levels = [
-                // tutorialFly,
-                // firstMountain,
-                mountainThenCeiling,
-                tutorialShoot,
-                caveThenCeiling,
-                lowCeiling,
-                hardMountains,
-                smallMountainSuccession,
-                upAndDown,
-            ]
-            let levelIndex = 0;
-            let attemptIndex = 0;
-            let startTime = this.age;
-            let missionStartTime = this.age;
+            let loopId = 0;
+            while (true) {
+                await this.gameLoop();
+            }
+        })();
+    }
 
-            const totalPrisoners = levels.reduce((sum, level) => {
-                const world = new World();
-                level(world);
-                return sum + Array.from(world.bucket('prisoner')).length;
-            }, 0);
-            let totalRescuedPrisoners = 0;
+    async gameLoop() {
+        const levels = [
+            tutorialFly,
+            firstMountain,
+            mountainThenCeiling,
+            tutorialShoot,
+            caveThenCeiling,
+            lowCeiling,
+            hardMountains,
+            smallMountainSuccession,
+            upAndDown,
+        ]
+        let levelIndex = 0;
+        let attemptIndex = 0;
+        let startTime = this.age;
+        let missionStartTime = this.age;
+        let totalDeaths = 0;
 
-            while (levelIndex < levels.length) {
-                if (this.world) this.world.destroy();
-                this.world = new World();
+        const totalPrisoners = levels.reduce((sum, level) => {
+            const world = new World();
+            level(world);
+            return sum + Array.from(world.bucket('prisoner')).length;
+        }, 0);
+        let totalRescuedPrisoners = 0;
 
-                const level = levels[levelIndex];
-                try {
-                    const levelPromise = level(this.world);
-                    const missionPrisoners = Array.from(this.world.bucket('prisoner')).length;
+        while (levelIndex < levels.length) {
+            if (this.world) this.world.destroy();
+            this.world = new World();
 
-                    this.world.add(new ProgressIndicator(() => {
-                        const player = firstItem(this.world.bucket('player'));
-                        return [
-                            ['MISSION', `${levelIndex + 1}/${levels.length}`],
-                            ['PRISONERS', (player ? player.rescuedPrisoners : 0) + '/' + missionPrisoners],
-                            ['TIME', formatTime(this.age - missionStartTime)],
-                            ['OVERALL', formatTime(this.age - startTime)],
-                        ];
-                    }));
-                    this.world.add(new Transition(-1));
+            const level = levels[levelIndex];
+            try {
+                const levelPromise = level(this.world);
+                const missionPrisoners = Array.from(this.world.bucket('prisoner')).length;
 
-                    if (attemptIndex++ === 0) {
-                        const title = new Title('THE 13TH SQUAD')
-                        this.world.add(title);
-
-                        const prompt = new StartPrompt();
-                        this.world.add(prompt);
-
-                        await this.world.waitFor(() => !this.world.contains(prompt));
-                        playSong();
-
-                        title.fade(1, 0, 1, 0.3);
-
-                        startTime = this.age;
-                    }
-
-                    await levelPromise;
-
+                this.world.add(new ProgressIndicator(() => {
                     const player = firstItem(this.world.bucket('player'));
-                    if (player) {
-                        totalRescuedPrisoners += player.rescuedPrisoners;
-                    }
+                    return [
+                        ['MISSION', `${levelIndex + 1}/${levels.length}`],
+                        ['PRISONERS', (player ? player.rescuedPrisoners : 0) + '/' + missionPrisoners],
+                        ['TIME', formatTime(this.age - missionStartTime)],
+                        ['OVERALL', formatTime(this.age - startTime)],
+                    ];
+                }));
+                this.world.add(new Transition(-1));
 
-                    this.world.add(new Title('MISSION\nSUCCESS', '#fff').fade(0, 1, 0.2, 0));
-                    await new Promise(r => setTimeout(r, 2000));
-                    levelIndex++;
-                    missionStartTime = this.age;
+                if (attemptIndex++ === 0) {
+                    const title = new Title('THE 13TH SQUAD')
+                    this.world.add(title);
 
-                } catch (err) {
-                    console.log(err);
-                    this.world.add(new Title('MISSION\nFAILED', '#f00').fade(0, 1, 0.2, 0));
-                    await new Promise(r => setTimeout(r, 1000));
+                    this.world.add(new StartPrompt('PRESS [SPACE] TO DEPLOY'));
+                    await this.world.waitFor(() => !firstItem(this.world.bucket('start-prompt')));
+
+                    playSong();
+
+                    title.fade(1, 0, 1, 0.3);
+
+                    startTime = this.age;
                 }
 
-                const transitionOut = new Transition(1);
-                this.world.add(transitionOut);
-                await this.world.waitFor(() => transitionOut.age > 0.3);
+                await levelPromise;
+
+                const player = firstItem(this.world.bucket('player'));
+                if (player) {
+                    totalRescuedPrisoners += player.rescuedPrisoners;
+                }
+
+                this.world.add(new Title('MISSION\nSUCCESS', '#fff').fade(0, 1, 0.2, 0));
+                await new Promise(r => setTimeout(r, 2000));
+                levelIndex++;
+                missionStartTime = this.age;
+
+            } catch (err) {
+                deaths++;
+                console.log(err);
+                this.world.add(new Title('MISSION\nFAILED', '#f00').fade(0, 1, 0.2, 0));
+                await new Promise(r => setTimeout(r, 1000));
             }
 
-            this.world.destroy();
+            const transitionOut = new Transition(1);
+            this.world.add(transitionOut);
+            await this.world.waitFor(() => transitionOut.age > 0.3);
+        }
 
-            const totalTime = formatTime(this.age - startTime);
-            this.world.add(new Title('THANKS\nFOR PLAYING', '#fff').fade(0, 1, 0.2, 0));
-            this.world.add(new RunRecap(() => {
-                return [
-                    ['TOTAL TIME', totalTime],
-                    ['RESCUED PRISONERS', `${totalRescuedPrisoners}/${totalPrisoners}`],
-                ]
-            }));
-        })();
+        this.world.destroy();
+
+        const totalTime = formatTime(this.age - startTime);
+        this.world.add(new Title('THX FOR PLAYING', '#fff').fade(0, 1, 0.2, 0));
+        this.world.add(new RunRecap(() => {
+            return [
+                ['TOTAL TIME', totalTime],
+                ['RESCUED PRISONERS', `${totalRescuedPrisoners}/${totalPrisoners}`],
+                ['CRASHES', `${totalDeaths}`],
+            ]
+        }));
+
+        this.world.add(new StartPrompt('PRESS [SPACE] TO REDEPLOY'));
+        await this.world.waitFor(() => !firstItem(this.world.bucket('start-prompt')));
     }
 
     cycle(elapsed) {

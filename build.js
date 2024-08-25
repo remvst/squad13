@@ -35,7 +35,7 @@ const CONSTANTS = {
     "const": "let",
     "null": 0,
 
-    "SONG_VOLUME": 0.5,
+    "SONG_VOLUME": 0.3,
 };
 
 function copy(obj) {

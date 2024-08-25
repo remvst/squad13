@@ -20,6 +20,8 @@ class Prisoner extends Entity {
     cycle(elapsed) {
         super.cycle(elapsed);
 
+        this.walking = false;
+
         const player = firstItem(this.world.bucket('player'));
 
         if (player) {
@@ -41,6 +43,8 @@ class Prisoner extends Entity {
                 );
                 this.x = between(obstacle.minX, this.x, obstacle.maxX);
                 this.y = obstacle.yAt(this.x) - this.radius;
+
+                this.walking = true;
             }
 
             // Grab the ladder
@@ -48,6 +52,8 @@ class Prisoner extends Entity {
                 this.grabbingLadderRatio += elapsed * 2;
 
                 if (this.grabbingLadderRatio > 1) {
+                    this.climbing = true;
+
                     player.hangingPrisoner = this;
                     player.ladderLength = this.y - player.y;
 
@@ -82,19 +88,45 @@ class Prisoner extends Entity {
             ctx.translate(this.x, this.y);
 
             ctx.fillStyle = '#0c0';
+            ctx.scale(0.8, 0.8);
 
+            // Head
             ctx.beginPath();
-            ctx.moveTo(-4, 8);
-            ctx.lineTo(4, 8);
-            ctx.arc(0, 0, 4, 0, Math.PI, true);
+            ctx.arc(0, -12, 4, 0, PI * 2);
             ctx.fill();
 
-            ctx.beginPath();
-            ctx.arc(0, -6, 3, 0, PI * 2);
-            ctx.fill();
+            ctx.strokeStyle = '#0c0';
+            ctx.lineJoin = 'round';
+            ctx.lineCap = 'round';
 
-            ctx.fillRect(-4, 8, 3.5, 6);
-            ctx.fillRect(4, 8, -3.5, 6);
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            if (!this.climbing) {
+                ctx.moveTo(-8 + sin(this.age * PI * 2) * 3, -14);
+            } else {
+                ctx.moveTo(-8, -15);
+            }
+            ctx.lineTo(-5, -5);
+            ctx.lineTo(5, -5);
+
+            if (!this.climbing) {
+                ctx.lineTo(8, 4);
+            } else {
+                ctx.lineTo(8, -14);
+            }
+            ctx.stroke();
+
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(-3, 0);
+            ctx.lineTo(-3, 16 + sin(this.age * PI * 4) * 2 * this.walking);
+
+            ctx.moveTo(3, 0);
+            ctx.lineTo(3, 16 - sin(this.age * PI * 4) * 2 * this.walking);
+            ctx.stroke();
+
+            // ctx.fillStyle = '#00f';
+            ctx.fillRect(-5, -8, 10, 16);
         })
     }
 }

@@ -270,16 +270,16 @@ class Chopper extends Entity {
 
         let hasPrisoner;
         for (const prisoner of this.world.bucket('prisoner')) {
-            if (dist(prisoner, this) < 200) {
+            if (dist(prisoner, this) < 150) {
                 hasPrisoner = prisoner;
             }
         }
 
         const targetLadderLength = hasPrisoner && !this.hangingPrisoner ? 100 : 0;
         this.ladderLength += between(
-            -elapsed * 100,
+            -elapsed * 50,
             targetLadderLength - this.ladderLength,
-            elapsed * 100,
+            elapsed * 50,
         );
 
         if (!this.sound) {

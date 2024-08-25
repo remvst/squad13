@@ -36,8 +36,7 @@ class Prisoner extends Entity {
             }
 
             // Grab the ladder
-            const ladderY = player.y + player.ladderLength;
-            if (abs(player.x - this.x) < 10 && isBetween(player.y, this.y, ladderY)) {
+            if (abs(player.x - this.x) < 10 && isBetween(player.y, this.y, player.y + player.ladderLength)) {
                 player.hangingPrisoner = this;
                 player.ladderLength = this.y - player.y;
             }
@@ -45,7 +44,7 @@ class Prisoner extends Entity {
             // Climb with the ladder
             if (player.hangingPrisoner === this) {
                 this.x = player.x;
-                this.y = ladderY;
+                this.y = player.y + player.ladderLength;
 
                 if (dist(player, this) < 20) {
                     player.hangingPrisoner = null;

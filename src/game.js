@@ -21,6 +21,13 @@ class Game {
             let startTime = this.age;
             let missionStartTime = this.age;
 
+            const totalPrisoners = levels.reduce((sum, level) => {
+                const world = new World();
+                level(world);
+                return sum + Array.from(world.bucket('prisoner')).length;
+            }, 0);
+            let totalRescuedPrisoners = 0;
+
             while (levelIndex < levels.length) {
                 if (this.world) this.world.destroy();
                 this.world = new World();
@@ -55,10 +62,17 @@ class Game {
                     }
 
                     await levelPromise;
+
+                    const player = firstItem(this.world.bucket('player'));
+                    if (player) {
+                        totalRescuedPrisoners += player.rescuedPrisoners;
+                    }
+
                     this.world.add(new Title('MISSION\nSUCCESS', '#fff').fade(0, 1, 0.2, 0));
                     await new Promise(r => setTimeout(r, 2000));
                     levelIndex++;
                     missionStartTime = this.age;
+
                 } catch (err) {
                     console.log(err);
                     this.world.add(new Title('MISSION\nFAILED', '#f00').fade(0, 1, 0.2, 0));
@@ -70,8 +84,16 @@ class Game {
                 await this.world.waitFor(() => transitionOut.age > 0.3);
             }
 
-            alert('Thanks for playing! Final time: ' + formatTime(this.age - startTime));
-            location.reload();
+            this.world.destroy();
+
+            const totalTime = formatTime(this.age - startTime);
+            this.world.add(new Title('THANKS\nFOR PLAYING', '#fff').fade(0, 1, 0.2, 0));
+            this.world.add(new RunRecap(() => {
+                return [
+                    ['TOTAL TIME', totalTime],
+                    ['RESCUED PRISONERS', `${totalRescuedPrisoners}/${totalPrisoners}`],
+                ]
+            }));
         })();
     }
 

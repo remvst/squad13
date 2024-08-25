@@ -1,4 +1,15 @@
-sunset = () => new Background('#f22f00', '#fa7f02');
+sunset = () => ([
+    new Background('#f22f00', '#fa7f02'),
+    new Sun('#faf857'),
+    new Mountains('#fa7f02'),
+])
+night = () => ([
+    new Background('#01010a', '#092644'),
+    new Stars(),
+    new Sun('#fff'),
+    new Mountains('#01010a'),
+    new Rain(),
+])
 spawn = (world, x) => {
     const landing = Obstacle.landingObstacle(x, 100, 200);
     world.add(landing);
@@ -74,7 +85,7 @@ tutorialFly = (world) => {
     camera.minY = -500;
     camera.maxY = 500;
 
-    world.add(sunset());
+    world.add(...sunset());
 
     world.add(Obstacle.landingObstacle(1000, 100, 200));
 
@@ -107,7 +118,27 @@ firstMountain = (world) => {
     camera.minY = -500;
     camera.maxY = 500;
 
-    world.add(sunset());
+    world.add(...sunset());
+    spawn(world, 0);
+    world.add(Obstacle.mountain(500, 2500, -200, 200, 1));
+    world.add(Obstacle.ceiling(2700, 3500, -400, -300, 2));
+
+    prisoner(world, 1000);
+
+    setTarget(world, 3000);
+
+    world.add(new Water(400));
+
+    return promise(world)
+};
+
+nightMountains = (world) => {
+    const camera = firstItem(world.bucket('camera'));
+    camera.minX = -300;
+    camera.minY = -500;
+    camera.maxY = 500;
+
+    world.add(...night());
     spawn(world, 0);
     world.add(Obstacle.mountain(500, 2500, -200, 200, 1));
     world.add(Obstacle.ceiling(2700, 3500, -400, -300, 2));
@@ -127,7 +158,7 @@ mountainThenCeiling = (world) => {
     camera.minY = -500;
     camera.maxY = 500;
 
-    world.add(sunset());
+    world.add(...sunset());
     spawn(world, 0);
 
     world.add(Obstacle.mountain(500, 2500, -200, 200, 1));
@@ -157,7 +188,7 @@ tutorialShoot = (world) => {
     camera.minY = -500;
     camera.maxY = 500;
 
-    world.add(sunset());
+    world.add(...sunset());
     spawn(world, 0);
     world.add(Obstacle.mountain(500, 2500, -150, 100, 1.5));
     world.add(Obstacle.mountain(2700, 3000, 0, 200, 2));
@@ -193,7 +224,7 @@ caveThenCeiling = (world) => {
     camera.minY = -500;
     camera.maxY = 500;
 
-    world.add(sunset());
+    world.add(...sunset());
     spawn(world, 0);
     world.add(Obstacle.mountain(500, 2000, -200, 200, 0.5));
     world.add(Obstacle.ceiling(400, 1500, -500, -200, 0.5));
@@ -216,7 +247,7 @@ lowCeiling = (world) => {
     camera.minY = -500;
     camera.maxY = 500;
 
-    world.add(sunset());
+    world.add(...sunset());
     spawn(world, 0);
 
     world.add(Obstacle.ceiling(500, 1500, -200, 100, 0.5));
@@ -244,7 +275,7 @@ hardMountains = (world) => {
     camera.minY = -500;
     camera.maxY = 500;
 
-    world.add(sunset());
+    world.add(...sunset());
     spawn(world, 0);
     world.add(Obstacle.mountain(500, 4500, -200, 200, 2));
     world.add(Obstacle.ceiling(2500, 3500, -600, -200, 0.5));
@@ -265,7 +296,7 @@ smallMountainSuccession = world => {
     camera.minY = -500;
     camera.maxY = 500;
 
-    world.add(sunset());
+    world.add(...sunset());
     spawn(world, 0);
     world.add(Obstacle.mountain(500, 1000, 0, 200, 2));
     world.add(Obstacle.ceiling(900, 1500, -400, -500, 2));
@@ -290,7 +321,7 @@ upAndDown = (world) => {
     camera.minY = -500;
     camera.maxY = 500;
 
-    world.add(sunset());
+    world.add(...sunset());
     spawn(world, 0);
     world.add(Obstacle.mountain(500, 1000, 0, 200, 2));
     world.add(Obstacle.ceiling(900, 1500, -500, -300, 2));

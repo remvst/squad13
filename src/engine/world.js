@@ -23,14 +23,16 @@ class World {
         }
     }
 
-    add(entity) {
-        if (this.contains(entity)) return;
+    add(...entities) {
+        for (const entity of entities) {
+            if (this.contains(entity)) return;
 
-        this.entities.add(entity);
-        for (const bucket of entity.buckets)  {
-            this.bucket(bucket).add(entity);
+            this.entities.add(entity);
+            for (const bucket of entity.buckets)  {
+                this.bucket(bucket).add(entity);
+            }
+            entity.world = this;
         }
-        entity.world = this;
     }
 
     remove(entity) {

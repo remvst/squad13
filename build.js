@@ -61,6 +61,7 @@ compiler.run((tasks) => {
                 'util/math.js',
                 'util/colors.js',
                 'util/format-time.js',
+                'util/rng.js',
 
                 'engine/entity.js',
                 'engine/world.js',
@@ -84,6 +85,10 @@ compiler.run((tasks) => {
                 'entities/progress-indicator.js',
                 'entities/start-prompt.js',
                 'entities/run-recap.js',
+                'entities/sun.js',
+                'entities/stars.js',
+                'entities/mountains.js',
+                'entities/rain.js',
 
                 'graphics/wrap.js',
                 'graphics/create-canvas.js',

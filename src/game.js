@@ -14,6 +14,7 @@ class Game {
 
     async gameLoop() {
         const levels = [
+            nightMountains,
             tutorialFly,
             firstMountain,
             mountainThenCeiling,
@@ -84,7 +85,7 @@ class Game {
                 missionStartTime = this.age;
 
             } catch (err) {
-                deaths++;
+                totalDeaths++;
                 console.log(err);
                 this.world.add(new Title('MISSION\nFAILED', '#f00').fade(0, 1, 0.2, 0));
                 await new Promise(r => setTimeout(r, 1000));

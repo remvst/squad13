@@ -35,7 +35,7 @@ const CONSTANTS = {
     "const": "let",
     "null": 0,
 
-    // TODO
+    "SONG_VOLUME": 0.5,
 };
 
 function copy(obj) {
@@ -91,6 +91,8 @@ compiler.run((tasks) => {
                 'graphics/font.js',
 
                 'sound/ZzFXMicro.js',
+                'sound/sonantx.js',
+                'sound/song.js',
 
                 'input/keyboard.js',
                 'input/mouse.js',

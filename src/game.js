@@ -6,8 +6,8 @@ class Game {
 
         (async () => {
             const levels = [
-                tutorialFly,
-                firstMountain,
+                // tutorialFly,
+                // firstMountain,
                 mountainThenCeiling,
                 tutorialShoot,
                 caveThenCeiling,
@@ -56,6 +56,8 @@ class Game {
                         this.world.add(prompt);
 
                         await this.world.waitFor(() => !this.world.contains(prompt));
+                        playSong();
+
                         title.fade(1, 0, 1, 0.3);
 
                         startTime = this.age;

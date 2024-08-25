@@ -277,6 +277,11 @@ class Chopper extends Entity {
         }
 
         const targetLadderLength = hasPrisoner && !this.hangingPrisoner ? 100 : 0;
+
+        if (targetLadderLength && !this.ladderLength) {
+            sound(...[,,100,.01,.08,.14,1,.8,10,,,,,,,,,.55,.02]); // Jump 405
+        }
+
         this.ladderLength += between(
             -elapsed * 100,
             targetLadderLength - this.ladderLength,

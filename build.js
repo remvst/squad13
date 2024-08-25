@@ -75,6 +75,7 @@ compiler.run((tasks) => {
                 'entities/fireball.js',
                 'entities/missile.js',
                 'entities/rebel.js',
+                'entities/prisoner.js',
                 'entities/landing-area.js',
                 'entities/instruction.js',
                 'entities/condition.js',

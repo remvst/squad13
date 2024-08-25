@@ -51,6 +51,22 @@ rebel = (world, x) => {
         rebel.y = obstacle.yAt(rebel.x) - rebel.radius;
     }
 }
+prisoner = (world, x) => {
+    const prisoner = new Prisoner();
+    prisoner.x = x;
+    world.add(prisoner);
+
+    for (const obstacle of world.bucket('obstacle')) {
+        if (obstacle.directionY < 0) continue;
+        if (!isBetween(obstacle.minX, prisoner.x, obstacle.maxX)) continue;
+
+        const idealY = obstacle.yAt(prisoner.x);
+        if (idealY === null) {
+            throw new Error('idealY is null');
+        }
+        prisoner.y = obstacle.yAt(prisoner.x) - prisoner.radius;
+    }
+}
 
 tutorialFly = (world) => {
     const camera = firstItem(world.bucket('camera'));
@@ -96,6 +112,8 @@ firstMountain = (world) => {
     world.add(Obstacle.mountain(500, 2500, -200, 200, 1));
     world.add(Obstacle.ceiling(2700, 3500, -400, -300, 2));
 
+    prisoner(world, 1000);
+
     setTarget(world, 3000);
 
     world.add(new Water(400));
@@ -120,6 +138,15 @@ mountainThenCeiling = (world) => {
     setTarget(world, 6500);
 
     world.add(new Water(400));
+
+    const rescueInstruction = new Instruction('PRISONERS CAN BE RESCUED');
+    rescueInstruction.x = 500;
+    rescueInstruction.y = -200;
+    world.add(rescueInstruction);
+
+    prisoner(world, 1000);
+    prisoner(world, 2400);
+    prisoner(world, 4500);
 
     return promise(world)
 };

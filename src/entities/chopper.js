@@ -70,10 +70,6 @@ class Chopper extends Entity {
         this.landed = false;
         this.landedTime = 0;
 
-        this.ladderLength = 0;
-        this.hangingPrisoner = null;
-        this.rescuedPrisoners = 0;
-
         this.damagedTimeLeft = 0;
         this.lastDamageBeep = 0;
 
@@ -321,25 +317,6 @@ class Chopper extends Entity {
             this.y = between(camera.minY, this.y, camera.maxY);
         }
 
-        let hasPrisoner;
-        for (const prisoner of this.world.bucket('prisoner')) {
-            if (dist(prisoner, this) < 150) {
-                hasPrisoner = prisoner;
-            }
-        }
-
-        const targetLadderLength = hasPrisoner && !this.hangingPrisoner ? 100 : 0;
-
-        if (targetLadderLength && !this.ladderLength) {
-            sound(...[,,100,.01,.08,.14,1,.8,10,,,,,,,,,.55,.02]); // Jump 405
-        }
-
-        this.ladderLength += between(
-            -elapsed * 100,
-            targetLadderLength - this.ladderLength,
-            elapsed * 100,
-        );
-
         if (!this.sound) {
             this.sound = new FunZZfx(zzfxG(...[,,317,,3,0,,3.2,-12,16,,,.07,.1,,,,.59,.18,.12])); // Shoot 71
             this.sound.source.loop = true;
@@ -409,17 +386,6 @@ class Chopper extends Entity {
             // ctx.moveTo(0, 0);
             // ctx.lineTo(100, 0);
             // ctx.stroke();
-        });
-
-        ctx.wrap(() => {
-            ctx.translate(this.x, this.y);
-            ctx.fillStyle = '#000';
-            ctx.fillRect(-5, 0, 2, this.ladderLength);
-            ctx.fillRect(5, 0, -2, this.ladderLength);
-
-            for (let y = this.ladderLength ; y >= 0 ; y -= 10) {
-                ctx.fillRect(-5, y, 10, 2);
-            }
         });
 
         // ctx.wrap(() => {

@@ -3,6 +3,10 @@ class Player extends Chopper {
     constructor() {
         super();
         this.buckets.push('player');
+
+        this.ladderLength = 0;
+        this.hangingPrisoner = null;
+        this.rescuedPrisoners = 0;
     }
 
     cycle(elapsed) {
@@ -16,11 +20,43 @@ class Player extends Chopper {
         this.controls.up = (DOWN[38] || DOWN[87]) && !hasTitle;
         this.controls.down = (DOWN[40] || DOWN[83]) && !hasTitle;
         this.controls.shoot = DOWN[32] && !hasTitle;
+
+        let hasPrisoner;
+        for (const prisoner of this.world.bucket('prisoner')) {
+            if (dist(prisoner, this) < 150) {
+                hasPrisoner = prisoner;
+            }
+        }
+
+        const targetLadderLength = hasPrisoner && !this.hangingPrisoner ? 100 : 0;
+
+        if (targetLadderLength && !this.ladderLength) {
+            sound(...[,,100,.01,.08,.14,1,.8,10,,,,,,,,,.55,.02]); // Jump 405
+        }
+
+        this.ladderLength += between(
+            -elapsed * 100,
+            targetLadderLength - this.ladderLength,
+            elapsed * 100,
+        );
     }
 
     render(camera) {
         super.render(camera);
 
+        // Ladder
+        ctx.wrap(() => {
+            ctx.translate(this.x, this.y);
+            ctx.fillStyle = '#000';
+            ctx.fillRect(-5, 0, 2, this.ladderLength);
+            ctx.fillRect(5, 0, -2, this.ladderLength);
+
+            for (let y = this.ladderLength ; y >= 0 ; y -= 10) {
+                ctx.fillRect(-5, y, 10, 2);
+            }
+        });
+
+        // Target lock on indicator
         ctx.wrap(() => {
             if (!this.lockedTarget) return;
 

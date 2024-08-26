@@ -371,6 +371,8 @@ mountainChopperMountain = (world) => {
     ]);
     world.add(enemyChopper);
 
+    rebel(world, 650);
+
     world.add(new Water(400));
 
     return promise(world)

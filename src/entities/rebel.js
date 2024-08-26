@@ -1,7 +1,7 @@
 class Rebel extends Entity {
     constructor() {
         super();
-        this.buckets.push('human');
+        this.buckets.push('human', 'rebel');
         this.radius = 10;
         this.lastShot = 0;
     }

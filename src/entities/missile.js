@@ -90,16 +90,16 @@ class Missile extends Entity {
 
         for (const chopper of this.world.bucket('chopper')) {
             if (chopper === this.owner) continue;
-            if (!isBetween(chopper.x - 35, this.x, chopper.x + 35)) continue;
-            if (!isBetween(chopper.y - 35, this.y, chopper.y + 35)) continue;
+            if (!isBetween(chopper.x - chopper.radius, this.x, chopper.x + chopper.radius)) continue;
+            if (!isBetween(chopper.y - chopper.radius, this.y, chopper.y + chopper.radius)) continue;
 
             this.explode();
         }
 
         for (const human of this.world.bucket('human')) {
             if (human === this.owner) continue;
-            if (!isBetween(human.x - 10, this.x, human.x + 10)) continue;
-            if (!isBetween(human.y - 10, this.y, human.y + 10)) continue;
+            if (!isBetween(human.x - human.radius, this.x, human.x + human.radius)) continue;
+            if (!isBetween(human.y - human.radius, this.y, human.y + human.radius)) continue;
 
             this.explode();
         }

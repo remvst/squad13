@@ -26,6 +26,8 @@ class Chopper extends Entity {
             shoot: false,
         };
 
+        this.radius = 35;
+
         this.lastShot = 0;
 
         this.facing = facing;
@@ -74,6 +76,9 @@ class Chopper extends Entity {
 
         this.damagedTimeLeft = 0;
         this.lastDamageBeep = 0;
+
+        this.lockedTarget = null;
+        this.lockedTargetFactor = 0;
     }
 
     updateGlobalHitboxes() {
@@ -106,29 +111,57 @@ class Chopper extends Entity {
         };
     }
 
+    * targets() {
+        for (const target of this.world.bucket('rebel')) {
+            yield target;
+        }
+        for (const target of this.world.bucket('chopper')) {
+            if (target === this) continue;
+            yield target;
+        }
+    }
+
+    shootingTarget() {
+        let bestTarget;
+        let bestTargetAngleDiff = PI / 8;
+        for (const target of this.targets()) {
+            if (dist(target, this) > 400) continue;
+            const angleToTarget = normalize(angleBetween(this, target));
+
+            const angleDiff = Math.abs(normalize(angleToTarget - normalize(this.angle)));
+            if (angleDiff < bestTargetAngleDiff) {
+                bestTarget = target;
+                bestTargetAngleDiff = angleDiff;
+            }
+        }
+
+        return bestTarget;
+    }
+
     cycle(elapsed) {
         super.cycle(elapsed);
 
+        // Target lock on
+        const bestTarget = this.shootingTarget();
+        if (bestTarget !== this.lockedTarget) {
+            this.lockedTarget = bestTarget;
+            this.lockedTargetFactor = null;
+        }
+
+        if (this.lockedTarget) {
+            this.lockedTargetFactor = min(
+                1,
+                this.lockedTargetFactor + elapsed,
+            );
+        }
+
+        // Shooting
         if (this.age - this.lastShot > 1 && this.controls.shoot) {
             const missile = new Missile(this);
             this.world.add(missile);
 
-            let bestTarget;
-            let bestTargetAngleDiff = PI / 8;
-            for (const target of this.world.bucket('human')) {
-                if (target === this.owner) continue;
-                if (dist(target, this) > 400) continue;
-                const angleToTarget = normalize(angleBetween(this, target));
-
-                const angleDiff = Math.abs(normalize(angleToTarget - normalize(this.angle)));
-                if (angleDiff < bestTargetAngleDiff) {
-                    bestTarget = target;
-                    bestTargetAngleDiff = angleDiff;
-                }
-            }
-
-            if (bestTarget) {
-                missile.angle = angleBetween(this, bestTarget);
+            if (this.lockedTarget) {
+                missile.angle = angleBetween(this, this.lockedTarget);
             }
 
             this.lastShot = this.age;

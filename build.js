@@ -62,6 +62,7 @@ compiler.run((tasks) => {
                 'util/colors.js',
                 'util/format-time.js',
                 'util/rng.js',
+                'util/explosion.js',
 
                 'engine/entity.js',
                 'engine/world.js',

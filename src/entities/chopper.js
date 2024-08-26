@@ -111,21 +111,12 @@ class Chopper extends Entity {
         };
     }
 
-    * targets() {
-        for (const target of this.world.bucket('rebel')) {
-            yield target;
-        }
-        for (const target of this.world.bucket('chopper')) {
-            if (target === this) continue;
-            yield target;
-        }
-    }
-
     shootingTarget() {
         let bestTarget;
         let bestTargetAngleDiff = PI / 8;
-        for (const target of this.targets()) {
+        for (const target of targets(this.world, this)) {
             if (dist(target, this) > 400) continue;
+            if (target instanceof Prisoner) continue; // Don't lock on prisoners
             const angleToTarget = normalize(angleBetween(this, target));
 
             const angleDiff = Math.abs(normalize(angleToTarget - normalize(this.angle)));
@@ -377,33 +368,8 @@ class Chopper extends Entity {
 
     explode() {
         this.world.remove(this);
-
         this.destroy();
-        sound(...[,,74,.06,.29,.54,4,3.1,,-8,,,,1.3,,.2,,.4,.24]);
-
-        for (let i = 0 ; i < 10 ; i++) {
-            const fireball = new Fireball(
-                this.x + rnd(-50, 50),
-                this.y + rnd(-50, 50),
-                -rnd(PI / 4, PI * 3 / 4),
-                rnd(300, 600),
-            );
-            this.world.add(fireball);
-        }
-
-        for (let i = 0 ; i < 30 ; i++) {
-            const x = this.x + rnd(-50, 50);
-            const y = this.y + rnd(-50, 50);
-            const particle = new Particle(
-                pick(['#000', '#ff0', '#f80', '#f00']),
-                [rnd(25, 30), 0],
-                [x, x + rnd(-100, 100)],
-                [y, y - rnd(50, 150)],
-                rnd(1.2, 3),
-            );
-            this.world.add(particle);
-        }
-
+        explosion(this.world, this, 80, this);
     }
 
     render() {

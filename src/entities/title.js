@@ -41,6 +41,7 @@ class Title extends Entity {
     }
 
     render(camera) {
+        if (this.alpha <= 0) return;
         ctx.globalAlpha = this.alpha;
 
         ctx.translate(~~camera.x - CANVAS_WIDTH / 2, ~~camera.y - CANVAS_HEIGHT / 2);

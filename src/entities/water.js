@@ -31,6 +31,8 @@ class Water extends Entity {
     }
 
     render(camera) {
+        if (camera.y - CANVAS_HEIGHT / 2 < this.y) return;
+
         ctx.translate(~~camera.x - CANVAS_WIDTH / 2, this.y);
 
         let baseY = 0;

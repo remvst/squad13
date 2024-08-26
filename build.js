@@ -89,6 +89,7 @@ compiler.run((tasks) => {
                 'entities/stars.js',
                 'entities/mountains.js',
                 'entities/rain.js',
+                'entities/flashlight.js',
 
                 'graphics/wrap.js',
                 'graphics/create-canvas.js',

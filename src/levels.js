@@ -10,6 +10,7 @@ night = () => ([
     new Sun('#fff'),
     new Mountains('#092644'),
     new Rain(),
+    new Flashlight(),
 ])
 spawn = (world, x, y = 100) => {
     const landing = Obstacle.landingObstacle(x, y, 200);

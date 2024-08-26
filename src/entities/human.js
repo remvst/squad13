@@ -8,6 +8,16 @@ class Human extends Entity {
     explode() {
         this.world.remove(this);
 
+        for (let i = 0 ; i < 10 ; i++) {
+            this.world.add(new Fireball(
+                this.x + rnd(-20, 20),
+                this.y + rnd(-20, 20),
+                -rnd(PI / 4, PI * 3 / 4),
+                rnd(100, 150),
+                ['#f00', '#900'],
+            ));
+        }
+
         // Particles
         for (let i = 0 ; i < 50 ; i++) {
             const x = this.x + rnd(-20, 20);

@@ -1,11 +1,12 @@
 class Fireball extends Entity {
-    constructor(x, y, angle, speed) {
+    constructor(x, y, angle, speed, colors = ['#ff0', '#f80', '#000']) {
         super();
 
         this.x = x;
         this.y = y;
         this.angle = angle;
         this.speed = speed;
+        this.colors = colors;
 
         this.nextParticle = 0;
     }
@@ -33,7 +34,7 @@ class Fireball extends Entity {
             this.nextParticle = 1 / 60;
 
             this.world.add(new Particle(
-                pick(['#ff0', '#f80', '#000']),
+                pick(this.colors),
                 [rnd(5, 10), 0],
                 [this.x, this.x + rnd(-5, 5)],
                 [this.y, this.y - rnd(20, 30)],

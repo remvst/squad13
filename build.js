@@ -69,6 +69,7 @@ compiler.run((tasks) => {
                 'entities/camera.js',
                 'entities/chopper.js',
                 'entities/player.js',
+                'entities/enemy-chopper.js',
                 'entities/obstacle.js',
                 'entities/water.js',
                 'entities/background.js',

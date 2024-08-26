@@ -344,3 +344,34 @@ upAndDown = (world) => {
     }
     return promise(world)
 }
+
+mountainChopperMountain = (world) => {
+    const camera = firstItem(world.bucket('camera'));
+    camera.minX = -300;
+    camera.minY = -500;
+    camera.maxY = 500;
+
+    world.add(...sunset());
+    spawn(world, 0);
+    world.add(Obstacle.mountain(500, 1000, 0, 200, 2));
+    // world.add(Obstacle.mountain(1500, 2000, -200, 0, 1.5));
+    // world.add(Obstacle.ceiling(1800, 2600, -400, -500, 2.5));
+    // world.add(Obstacle.mountain(2500, 3500, -200, 200, 3));
+    // world.add(Obstacle.ceiling(3000, 4000, -400, -550, 4));
+
+    setTarget(world, 4500);
+
+    const enemyChopper = new EnemyChopper();
+    enemyChopper.x = 750;
+    enemyChopper.y = -200;
+    enemyChopper.follow([
+        { x: enemyChopper.x - 100, y: enemyChopper.y },
+        { x: enemyChopper.x + 100, y: enemyChopper.y - 50 },
+        { x: enemyChopper.x + 50, y: enemyChopper.y + 50 },
+    ]);
+    world.add(enemyChopper);
+
+    world.add(new Water(400));
+
+    return promise(world)
+}

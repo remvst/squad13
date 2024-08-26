@@ -13,7 +13,7 @@ class Hitbox {
 
 class Chopper extends Entity {
 
-    constructor() {
+    constructor(facing = 1) {
         super();
 
         this.buckets.push('chopper');
@@ -27,6 +27,8 @@ class Chopper extends Entity {
         };
 
         this.lastShot = 0;
+
+        this.facing = facing;
 
         this.hitBoxes = [
             new Hitbox(-10, 18, 5),
@@ -42,6 +44,10 @@ class Chopper extends Entity {
             // Back propeller
             new Hitbox(-55, -10, 10),
         ];
+
+        for (const hitbox of this.hitBoxes) {
+            hitbox.x *= this.facing;
+        }
 
         for (const landingHitbox of [
             this.hitBoxes[0],
@@ -371,6 +377,7 @@ class Chopper extends Entity {
         ctx.wrap(() => {
             ctx.translate(this.x, this.y);
             ctx.rotate(this.angle);
+            ctx.scale(this.facing, 1);
 
             ctx.fillStyle = '#000';
             ctx.fillRect(-20, -15, 40, 30);
@@ -439,11 +446,27 @@ class Chopper extends Entity {
         // const { averagePoint } = this;
         // ctx.fillStyle = '#00f';
         // ctx.fillRect(averagePoint.x - 2, averagePoint.y - 2, 4, 4);
+
+        const futureX = this.x + this.momentum.x * 1;
+        const futureY = this.y + this.momentum.y * 1;
+
+        ctx.strokeStyle = '#ff0';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(this.x, this.y);
+        ctx.lineTo(futureX, futureY);
+        ctx.stroke();
     }
 
     crashed() {
         return this.world.waitFor(() => {
             if (!this.world.contains(this)) throw new Error();
         })
+    }
+
+    futurePosition() {
+        const x = this.x + this.momentum.x * 1;
+        const y = this.y + this.momentum.y * 1;
+        return { x, y };
     }
 }

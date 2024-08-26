@@ -119,7 +119,7 @@ class Chopper extends Entity {
         let bestTarget;
         let bestTargetAngleDiff = PI / 4;
         for (const target of targets(this.world, this)) {
-            if (dist(target, this) > 400) continue;
+            if (dist(target, this) > 600) continue;
             if (target instanceof Prisoner) continue; // Don't lock on prisoners
             const angleToTarget = normalize(angleBetween(this, target));
 

@@ -3,3 +3,6 @@
 - More levels
 - Enemy choppers
 - Daytime
+- Blood when humans die
+- Enemy choppers shoot
+- Chopper collisions

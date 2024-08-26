@@ -39,6 +39,17 @@ class Player extends Chopper {
             targetLadderLength - this.ladderLength,
             elapsed * 100,
         );
+
+        if (!this.sound) {
+            this.sound = new FunZZfx(zzfxG(...[,,317,,3,0,,3.2,-12,16,,,.07,.1,,,,.59,.18,.12])); // Shoot 71
+            this.sound.source.loop = true;
+            this.sound.start();
+        }
+
+        if (this.sound) {
+            this.sound.setVolume(interpolate(0.5, 1, this.propellerPower));
+            this.sound.setRate(interpolate(0.5, 1, this.propellerPower));
+        }
     }
 
     render(camera) {
@@ -69,14 +80,15 @@ class Player extends Chopper {
 
             ctx.rotate(this.age * PI);
 
+            const radius = Math.max(this.lockedTarget.radius, 20);
             ctx.strokeStyle = ctx.fillStyle = '#ff0';
             ctx.beginPath();
-            ctx.arc(0, 0, this.lockedTarget.radius, 0, 2 * PI);
+            ctx.arc(0, 0, radius, 0, 2 * PI);
             ctx.stroke();
 
             for (let i = 0 ; i < 4 ; i++) {
                 ctx.rotate(PI / 2);
-                ctx.fillRect(this.lockedTarget.radius - 5, 0, 10, 2);
+                ctx.fillRect(radius - 5, 0, 10, 2);
             }
         });
     }

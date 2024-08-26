@@ -109,9 +109,15 @@ class Chopper extends Entity {
         };
     }
 
+    get readyToShoot() {
+        return this.age - this.lastShot > 1;
+    }
+
     shootingTarget() {
+        if (!this.readyToShoot) return null;
+
         let bestTarget;
-        let bestTargetAngleDiff = PI / 8;
+        let bestTargetAngleDiff = PI / 4;
         for (const target of targets(this.world, this)) {
             if (dist(target, this) > 400) continue;
             if (target instanceof Prisoner) continue; // Don't lock on prisoners
@@ -146,23 +152,34 @@ class Chopper extends Entity {
         const bestTarget = this.shootingTarget();
         if (bestTarget !== this.lockedTarget) {
             this.lockedTarget = bestTarget;
-            this.lockedTargetFactor = null;
+            this.lockedTargetFactor = 0;
+
+            if (bestTarget) {
+                // sound(...[,,100,.02,.28,.31,,.5,,,50,.06,.06,,,,,.56,.23]); // Loaded Sound 597
+                sound(...[,,354,.02,.28,.32,,.9,5,160,491,.07,.09,,,,,.66,.17,.39]); // Powerup 616
+            }
         }
 
         if (this.lockedTarget) {
+            const previous = this.lockedTargetFactor;
             this.lockedTargetFactor = min(
                 1,
                 this.lockedTargetFactor + elapsed,
             );
+
+            if (previous < 1 && this.lockedTargetFactor >= 1) {
+                sound(...[2,,12,.01,.04,.006,,2.8,,,-436,.01,.02,,,,.14,.61,.02]); // Blip 591
+            }
         }
 
         // Shooting
-        if (this.age - this.lastShot > 1 && this.controls.shoot) {
+        if (this.readyToShoot && this.controls.shoot) {
             const missile = new Missile(this);
             this.world.add(missile);
 
-            if (this.lockedTarget) {
+            if (this.lockedTarget && this.lockedTargetFactor >= 1) {
                 missile.angle = angleBetween(this, this.lockedTarget);
+                missile.target = this.lockedTarget;
             }
 
             this.lastShot = this.age;
@@ -329,17 +346,6 @@ class Chopper extends Entity {
         if (!isBetween(camera.minY, this.y, camera.maxY)) {
             this.momentum.y = 0;
             this.y = between(camera.minY, this.y, camera.maxY);
-        }
-
-        if (!this.sound) {
-            this.sound = new FunZZfx(zzfxG(...[,,317,,3,0,,3.2,-12,16,,,.07,.1,,,,.59,.18,.12])); // Shoot 71
-            this.sound.source.loop = true;
-            this.sound.start();
-        }
-
-        if (this.sound) {
-            this.sound.setVolume(interpolate(0.5, 1, this.propellerPower));
-            this.sound.setRate(interpolate(0.5, 1, this.propellerPower));
         }
     }
 

@@ -373,7 +373,7 @@ mountainChopperCeilingChopper = (world) => {
 
     prisoner(world, 1450);
     prisoner(world, 3800);
-    rebel(world, 650);
+    rebel(world, 750);
     rebel(world, 2450);
 
     enemyChopper(world, [

@@ -28,7 +28,6 @@ class Missile extends Entity {
             return;
         }
 
-
         for (const obstacle of this.world.bucket('obstacle')) {
             if (!isBetween(obstacle.minX, this.x, obstacle.maxX)) continue;
 
@@ -42,13 +41,23 @@ class Missile extends Entity {
             this.explode();
         }
 
-        let angleSin = sin(this.angle);
-        angleSin += between(
-            -elapsed * 0.2,
-            1 - sin(this.angle),
-            elapsed * 0.2,
-        );
-        this.angle = atan2(angleSin, cos(this.angle));
+
+        if (this.target) {
+            const angleToTarget = normalize(angleBetween(this, this.target));
+            this.angle += between(
+                -elapsed * PI * 2,
+                normalize(angleToTarget - normalize(this.angle)),
+                elapsed * PI * 2,
+            );
+        } else {
+            let angleSin = sin(this.angle);
+            angleSin += between(
+                -elapsed * 0.2,
+                1 - sin(this.angle),
+                elapsed * 0.2,
+            );
+            this.angle = atan2(angleSin, cos(this.angle));
+        }
 
         this.x += cos(this.angle) * elapsed * this.speed;
         this.y += sin(this.angle) * elapsed * this.speed;

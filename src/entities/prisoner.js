@@ -1,14 +1,13 @@
-class Prisoner extends Entity {
+class Prisoner extends Human {
     constructor() {
         super();
-        this.buckets.push('human', 'prisoner');
-        this.radius = 10;
+        this.buckets.push('prisoner');
 
         this.grabbingLadderRatio = 0;
     }
 
     explode() {
-        this.world.remove(this);
+        super.explode();
 
         // Just in case, get off the ladder
         const player = firstItem(this.world.bucket('player'));

@@ -1,13 +1,8 @@
-class Rebel extends Entity {
+class Rebel extends Human {
     constructor() {
         super();
-        this.buckets.push('human', 'rebel');
-        this.radius = 10;
+        this.buckets.push('rebel');
         this.lastShot = 0;
-    }
-
-    explode() {
-        this.world.remove(this);
     }
 
     cycle(elapsed) {

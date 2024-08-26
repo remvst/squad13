@@ -21,7 +21,7 @@ function explosion(
         const x = position.x + rnd(-radius * 5 / 8, radius * 5 / 8);
         const y = position.y + rnd(-radius * 5 / 8, radius * 5 / 8);
         world.add(new Particle(
-            pick(['#000', '#ff0', '#f80', '#f00']),
+            pick(['#000', '#ff0', '#f80']),
             [rnd(25, 30), 0],
             [x, x + rnd(-100, 100)],
             [y, y - rnd(50, 150)],

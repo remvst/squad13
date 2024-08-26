@@ -50,6 +50,11 @@ class Player extends Chopper {
             this.sound.setVolume(interpolate(0.5, 1, this.propellerPower));
             this.sound.setRate(interpolate(0.5, 1, this.propellerPower));
         }
+
+        if (this.damagedTimeLeft > 0 && this.age - this.lastDamageBeep > 0.25) {
+            this.lastDamageBeep = this.age;
+            sound(...[1,,154,,.07,.04,3,2.1,,,,,,.4,,,,.45,.04,.07,680]); // Hit 406
+        }
     }
 
     render(camera) {

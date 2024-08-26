@@ -268,11 +268,6 @@ class Chopper extends Entity {
                 rnd(1.2, 3),
             );
             this.world.add(particle);
-
-            if (this.age - this.lastDamageBeep > 0.25) {
-                this.lastDamageBeep = this.age;
-                sound(...[1,,154,,.07,.04,3,2.1,,,,,,.4,,,,.45,.04,.07,680]); // Hit 406
-            }
         }
         this.momentum.angle = 0;
 

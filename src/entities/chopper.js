@@ -75,6 +75,8 @@ class Chopper extends Entity {
 
         this.lockedTarget = null;
         this.lockedTargetFactor = 0;
+
+        this.lastCollisionSound = 0;
     }
 
     updateGlobalHitboxes() {
@@ -127,6 +129,18 @@ class Chopper extends Entity {
 
     cycle(elapsed) {
         super.cycle(elapsed);
+
+        for (const chopper of this.world.bucket('chopper')) {
+            if (chopper === this) continue;
+            if (dist(chopper, this) > this.radius) continue;
+            this.push();
+            chopper.push();
+
+            if (this.age - this.lastCollisionSound > 0.2) {
+                this.lastCollisionSound = this.age;
+                sound(...[,,63,.05,.2,.3,4,,,6,,,.15,1.3,,.1,,.32,.15,.01]); // Explosion 424
+            }
+        }
 
         // Target lock on
         const bestTarget = this.shootingTarget();
@@ -335,12 +349,12 @@ class Chopper extends Entity {
         }
     }
 
-    push() {
+    push(duration = 1) {
         const angle = rnd(PI / 4, PI * 3 / 4);
         this.momentum.x = cos(angle) * 300;
         this.momentum.y = sin(angle) * 300;
 
-        this.damagedTimeLeft = 1;
+        this.damagedTimeLeft = duration;
     }
 
     explode() {

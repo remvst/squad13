@@ -33,7 +33,7 @@ class Rebel extends Entity {
     render() {
         ctx.translate(this.x, this.y);
 
-        ctx.fillStyle = ctx.strokeStyle = '#f00';
+        ctx.fillStyle = ctx.strokeStyle = '#000';
         ctx.scale(0.8, 0.8);
 
         // Head
@@ -78,7 +78,7 @@ class Rebel extends Entity {
             ctx.translate(0, -4);
             ctx.rotate(this.angle);
 
-            ctx.fillStyle = '#000';
+            ctx.fillStyle = '#f00';
             ctx.fillRect(-10, -2.5, 24, 5);
         });
     }

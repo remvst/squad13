@@ -12,7 +12,7 @@ class Rain extends Entity {
 
         if (this.age % 4 < 0.4) {
             ctx.wrap(() => {
-                ctx.globalAlpha = sin(this.age * PI * 10) * 0.5 + 0.5;
+                ctx.globalAlpha = sin(this.age * PI * 10) * 0.1 + 0.1;
                 ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
             });
         }

@@ -15,15 +15,15 @@ class EnemyChopper extends Chopper {
     render(camera) {
         super.render(camera);
 
-        const target = this.path[0];
-        if (target) {
-            ctx.strokeStyle = '#00f';
-            ctx.lineWidth = 4;
-            ctx.beginPath();
-            ctx.moveTo(this.x, this.y);
-            ctx.lineTo(target.x, target.y);
-            ctx.stroke();
-        }
+        // const target = this.path[0];
+        // if (target) {
+        //     ctx.strokeStyle = '#00f';
+        //     ctx.lineWidth = 4;
+        //     ctx.beginPath();
+        //     ctx.moveTo(this.x, this.y);
+        //     ctx.lineTo(target.x, target.y);
+        //     ctx.stroke();
+        // }
     }
 
     cycle(elapsed) {

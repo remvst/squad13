@@ -427,15 +427,14 @@ class Chopper extends Entity {
         // ctx.fillStyle = '#00f';
         // ctx.fillRect(averagePoint.x - 2, averagePoint.y - 2, 4, 4);
 
-        const futureX = this.x + this.momentum.x * 1;
-        const futureY = this.y + this.momentum.y * 1;
+        // const future = this.futurePosition();
 
-        ctx.strokeStyle = '#ff0';
-        ctx.lineWidth = 4;
-        ctx.beginPath();
-        ctx.moveTo(this.x, this.y);
-        ctx.lineTo(futureX, futureY);
-        ctx.stroke();
+        // ctx.strokeStyle = '#ff0';
+        // ctx.lineWidth = 4;
+        // ctx.beginPath();
+        // ctx.moveTo(this.x, this.y);
+        // ctx.lineTo(future.x, future.y);
+        // ctx.stroke();
     }
 
     crashed() {

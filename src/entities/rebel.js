@@ -13,7 +13,7 @@ class Rebel extends Entity {
     cycle(elapsed) {
         super.cycle(elapsed);
 
-        this.angle = 0;
+        this.angle = PI;
 
         const player = firstItem(this.world.bucket('player'));
         if (player) {
@@ -31,20 +31,55 @@ class Rebel extends Entity {
     }
 
     render() {
+        ctx.translate(this.x, this.y);
+
+        ctx.fillStyle = ctx.strokeStyle = '#f00';
+        ctx.scale(0.8, 0.8);
+
+        // Head
+        ctx.beginPath();
+        ctx.arc(0, -12, 4, 0, PI * 2);
+        ctx.fill();
+
+        ctx.lineJoin = 'round';
+        ctx.lineCap = 'round';
+
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+
         ctx.wrap(() => {
-            ctx.translate(this.x, this.y);
+            ctx.translate(0, -4);
+            ctx.rotate(this.angle);
+            ctx.moveTo(-8, 2);
+        });
+        ctx.lineTo(-5, -5);
+        ctx.lineTo(5, -5);
 
-            ctx.fillStyle = '#f00'
-            ctx.fillRect(-5, -10, 10, 20);
-            ctx.fillRect(-5, 10, 3, 4);
-            ctx.fillRect(5, 10, -3, 4);
+        ctx.wrap(() => {
+            ctx.translate(0, -4);
+            ctx.rotate(this.angle);
+            ctx.lineTo(8, 2);
+        });
+        ctx.stroke();
 
-            ctx.wrap(() => {
-                ctx.rotate(this.angle);
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(-3, 0);
+        ctx.lineTo(-3, 16);
 
-                ctx.fillStyle = '#000';
-                ctx.fillRect(-10, -2.5, 20, 5);
-            });
-        })
+        ctx.moveTo(3, 0);
+        ctx.lineTo(3, 16);
+        ctx.stroke();
+
+        // ctx.fillStyle = '#00f';
+        ctx.fillRect(-5, -8, 10, 16);
+
+        ctx.wrap(() => {
+            ctx.translate(0, -4);
+            ctx.rotate(this.angle);
+
+            ctx.fillStyle = '#000';
+            ctx.fillRect(-14, -2.5, 24, 5);
+        });
     }
 }

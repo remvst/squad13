@@ -84,49 +84,47 @@ class Prisoner extends Entity {
     }
 
     render() {
-        ctx.wrap(() => {
-            ctx.translate(this.x, this.y);
+        ctx.translate(this.x, this.y);
 
-            ctx.fillStyle = '#0c0';
-            ctx.scale(0.8, 0.8);
+        ctx.fillStyle = '#0c0';
+        ctx.scale(0.8, 0.8);
 
-            // Head
-            ctx.beginPath();
-            ctx.arc(0, -12, 4, 0, PI * 2);
-            ctx.fill();
+        // Head
+        ctx.beginPath();
+        ctx.arc(0, -12, 4, 0, PI * 2);
+        ctx.fill();
 
-            ctx.strokeStyle = '#0c0';
-            ctx.lineJoin = 'round';
-            ctx.lineCap = 'round';
+        ctx.strokeStyle = '#0c0';
+        ctx.lineJoin = 'round';
+        ctx.lineCap = 'round';
 
-            ctx.lineWidth = 3;
-            ctx.beginPath();
-            if (!this.climbing) {
-                ctx.moveTo(-8 + sin(this.age * PI * 2) * 3, -14);
-            } else {
-                ctx.moveTo(-8, -15);
-            }
-            ctx.lineTo(-5, -5);
-            ctx.lineTo(5, -5);
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        if (!this.climbing) {
+            ctx.moveTo(-8 + sin(this.age * PI * 2) * 3, -14);
+        } else {
+            ctx.moveTo(-8, -15);
+        }
+        ctx.lineTo(-5, -5);
+        ctx.lineTo(5, -5);
 
-            if (!this.climbing) {
-                ctx.lineTo(8, 4);
-            } else {
-                ctx.lineTo(8, -14);
-            }
-            ctx.stroke();
+        if (!this.climbing) {
+            ctx.lineTo(8, 4);
+        } else {
+            ctx.lineTo(8, -14);
+        }
+        ctx.stroke();
 
-            ctx.lineWidth = 4;
-            ctx.beginPath();
-            ctx.moveTo(-3, 0);
-            ctx.lineTo(-3, 16 + sin(this.age * PI * 4) * 2 * this.walking);
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(-3, 0);
+        ctx.lineTo(-3, 16 + sin(this.age * PI * 4) * 2 * this.walking);
 
-            ctx.moveTo(3, 0);
-            ctx.lineTo(3, 16 - sin(this.age * PI * 4) * 2 * this.walking);
-            ctx.stroke();
+        ctx.moveTo(3, 0);
+        ctx.lineTo(3, 16 - sin(this.age * PI * 4) * 2 * this.walking);
+        ctx.stroke();
 
-            // ctx.fillStyle = '#00f';
-            ctx.fillRect(-5, -8, 10, 16);
-        })
+        // ctx.fillStyle = '#00f';
+        ctx.fillRect(-5, -8, 10, 16);
     }
 }

@@ -79,7 +79,7 @@ class Rebel extends Entity {
             ctx.rotate(this.angle);
 
             ctx.fillStyle = '#000';
-            ctx.fillRect(-14, -2.5, 24, 5);
+            ctx.fillRect(-10, -2.5, 24, 5);
         });
     }
 }

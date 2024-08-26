@@ -19,7 +19,7 @@ class Missile extends Entity {
 
         sound(...[,,74,.06,.29,.54,4,3.1,,-8,,,,1.3,,.2,,.4,.24]);
 
-        const radius = this.owner.buckets.indexOf('chopper') >= 0 ? 80 : 50;
+        const radius = 80;
 
         for (let i = 0 ; i < 10 ; i++) {
             const fireball = new Fireball(
@@ -49,7 +49,12 @@ class Missile extends Entity {
         for (const target of this.targets()) {
             if (target === this.owner) continue;
             if (dist(target, this) > radius) continue;
-            target.explode();
+
+            if (target.push) {
+                target.push();
+            } else {
+                target.explode();
+            }
         }
 
         // Camera shake
@@ -85,8 +90,8 @@ class Missile extends Entity {
 
         for (const chopper of this.world.bucket('chopper')) {
             if (chopper === this.owner) continue;
-            if (!isBetween(chopper.x - 25, this.x, chopper.x + 25)) continue;
-            if (!isBetween(chopper.y - 25, this.y, chopper.y + 25)) continue;
+            if (!isBetween(chopper.x - 35, this.x, chopper.x + 35)) continue;
+            if (!isBetween(chopper.y - 35, this.y, chopper.y + 35)) continue;
 
             this.explode();
         }

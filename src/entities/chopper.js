@@ -65,6 +65,9 @@ class Chopper extends Entity {
         this.ladderLength = 0;
         this.hangingPrisoner = null;
         this.rescuedPrisoners = 0;
+
+        this.damagedTimeLeft = 0;
+        this.lastDamageBeep = 0;
     }
 
     updateGlobalHitboxes() {
@@ -169,32 +172,51 @@ class Chopper extends Entity {
             this.momentum.angle += angleOriginal - angleNew;
         }
 
-        let x = 0, y = 0;
-        if (this.controls.left) x -= 1;
-        if (this.controls.right) x += 1;
-        if (this.controls.up) y -= 1;
-        if (this.controls.down) y += 1;
+        this.damagedTimeLeft -= elapsed;
+        if (this.damagedTimeLeft <= 0) {
+            let x = 0, y = 0;
+            if (this.controls.left) x -= 1;
+            if (this.controls.right) x += 1;
+            if (this.controls.up) y -= 1;
+            if (this.controls.down) y += 1;
 
-        const targetPower = this.controls.up ? 1 : 0;
-        this.propellerPower += between(
-            -elapsed * 4,
-            targetPower - this.propellerPower,
-            elapsed * 4,
-        );
+            const targetPower = this.controls.up ? 1 : 0;
+            this.propellerPower += between(
+                -elapsed * 4,
+                targetPower - this.propellerPower,
+                elapsed * 4,
+            );
 
-        let idealAngle = 0;
-        let angleVelocity = PI / 6;
-        if (!landed) {
-            if (this.controls.left) idealAngle = -PI / 4;
-            if (this.controls.right) idealAngle = PI / 4;
-            if (this.controls.left || this.controls.right) angleVelocity = PI / 2;
+            let idealAngle = 0;
+            let angleVelocity = PI / 6;
+            if (!landed) {
+                if (this.controls.left) idealAngle = -PI / 4;
+                if (this.controls.right) idealAngle = PI / 4;
+                if (this.controls.left || this.controls.right) angleVelocity = PI / 2;
+            }
+
+            this.angle += between(
+                -elapsed * angleVelocity,
+                idealAngle - this.angle,
+                elapsed * angleVelocity
+            );
+        } else {
+            const x = this.x + rnd(-20, 20);
+            const y = this.y + rnd(-20, 20);
+            const particle = new Particle(
+                pick(['#000', '#ff0', '#f80', '#f00']),
+                [rnd(10, 20), 0],
+                [x, x + rnd(-100, 100)],
+                [y, y - rnd(50, 150)],
+                rnd(1.2, 3),
+            );
+            this.world.add(particle);
+
+            if (this.age - this.lastDamageBeep > 0.25) {
+                this.lastDamageBeep = this.age;
+                sound(...[1,,154,,.07,.04,3,2.1,,,,,,.4,,,,.45,.04,.07,680]); // Hit 406
+            }
         }
-
-        this.angle += between(
-            -elapsed * angleVelocity,
-            idealAngle - this.angle,
-            elapsed * angleVelocity
-        )
         this.momentum.angle = 0;
 
         if (this.propellerPower) {
@@ -304,6 +326,14 @@ class Chopper extends Entity {
         if (this.sound) {
             this.sound.stop();
         }
+    }
+
+    push() {
+        const angle = rnd(PI / 4, PI * 3 / 4);
+        this.momentum.x = cos(angle) * 300;
+        this.momentum.y = sin(angle) * 300;
+
+        this.damagedTimeLeft = 1;
     }
 
     explode() {

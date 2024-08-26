@@ -2,5 +2,4 @@
 - Mobile controls
 - More levels
 - Enemy choppers
-- Night + rain
 - Daytime

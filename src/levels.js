@@ -64,6 +64,15 @@ rebel = (world, x) => {
         rebel.y = obstacle.yAt(rebel.x) - rebel.radius;
     }
 }
+
+enemyChopper = (world, path) => {
+    const enemyChopper = new EnemyChopper();
+    enemyChopper.x = path[0].x;
+    enemyChopper.y = path[0].y;
+    enemyChopper.follow(path);
+    world.add(enemyChopper);
+}
+
 prisoner = (world, x) => {
     const prisoner = new Prisoner();
     prisoner.x = x;
@@ -345,7 +354,7 @@ upAndDown = (world) => {
     return promise(world)
 }
 
-mountainChopperMountain = (world) => {
+mountainChopperCeilingChopper = (world) => {
     const camera = firstItem(world.bucket('camera'));
     camera.minX = -300;
     camera.minY = -500;
@@ -353,25 +362,29 @@ mountainChopperMountain = (world) => {
 
     world.add(...sunset());
     spawn(world, 0);
-    world.add(Obstacle.mountain(500, 1000, 0, 200, 2));
-    // world.add(Obstacle.mountain(1500, 2000, -200, 0, 1.5));
-    // world.add(Obstacle.ceiling(1800, 2600, -400, -500, 2.5));
-    // world.add(Obstacle.mountain(2500, 3500, -200, 200, 3));
-    // world.add(Obstacle.ceiling(3000, 4000, -400, -550, 4));
+    world.add(Obstacle.mountain(500, 1000, -400, 200, 1));
+    world.add(Obstacle.ceiling(2000, 3400, -200, 150, 1));
+    world.add(Obstacle.mountain(2400, 2700, 280, 350, 0.5));
+    world.add(Obstacle.mountain(1200, 1500, 200, 250, 0.5));
+    world.add(Obstacle.mountain(3750, 4100, 300, 350, 0.5));
+    world.add(Obstacle.ceiling(4300, 4600, -300, -550, 1));
 
     setTarget(world, 4500);
 
-    const enemyChopper = new EnemyChopper();
-    enemyChopper.x = 750;
-    enemyChopper.y = -200;
-    enemyChopper.follow([
-        { x: enemyChopper.x - 100, y: enemyChopper.y },
-        { x: enemyChopper.x + 100, y: enemyChopper.y - 50 },
-        { x: enemyChopper.x + 50, y: enemyChopper.y + 50 },
-    ]);
-    world.add(enemyChopper);
-
+    prisoner(world, 1450);
+    prisoner(world, 3800);
     rebel(world, 650);
+    rebel(world, 2450);
+
+    enemyChopper(world, [
+        { x: 1700, y: -200 },
+        { x: 1500, y: 100 },
+    ]);
+
+    enemyChopper(world, [
+        { x: 3800, y: -200 },
+        { x: 4200, y: 200 },
+    ]);
 
     world.add(new Water(400));
 

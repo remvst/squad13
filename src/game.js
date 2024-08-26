@@ -17,7 +17,7 @@ class Game {
             // tutorialFly,
             // firstMountain,
             // mountainThenCeiling,
-            mountainChopperMountain,
+            mountainChopperCeilingChopper,
             tutorialShoot,
             caveThenCeiling,
             lowCeiling,

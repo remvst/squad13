@@ -53,6 +53,8 @@ class Game {
         let missionStartTime = this.age;
         let totalDeaths = 0;
         let wasEverEasy = false;
+        let promptedEasyMode = false;
+        let missionFailures = 0;
 
         const totalPrisoners = levels.reduce((sum, level) => {
             const world = new World();
@@ -72,7 +74,7 @@ class Game {
 
                 this.world.add(new ProgressIndicator(() => {
                     const player = firstItem(this.world.bucket('player'));
-                    player.simplifiedPhysics = this.easyMode;
+                    if (player) player.simplifiedPhysics = this.easyMode;
 
                     wasEverEasy = wasEverEasy || this.easyMode;
 
@@ -93,7 +95,6 @@ class Game {
                     this.world.add(new StartPrompt('PRESS [SPACE] TO DEPLOY'));
                     await this.world.waitFor(() => !firstItem(this.world.bucket('start-prompt')));
 
-                    console.log('reset!');
                     wasEverEasy = false;
 
                     playSong();
@@ -104,6 +105,8 @@ class Game {
                 }
 
                 await levelPromise;
+
+                missionFailures = 0;
 
                 const player = firstItem(this.world.bucket('player'));
                 if (player) totalRescuedPrisoners += player.rescuedPrisoners;
@@ -149,9 +152,17 @@ class Game {
 
             } catch (err) {
                 totalDeaths++;
+                missionFailures++;
                 console.log(err);
                 this.world.add(new Title('MISSION\nFAILED', '#f00').fade(0, 1, 0.2, 0));
                 await new Promise(r => setTimeout(r, 1000));
+
+                if (missionFailures % 5 === 0 && !this.easyMode && !promptedEasyMode) {
+                    promptedEasyMode = true;
+                    if (confirm('Enable easy mode? (simplified physics, less aggressive enemies)')) {
+                        this.easyMode = true;
+                    }
+                }
             }
 
             const transitionOut = new Transition(1);

@@ -53,7 +53,9 @@ class Game {
         const worldOut = new TransitionOut();
         this.pauseWorld.add(worldOut);
         await worldOut.agesBy(0.3);
+
         this.paused = true;
+        this.world.destroy();
 
         const title = new Title('MISSION\nFAILED', '#f00');
         this.pauseWorld.add(title);
@@ -74,7 +76,9 @@ class Game {
         const worldOut = new TransitionOut();
         this.pauseWorld.add(worldOut);
         await worldOut.agesBy(0.3);
+
         this.paused = true;
+        this.world.destroy();
 
         const title = new Title('MISSION\nSUCCESS', '#fff');
         this.pauseWorld.add(title);
@@ -145,16 +149,16 @@ class Game {
     async gameLoop() {
         const levels = [
             tutorialFly,
-            // firstMountain,
-            // mountainThenCeiling,
-            // tutorialShoot,
-            // caveThenCeiling,
-            // lowCeiling,
-            // mountainChopperCeilingChopper,
-            // hardMountains,
-            // smallMountainSuccession,
-            // nightMountains,
-            // upAndDown,
+            firstMountain,
+            mountainThenCeiling,
+            tutorialShoot,
+            caveThenCeiling,
+            lowCeiling,
+            mountainChopperCeilingChopper,
+            hardMountains,
+            smallMountainSuccession,
+            nightMountains,
+            upAndDown,
         ]
         let levelIndex = 0;
         let attemptIndex = 0;
@@ -182,11 +186,6 @@ class Game {
                 wasEverEasy = wasEverEasy || this.easyMode;
             }));
 
-            // Invisible prompt to pause the game
-            this.world.add(new StartPrompt('', [27, 80], () => {
-                this.pause();
-            }));
-
             const level = levels[levelIndex];
             try {
                 const levelPromise = level(this.world);
@@ -210,6 +209,11 @@ class Game {
                 if (missionFailures === 0) {
                     missionStartTime = this.age;
                 }
+
+                // Invisible prompt to pause the game
+                this.world.add(new StartPrompt('', [27, 80], () => {
+                    this.pause();
+                }));
 
                 this.world.add(new ProgressIndicator(() => {
                     const player = firstItem(this.world.bucket('player'));

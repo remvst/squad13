@@ -2,6 +2,11 @@
 <img src="/assets/gameplay-screenshot.png">
 </p>
 
+> When all hope is lost, the World Police Organization sends SQUAD 13.
+> They are tasked with the most dangerous missions.
+> SQUAD 13 is feared even by the most wicked evil terrorists.
+> This is their story.
+
 # The 13th Squad
 
 **The 13th Squad** is my entry for 2024's [JS13K](https://js13kgames.com/).

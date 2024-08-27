@@ -71,28 +71,34 @@ compiler.run((tasks) => {
                 'entities/chopper.js',
                 'entities/player.js',
                 'entities/enemy-chopper.js',
+                'entities/flashlight.js',
+
                 'entities/obstacle.js',
-                'entities/water.js',
-                'entities/background.js',
+                'entities/landing-area.js',
                 'entities/particle.js',
                 'entities/fireball.js',
                 'entities/missile.js',
+
                 'entities/human.js',
                 'entities/rebel.js',
                 'entities/prisoner.js',
-                'entities/landing-area.js',
+
                 'entities/instruction.js',
                 'entities/condition.js',
+
                 'entities/transition.js',
                 'entities/title.js',
                 'entities/progress-indicator.js',
                 'entities/start-prompt.js',
+                'entities/exposition.js',
                 'entities/run-recap.js',
+
+                'entities/background.js',
                 'entities/sun.js',
                 'entities/stars.js',
                 'entities/mountains.js',
                 'entities/rain.js',
-                'entities/flashlight.js',
+                'entities/water.js',
 
                 'graphics/wrap.js',
                 'graphics/create-canvas.js',

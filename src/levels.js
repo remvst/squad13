@@ -134,8 +134,6 @@ firstMountain = (world) => {
     world.add(Obstacle.mountain(500, 2500, -200, 200, 1));
     world.add(Obstacle.ceiling(2700, 3500, -400, -300, 2));
 
-    prisoner(world, 1000);
-
     setTarget(world, 3000);
 
     world.add(new Water(400));

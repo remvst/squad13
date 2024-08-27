@@ -14,13 +14,13 @@ class Game {
 
     async gameLoop() {
         const levels = [
-            // tutorialFly,
-            // firstMountain,
-            // mountainThenCeiling,
-            mountainChopperCeilingChopper,
+            tutorialFly,
+            firstMountain,
+            mountainThenCeiling,
             tutorialShoot,
             caveThenCeiling,
             lowCeiling,
+            mountainChopperCeilingChopper,
             hardMountains,
             smallMountainSuccession,
             nightMountains,
@@ -80,8 +80,42 @@ class Game {
                     totalRescuedPrisoners += player.rescuedPrisoners;
                 }
 
-                this.world.add(new Title('MISSION\nSUCCESS', '#fff').fade(0, 1, 0.2, 0));
-                await new Promise(r => setTimeout(r, 2000));
+                if (levelIndex === 0) {
+                    const transitionOut = new Transition(1);
+                    this.world.add(transitionOut);
+                    await this.world.waitFor(() => transitionOut.age > 0.3);
+                    this.world.destroy();
+
+                    {
+                        this.world = new World();
+                        const exposition = new Exposition([
+                            'When all hope is lost, the World Police Organization sends SQUAD 13.',
+                            'They are tasked with the most dangerous missions.',
+                        ]);
+                        this.world.add(exposition);
+
+                        await exposition.complete();
+                        await exposition.agesBy(1);
+                    }
+
+                    {
+                        this.world = new World();
+                        const exposition = new Exposition([
+                            'SQUAD 13 is feared even by the most wicked evil terrorists.',
+                            'This is their story.',
+                        ]);
+                        this.world.add(exposition);
+
+                        await exposition.complete();
+                        await exposition.agesBy(1);
+                    }
+                } else {
+                    const title = new Title('MISSION\nSUCCESS', '#fff').fade(0, 1, 0.2, 0);
+                    this.world.add(title);
+                    await title.agesBy(1);
+                }
+
+                // Move on to the next level
                 levelIndex++;
                 missionStartTime = this.age;
 

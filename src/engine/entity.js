@@ -16,4 +16,9 @@ class Entity {
     destroy() {
 
     }
+
+    agesBy(duration) {
+        const age = this.age + duration;
+        return this.world.waitFor(() => this.age > age);
+    }
 }

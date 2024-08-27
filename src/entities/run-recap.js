@@ -12,7 +12,7 @@ class RunRecap extends Entity {
         ctx.shadowOffsetY = 2;
         ctx.fillStyle = '#fff';
 
-        let y = 50;
+        let y = 25;
         for (const [label, value] of this.labels()) {
             ctx.font = '18pt Courier';
 

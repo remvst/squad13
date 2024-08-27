@@ -15,7 +15,8 @@ class Rebel extends Human {
             if (dist(player, this) < 500) {
                 this.angle = angleBetween(this, player);
 
-                if (this.age - this.lastShot > 4) {
+                const interval = player.simplifiedPhysics ? 6 : 4;
+                if (this.age - this.lastShot > interval) {
                     const missile = new Missile(this);
                     missile.speed *= 0.5;
                     this.world.add(missile);

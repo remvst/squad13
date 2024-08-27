@@ -3,6 +3,7 @@ class Game {
         this.world = new World();
 
         this.age = 0;
+        this.easyMode = false;
 
         if (SCREENSHOT) {
             CANVAS_WIDTH = 4096;
@@ -35,22 +36,23 @@ class Game {
     async gameLoop() {
         const levels = [
             tutorialFly,
-            firstMountain,
-            mountainThenCeiling,
-            tutorialShoot,
-            caveThenCeiling,
-            lowCeiling,
-            mountainChopperCeilingChopper,
-            hardMountains,
-            smallMountainSuccession,
-            nightMountains,
-            upAndDown,
+            // firstMountain,
+            // mountainThenCeiling,
+            // tutorialShoot,
+            // caveThenCeiling,
+            // lowCeiling,
+            // mountainChopperCeilingChopper,
+            // hardMountains,
+            // smallMountainSuccession,
+            // nightMountains,
+            // upAndDown,
         ]
         let levelIndex = 0;
         let attemptIndex = 0;
         let startTime = this.age;
         let missionStartTime = this.age;
         let totalDeaths = 0;
+        let wasEverEasy = false;
 
         const totalPrisoners = levels.reduce((sum, level) => {
             const world = new World();
@@ -70,11 +72,16 @@ class Game {
 
                 this.world.add(new ProgressIndicator(() => {
                     const player = firstItem(this.world.bucket('player'));
+                    player.simplifiedPhysics = this.easyMode;
+
+                    wasEverEasy = wasEverEasy || this.easyMode;
+
                     return [
                         ['MISSION', `${levelIndex + 1}/${levels.length}`],
                         ['PRISONERS', (player ? player.rescuedPrisoners : 0) + '/' + missionPrisoners],
                         ['TIME', formatTime(this.age - missionStartTime)],
                         ['OVERALL', formatTime(this.age - startTime)],
+                        ['DIFFICULTY [K]', this.easyMode ? 'EASY' : 'NORMAL'],
                     ];
                 }));
                 this.world.add(new Transition(-1));
@@ -86,6 +93,9 @@ class Game {
                     this.world.add(new StartPrompt('PRESS [SPACE] TO DEPLOY'));
                     await this.world.waitFor(() => !firstItem(this.world.bucket('start-prompt')));
 
+                    console.log('reset!');
+                    wasEverEasy = false;
+
                     playSong();
 
                     title.fade(1, 0, 1, 0.3);
@@ -96,9 +106,7 @@ class Game {
                 await levelPromise;
 
                 const player = firstItem(this.world.bucket('player'));
-                if (player) {
-                    totalRescuedPrisoners += player.rescuedPrisoners;
-                }
+                if (player) totalRescuedPrisoners += player.rescuedPrisoners;
 
                 if (levelIndex === 0) {
                     const transitionOut = new Transition(1);
@@ -158,6 +166,7 @@ class Game {
         this.world.add(new RunRecap(() => {
             return [
                 ['TOTAL TIME', totalTime],
+                ['DIFFICULTY', wasEverEasy ? 'EASY' : 'NORMAL'],
                 ['RESCUED PRISONERS', `${totalRescuedPrisoners}/${totalPrisoners}`],
                 ['CRASHES', `${totalDeaths}`],
             ]

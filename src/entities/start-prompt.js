@@ -13,6 +13,7 @@ class StartPrompt extends Entity {
         ctx.textBaseline = 'middle';
         ctx.fillStyle = '#fff';
         ctx.fillText(this.text, 0, 0);
+        ctx.fillText('DIFFICULTY: ' + (G.easyMode ? 'EASY' : 'NORMAL') + ' - PRESS [K] TO CHANGE', 0, 50);
     }
 
     cycle(elapsed) {

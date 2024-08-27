@@ -33,6 +33,8 @@ class Chopper extends Entity {
 
         this.facing = facing;
 
+        this.simplifiedPhysics = true;
+
         this.hitBoxes = [
             new Hitbox(-10, 18, 5),
             new Hitbox(10, 18, 5),
@@ -274,19 +276,20 @@ class Chopper extends Entity {
             this.momentum.y += this.propellerPower * Math.sin(this.angle - PI / 2) * elapsed * 400;
         }
 
-        const opposition = Math.sign(Math.sin(this.angle)) !== Math.sign(this.momentum.x)
+        const opposition = Math.sign(Math.sin(this.angle)) !== Math.sign(this.momentum.x) || this.simplifiedPhysics
             ? 200
             : 50;
-
         this.momentum.x += between(
             -elapsed * opposition,
             -this.momentum.x,
             elapsed * opposition,
         );
+
+        const maxFallSpeed = this.simplifiedPhysics ? 100 : 400;
         this.momentum.y += between(
-            -elapsed * 200,
-            400 - this.momentum.y,
-            elapsed * 150,
+            -elapsed * (this.simplifiedPhysics ? 100 : 200),
+            maxFallSpeed - this.momentum.y,
+            elapsed * (this.simplifiedPhysics ? 200 : 150),
         );
 
         if (landed && !this.propellerPower) {
@@ -356,7 +359,7 @@ class Chopper extends Entity {
         this.momentum.y = sin(angle) * 300;
 
         this.damagedStart = this.age;
-        this.damagedEnd = this.age + duration;
+        this.damagedEnd = this.age + duration * (this.simplifiedPhysics ? 0.5 : 1);
     }
 
     explode() {

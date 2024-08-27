@@ -9,8 +9,6 @@ class EnemyChopper extends Chopper {
         this.lastWarningBeep = 0;
 
         this.lockedTargetKeepAngle = PI;
-
-        this.shotInterval = 3;
     }
 
     follow(path) {
@@ -46,6 +44,9 @@ class EnemyChopper extends Chopper {
         this.controls.up = false;
         this.controls.left = false;
         this.controls.right = false;
+
+        const player = firstItem(this.world.bucket('player'));
+        this.shotInterval = player.simplifiedPhysics ? 6 : 3;
 
         const target = this.path[0]
         if (!target) return;

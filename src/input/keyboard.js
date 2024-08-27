@@ -4,6 +4,13 @@ onkeydown = e => {
     //     GAME_PAUSED = !GAME_PAUSED;
     //     setSongVolume(GAME_PAUSED ? 0 : SONG_VOLUME);
     // }
+
+    // Toggle easy mode
+    if (e.keyCode === 75) {
+        G.easyMode = !G.easyMode;
+        sound(...[2,,409,,.02,.02,1,.5,-2,,-316,.05,,,137,,.43,.82,.02]); // Blip 189
+    }
+
     DOWN[e.keyCode] = true
 };
 onkeyup = e => DOWN[e.keyCode] = false;

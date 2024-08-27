@@ -33,7 +33,7 @@ class Chopper extends Entity {
 
         this.facing = facing;
 
-        this.simplifiedPhysics = true;
+        this.simplifiedPhysics = false;
 
         this.hitBoxes = [
             new Hitbox(-10, 18, 5),

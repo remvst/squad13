@@ -33,6 +33,115 @@ class Game {
         })();
     }
 
+    difficultyPrompt() {
+        const text = () => 'DIFFICULTY: ' + (this.easyMode ? 'EASY' : 'NORMAL') + ' - PRESS [K] TO CHANGE';
+
+        const prompt = new StartPrompt(
+            text(),
+            [75],
+            () => {
+                this.easyMode = !this.easyMode;
+                prompt.text = text();
+            },
+        );
+        return prompt;
+    }
+
+    async missionFailed() {
+        this.pauseWorld = new World();
+
+        const worldOut = new TransitionOut();
+        this.pauseWorld.add(worldOut);
+        await worldOut.agesBy(0.3);
+        this.paused = true;
+
+        const title = new Title('MISSION\nFAILED', '#f00');
+        this.pauseWorld.add(title);
+        title.fade(0, 1, 0.2);
+        await title.agesBy(1);
+
+        const transitionOut = new TransitionOut();
+        this.pauseWorld.add(transitionOut);
+        await transitionOut.agesBy(0.3);
+
+        this.paused = false;
+        this.pauseWorld = null;
+    }
+
+    async missionSuccess() {
+        this.pauseWorld = new World();
+
+        const worldOut = new TransitionOut();
+        this.pauseWorld.add(worldOut);
+        await worldOut.agesBy(0.3);
+        this.paused = true;
+
+        const title = new Title('MISSION\nSUCCESS', '#fff');
+        this.pauseWorld.add(title);
+        title.fade(0, 1, 0.2);
+        await title.agesBy(1);
+
+        const transitionOut = new TransitionOut();
+        this.pauseWorld.add(transitionOut);
+        await transitionOut.agesBy(0.3);
+
+        this.paused = false;
+        this.pauseWorld = null;
+    }
+
+    async titleScreen() {
+        this.paused = true;
+        this.pauseWorld = new World();
+
+        const title = new Title('SQUAD 13');
+
+        const promptSet = new PromptSet([
+            new StartPrompt('PRESS [SPACE] TO DEPLOY', [32], () => {
+                promptSet.world.remove(promptSet);
+            }),
+            this.difficultyPrompt(),
+        ]);
+
+        this.pauseWorld.add(
+            title,
+            promptSet,
+            new TransitionIn(),
+        );
+
+        await promptSet.removed();
+        this.paused = false;
+        await title.fade(1, 0, 1, 0.3);
+
+        this.pauseWorld = null;
+    }
+
+    pause() {
+        if (this.pauseWorld) {
+            return;
+        }
+
+        this.paused = true;
+        this.pauseWorld = new World();
+
+        const title = new Title('PAUSED', 'rgba(0,0,0,0)', 'rgba(0,0,0,0.95)');
+
+        const promptSet = new PromptSet([
+            new StartPrompt('PRESS [SPACE] TO RESUME', [32, 27, 80], () => {
+                promptSet.world.remove(promptSet);
+            }),
+            this.difficultyPrompt(),
+        ]);
+        this.pauseWorld.add(title, promptSet);
+
+        (async () => {
+            await promptSet.removed();
+            this.pauseWorld = null;
+            this.paused = false;
+
+            DOWN = {};
+        })();
+    }
+
     async gameLoop() {
         const levels = [
             tutorialFly,
@@ -67,10 +176,40 @@ class Game {
             if (this.world) this.world.destroy();
             this.world = new World();
 
+            // Invisible prompt to change difficulty
+            this.world.add(new StartPrompt('', [75], () => {
+                this.easyMode = !this.easyMode;
+                wasEverEasy = wasEverEasy || this.easyMode;
+            }));
+
+            // Invisible prompt to pause the game
+            this.world.add(new StartPrompt('', [27, 80], () => {
+                this.pause();
+            }));
+
             const level = levels[levelIndex];
             try {
                 const levelPromise = level(this.world);
+
+                // Force camera to update
+                this.world.cycle(0);
+
                 const missionPrisoners = Array.from(this.world.bucket('prisoner')).length;
+
+                if (attemptIndex++ === 0) {
+                    await this.titleScreen();
+                    startTime = this.age;
+                    wasEverEasy = false;
+                    startTime = this.age;
+
+                    playSong();
+                } else {
+                    this.world.add(new TransitionIn());
+                }
+
+                if (missionFailures === 0) {
+                    missionStartTime = this.age;
+                }
 
                 this.world.add(new ProgressIndicator(() => {
                     const player = firstItem(this.world.bucket('player'));
@@ -86,23 +225,6 @@ class Game {
                         ['DIFFICULTY [K]', this.easyMode ? 'EASY' : 'NORMAL'],
                     ];
                 }));
-                this.world.add(new Transition(-1));
-
-                if (attemptIndex++ === 0) {
-                    const title = new Title('SQUAD 13')
-                    this.world.add(title);
-
-                    this.world.add(new StartPrompt('PRESS [SPACE] TO DEPLOY'));
-                    await this.world.waitFor(() => !firstItem(this.world.bucket('start-prompt')));
-
-                    wasEverEasy = false;
-
-                    playSong();
-
-                    title.fade(1, 0, 1, 0.3);
-
-                    startTime = this.age;
-                }
 
                 await levelPromise;
 
@@ -112,50 +234,21 @@ class Game {
                 if (player) totalRescuedPrisoners += player.rescuedPrisoners;
 
                 if (levelIndex === 0) {
-                    const transitionOut = new Transition(1);
-                    this.world.add(transitionOut);
-                    await this.world.waitFor(() => transitionOut.age > 0.3);
-                    this.world.destroy();
-
-                    {
-                        this.world = new World();
-                        const exposition = new Exposition([
-                            'When all hope is lost, the World Police Organization sends SQUAD 13.',
-                            'They are tasked with the most dangerous missions.',
-                        ]);
-                        this.world.add(exposition);
-
-                        await exposition.complete();
-                        await exposition.agesBy(1);
-                    }
-
-                    {
-                        this.world = new World();
-                        const exposition = new Exposition([
-                            'SQUAD 13 is feared even by the most wicked evil terrorists.',
-                            'This is their story.',
-                        ]);
-                        this.world.add(exposition);
-
-                        await exposition.complete();
-                        await exposition.agesBy(1);
-                    }
+                    await this.exposition();
                 } else {
-                    const title = new Title('MISSION\nSUCCESS', '#fff').fade(0, 1, 0.2, 0);
-                    this.world.add(title);
-                    await title.agesBy(1);
+                    await this.missionSuccess();
                 }
 
                 // Move on to the next level
                 levelIndex++;
-                missionStartTime = this.age;
 
             } catch (err) {
                 totalDeaths++;
                 missionFailures++;
                 console.log(err);
-                this.world.add(new Title('MISSION\nFAILED', '#f00').fade(0, 1, 0.2, 0));
-                await new Promise(r => setTimeout(r, 1000));
+
+                await new Promise(resolve => setTimeout(resolve, 500));
+                await this.missionFailed();
 
                 if (missionFailures % 5 === 0 && !this.easyMode && !promptedEasyMode) {
                     promptedEasyMode = true;
@@ -165,33 +258,96 @@ class Game {
                 }
             }
 
-            const transitionOut = new Transition(1);
-            this.world.add(transitionOut);
-            await this.world.waitFor(() => transitionOut.age > 0.3);
+            // const transitionOut = new Transition(1);
+            // this.world.add(transitionOut);
+            // await this.world.waitFor(() => transitionOut.age > 0.3);
         }
 
         this.world.destroy();
 
-        const totalTime = formatTime(this.age - startTime);
-        this.world.add(new Title('THX FOR PLAYING', '#fff').fade(0, 1, 0.2, 0));
-        this.world.add(new RunRecap(() => {
-            return [
-                ['TOTAL TIME', totalTime],
-                ['DIFFICULTY', wasEverEasy ? 'EASY' : 'NORMAL'],
-                ['RESCUED PRISONERS', `${totalRescuedPrisoners}/${totalPrisoners}`],
-                ['CRASHES', `${totalDeaths}`],
-            ]
-        }));
+        await this.runRecap([
+            ['TOTAL TIME', formatTime(this.age - startTime)],
+            ['DIFFICULTY', wasEverEasy ? 'EASY' : 'NORMAL'],
+            ['RESCUED PRISONERS', `${totalRescuedPrisoners}/${totalPrisoners}`],
+            ['CRASHES', `${totalDeaths}`],
+        ]);
+    }
 
-        this.world.add(new StartPrompt('PRESS [SPACE] TO REDEPLOY'));
-        await this.world.waitFor(() => !firstItem(this.world.bucket('start-prompt')));
+    async exposition() {
+        this.pauseWorld = new World();
+
+        const worldOut = new TransitionOut();
+        this.pauseWorld.add(worldOut);
+        await worldOut.agesBy(0.3);
+        this.paused = true;
+        this.world.destroy();
+
+        {
+            this.pauseWorld = new World();
+            const exposition = new Exposition([
+                'When all hope is lost, the World Police Organization sends SQUAD 13.',
+                'They are tasked with the most dangerous missions.',
+            ]);
+            this.pauseWorld.add(exposition);
+
+            await exposition.complete();
+            await exposition.agesBy(1);
+        }
+
+        {
+            this.pauseWorld = new World();
+            const exposition = new Exposition([
+                'SQUAD 13 is feared even by the most wicked evil terrorists.',
+                'This is their story.',
+            ]);
+            this.pauseWorld.add(exposition);
+
+            await exposition.complete();
+            await exposition.agesBy(1);
+        }
+
+        this.paused = false;
+        this.pauseWorld = null;
+    }
+
+    async runRecap(recap) {
+        this.pauseWorld = new World();
+        this.paused = true;
+
+        const transitionIn = new Transition(1);
+        this.pauseWorld.add(transitionIn);
+        await transitionIn.agesBy(0.3);
+
+        const title = new Title('THX FOR PLAYING', '#fff');
+
+        const promptSet = new PromptSet([
+            ...recap.map(([label, value]) => new RunRecap(label, value)),
+            new StartPrompt('PRESS [SPACE] TO REDEPLOY', [32], () => {
+                promptSet.world.remove(promptSet);
+            }),
+        ])
+
+        this.pauseWorld.add(title, promptSet);
+
+        await promptSet.removed();
+
+        this.paused = false;
+        this.pauseWorld = null;
     }
 
     cycle(elapsed) {
         this.age += elapsed;
 
-        this.world.cycle(Math.min(elapsed, 1 / 30));
+        if (!this.pauseWorld || !this.paused) {
+            this.world.cycle(Math.min(elapsed, 1 / 30));
+        }
+
         this.world.render();
+
+        if (this.pauseWorld) {
+            this.pauseWorld.cycle(elapsed);
+            this.pauseWorld.render();
+        }
 
         if (DEBUG) {
             ctx.fillStyle = '#fff';

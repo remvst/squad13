@@ -1,28 +1,20 @@
 class RunRecap extends Entity {
 
-    constructor(labels) {
+    constructor(label, value) {
         super();
-        this.labels = labels;
+        this.label = label;
+        this.value = value;
     }
 
     render(camera) {
-        ctx.translate(~~camera.x, ~~camera.y);
-        ctx.textBaseline = 'top';
-        ctx.shadowColor = '#000';
-        ctx.shadowOffsetY = 2;
+        ctx.textBaseline = 'middle';
         ctx.fillStyle = '#fff';
+        ctx.font = '18pt Courier';
 
-        let y = 25;
-        for (const [label, value] of this.labels()) {
-            ctx.font = '18pt Courier';
+        ctx.textAlign = 'right';
+        ctx.fillText(this.label, -20, 0);
 
-            ctx.textAlign = 'right';
-            ctx.fillText(label, -20, y);
-
-            ctx.textAlign = 'left';
-            ctx.fillText(value, 20, y);
-
-            y += 30;
-        }
+        ctx.textAlign = 'left';
+        ctx.fillText(this.value, 20, 0);
     }
 }

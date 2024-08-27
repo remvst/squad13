@@ -1,14 +1,14 @@
 class Title extends Entity {
 
-    constructor(title, background = 'rgba(0,0,0,0)') {
+    constructor(title, textBackground = 'rgba(0,0,0,0)', mainBackground = '#000') {
         super();
 
         this.buckets.push('title');
 
-        this.background = background;
+        this.textBackground = textBackground;
 
         this.canvas = createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT, (ctx) => {
-            ctx.fillStyle = '#000';
+            ctx.fillStyle = mainBackground;
             ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
             ctx.globalCompositeOperation = 'destination-out';
@@ -23,17 +23,20 @@ class Title extends Entity {
             }
         });
 
-        this.fade(1, 1, 9999, 0);
+        this.fromAge = 0;
+        this.toAge = 1;
+        this.fromAlpha = 1;
+        this.toAlpha = 1;
     }
 
-    fade(fromAlpha, toAlpha, duration, delay) {
-        this.fromAge = this.age + delay;
+    fade(fromAlpha, toAlpha, duration) {
+        this.fromAge = this.age;
         this.toAge = this.fromAge + duration;
 
         this.fromAlpha = fromAlpha;
         this.toAlpha = toAlpha;
 
-        return this;
+        return this.agesBy(duration);
     }
 
     get alpha() {
@@ -46,7 +49,7 @@ class Title extends Entity {
 
         ctx.translate(~~camera.x - CANVAS_WIDTH / 2, ~~camera.y - CANVAS_HEIGHT / 2);
 
-        ctx.fillStyle = this.background;
+        ctx.fillStyle = this.textBackground;
         ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
         ctx.drawImage(this.canvas, 0, 0);

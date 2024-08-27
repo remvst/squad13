@@ -21,4 +21,8 @@ class Entity {
         const age = this.age + duration;
         return this.world.waitFor(() => this.age > age);
     }
+
+    removed() {
+        return this.world.waitFor(() => !this.world.contains(this));
+    }
 }

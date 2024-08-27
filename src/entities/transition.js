@@ -1,8 +1,11 @@
+const SHIFT = 160;
+
 class Transition extends Entity {
 
-    constructor(direction) {
+    constructor(fromX, toX) {
         super();
-        this.direction = direction;
+        this.fromX = fromX;
+        this.toX = toX;
     }
 
     cycle(elapsed) {
@@ -14,26 +17,30 @@ class Transition extends Entity {
     render(camera) {
         ctx.translate(~~camera.x - CANVAS_WIDTH / 2, ~~camera.y - CANVAS_HEIGHT / 2);
 
-        const shift = CANVAS_WIDTH * 0.1;
-        let fromX = -CANVAS_WIDTH - shift;
-        let toX = 0;
-        if (this.direction < 0) {
-            fromX = 0;
-            toX = CANVAS_WIDTH + shift;
-        }
-
         ctx.translate(interpolate(
-            fromX,
-            toX,
+            this.fromX,
+            this.toX,
             this.age / 0.3
         ), 0);
 
         ctx.fillStyle = '#000';
         ctx.beginPath();
         ctx.moveTo(0, 0);
-        ctx.lineTo(CANVAS_WIDTH + shift, 0);
+        ctx.lineTo(CANVAS_WIDTH + SHIFT, 0);
         ctx.lineTo(CANVAS_WIDTH, CANVAS_HEIGHT);
-        ctx.lineTo(-shift, CANVAS_HEIGHT);
+        ctx.lineTo(-SHIFT, CANVAS_HEIGHT);
         ctx.fill();
+    }
+}
+
+class TransitionIn extends Transition {
+    constructor() {
+        super(0, CANVAS_WIDTH + SHIFT);
+    }
+}
+
+class TransitionOut extends Transition {
+    constructor() {
+        super(-CANVAS_WIDTH - SHIFT, 0);
     }
 }

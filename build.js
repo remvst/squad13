@@ -92,6 +92,7 @@ compiler.run((tasks) => {
                 'entities/title.js',
                 'entities/progress-indicator.js',
                 'entities/start-prompt.js',
+                'entities/prompt-set.js',
                 'entities/exposition.js',
                 'entities/run-recap.js',
 

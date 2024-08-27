@@ -60,7 +60,7 @@ class Game {
                 this.world.add(new Transition(-1));
 
                 if (attemptIndex++ === 0) {
-                    const title = new Title('THE 13TH SQUAD')
+                    const title = new Title('SQUAD 13')
                     this.world.add(title);
 
                     this.world.add(new StartPrompt('PRESS [SPACE] TO DEPLOY'));

@@ -7,9 +7,9 @@
 > SQUAD 13 is feared even by the most wicked evil terrorists.
 > This is their story.
 
-# The 13th Squad
+# SQUAD 13
 
-**The 13th Squad** is my entry for 2024's [JS13K](https://js13kgames.com/).
+**SQUAD 13** is my entry for 2024's [JS13K](https://js13kgames.com/).
 The theme for the competition was **triskaidekaphobia** (fear of the number 13).
 
 The game is inspired by the helicopter game, [Rashlander](https://store.steampowered.com/app/1054270/RASHLANDER/), and Metal Gear Solid V.

@@ -34,16 +34,16 @@ class Game {
 
     async gameLoop() {
         const levels = [
-            // tutorialFly,
-            // firstMountain,
-            // mountainThenCeiling,
-            // tutorialShoot,
-            // caveThenCeiling,
-            // lowCeiling,
-            // mountainChopperCeilingChopper,
-            // hardMountains,
-            // smallMountainSuccession,
-            // nightMountains,
+            tutorialFly,
+            firstMountain,
+            mountainThenCeiling,
+            tutorialShoot,
+            caveThenCeiling,
+            lowCeiling,
+            mountainChopperCeilingChopper,
+            hardMountains,
+            smallMountainSuccession,
+            nightMountains,
             upAndDown,
         ]
         let levelIndex = 0;

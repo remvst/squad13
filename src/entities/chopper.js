@@ -350,6 +350,7 @@ class Chopper extends Entity {
     destroy() {
         if (this.sound) {
             this.sound.stop();
+            this.sound = null;
         }
     }
 

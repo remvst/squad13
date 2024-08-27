@@ -124,6 +124,8 @@ class Game {
             return;
         }
 
+        this.world.destroy();
+
         this.paused = true;
         this.pauseWorld = new World();
 

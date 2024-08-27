@@ -72,8 +72,8 @@ class Chopper extends Entity {
         this.landedTime = 0;
         this.lastLanded = 0;
 
-        this.damagedTimeLeft = 0;
-        this.lastDamageBeep = 0;
+        this.damagedStart = 0;
+        this.damagedEnd = 0;
 
         this.lockedTarget = null;
         this.lockedTargetFactor = 0;
@@ -231,11 +231,10 @@ class Chopper extends Entity {
             const angleOriginal = atan2(averagePoint.y, averagePoint.x);
             const angleNew = atan2(newAverage.y, newAverage.x);
 
-            this.momentum.angle += angleOriginal - angleNew;
+            this.angle += angleOriginal - angleNew;
         }
 
-        this.damagedTimeLeft -= elapsed;
-        if (this.damagedTimeLeft <= 0) {
+        if (this.age >= this.damagedEnd) {
             let x = 0, y = 0;
             if (this.controls.left) x -= 1;
             if (this.controls.right) x += 1;
@@ -362,7 +361,8 @@ class Chopper extends Entity {
         this.momentum.x = cos(angle) * 300;
         this.momentum.y = sin(angle) * 300;
 
-        this.damagedTimeLeft = duration;
+        this.damagedStart = this.age;
+        this.damagedEnd = this.age + duration;
     }
 
     explode() {
@@ -376,6 +376,12 @@ class Chopper extends Entity {
             ctx.translate(this.x, this.y);
             ctx.rotate(this.angle);
             ctx.scale(this.facing, 1);
+
+            // Spin around when damaged
+            if (this.age < this.damagedEnd) {
+                const ratio = (this.age - this.damagedStart) / (this.damagedEnd - this.damagedStart);
+                ctx.scale(cos(ratio * PI * 2), 1);
+            }
 
             ctx.fillStyle = '#000';
             ctx.fillRect(-20, -15, 40, 30);

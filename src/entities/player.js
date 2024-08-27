@@ -54,7 +54,7 @@ class Player extends Chopper {
         }
 
         // Warning beep
-        if (this.damagedTimeLeft > 0 && this.age - this.lastDamageBeep > 0.25) {
+        if (this.age < this.damagedEnd && this.age - this.lastDamageBeep > 0.25) {
             this.lastDamageBeep = this.age;
             // sound(...[1,,154,,.07,.04,3,2.1,,,,,,.4,,,,.45,.04,.07,680]); // Hit 406
             sound(...[.4,,434,,.03,.01,3,2,,5,,,,,168,,,.76,.03,,520]); // Blip 639

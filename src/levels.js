@@ -59,9 +59,9 @@ rebel = (world, x) => {
 
         const idealY = obstacle.yAt(rebel.x);
         if (idealY === null) {
-            throw new Error('idealY is null');
+            // throw new Error('idealY is null');
         }
-        rebel.y = obstacle.yAt(rebel.x) - rebel.radius;
+        rebel.y = idealY - rebel.radius;
     }
 }
 
@@ -182,6 +182,7 @@ tutorialShoot = (world) => {
     world.add(Obstacle.mountain(500, 2500, -150, 100, 1.5));
     world.add(Obstacle.mountain(2700, 3000, 0, 200, 2));
     world.add(Obstacle.ceiling(2000, 3000, -500, -350, 2));
+    world.add(Obstacle.mountain(3700, 3950, 400, 300, 0.5));
 
     setTarget(world, 3500);
 
@@ -192,6 +193,7 @@ tutorialShoot = (world) => {
     }
 
     prisoner(world, 2000);
+    prisoner(world, 3800);
 
     const instruction = new Instruction('PRESS [SPACE] TO SHOOT');
     instruction.x = 500;
@@ -219,14 +221,20 @@ caveThenCeiling = (world) => {
     world.add(Obstacle.ceiling(400, 1500, -500, -200, 0.5));
     world.add(Obstacle.ceiling(2500, 3500, -600, 0, 1));
     world.add(Obstacle.mountain(2300, 2700, 200, 300, 0.5));
+    world.add(Obstacle.ceiling(3700, 4200, -300, -450, 2));
 
     setTarget(world, 4000);
 
     world.add(new Water(400));
 
-    for (const x of [1200, 1750, 1850, 2650]) {
+    for (const x of [650, 1200, 1750, 1850, 2650]) {
         rebel(world, x);
     }
+
+    prisoner(world, 950);
+    prisoner(world, 1350);
+    prisoner(world, 2350);
+
     return promise(world)
 };
 
@@ -255,6 +263,15 @@ lowCeiling = (world) => {
     for (const x of [1450, 2050, 2650, 4050]) {
         rebel(world, x);
     }
+
+    prisoner(world, 1050);
+    prisoner(world, 2450);
+    prisoner(world, 4150);
+    enemyChopper(world, [
+        { x: 1800, y: -300 },
+        { x: 2200, y: -200 },
+    ])
+
     return promise(world)
 }
 
@@ -266,8 +283,13 @@ hardMountains = (world) => {
 
     world.add(...sunset());
     spawn(world, 0);
+    world.add(Obstacle.ceiling(-200, 600, -300, -400, 2.2));
     world.add(Obstacle.mountain(500, 4500, -200, 200, 2));
+    world.add(Obstacle.ceiling(800, 1100, -300, -400, 4));
     world.add(Obstacle.ceiling(2500, 3500, -600, -200, 0.5));
+    world.add(Obstacle.mountain(4700, 5200, 200, 400, 1));
+    world.add(Obstacle.ceiling(4000, 4300, -600, -200, 0.5));
+    world.add(Obstacle.ceiling(5500, 6000, -400, 0, 0.5));
 
     setTarget(world, 5500);
 
@@ -276,6 +298,11 @@ hardMountains = (world) => {
     for (const x of [1000, 1900, 2050, 2500, 3000, 3500, 4400, 4200]) {
         rebel(world, x);
     }
+
+    prisoner(world, 1150);
+    prisoner(world, 1150);
+    prisoner(world, 4750);
+
     return promise(world)
 }
 
@@ -292,15 +319,26 @@ smallMountainSuccession = world => {
     world.add(Obstacle.mountain(1500, 2000, -200, 0, 1.5));
     world.add(Obstacle.ceiling(1800, 2600, -400, -500, 2.5));
     world.add(Obstacle.mountain(2500, 3500, -200, 200, 3));
+    world.add(Obstacle.mountain(2050, 2350, 250, 350, 1.2));
     world.add(Obstacle.ceiling(3000, 4000, -400, -550, 4));
+    world.add(Obstacle.ceiling(3800, 4500, -300, -450, 4));
 
     setTarget(world, 4000);
 
     world.add(new Water(400));
 
-    for (const x of [850, 1600, 1850, 2600, 2900, 3350, 3450]) {
+    for (const x of [850, 1600, 1850, 2580, 2880, 3350, 3450]) {
         rebel(world, x)
     }
+
+    enemyChopper(world, [
+        { x: 950, y: -150 },
+        { x: 1250, y: -50 },
+    ]);
+
+    prisoner(world, 650);
+    prisoner(world, 2150);
+
     return promise(world)
 }
 
@@ -314,12 +352,25 @@ nightMountains = (world) => {
     spawn(world, 0, 0);
     world.add(Obstacle.mountain(500, 2500, -300, 0, 1));
     world.add(Obstacle.ceiling(2700, 3800, -400, 0, 2));
+    world.add(Obstacle.mountain(2900, 3450, 400, 300, 1));
     world.add(Obstacle.mountain(3800, 4500, -200, 200, 1));
     world.add(Obstacle.ceiling(4500, 5500, -600, -200, 2));
 
     setTarget(world, 5000);
 
     world.add(new Water(400));
+
+    enemyChopper(world, [
+        { x: 2000, y: -500 },
+        { x: 1200, y: -600 },
+    ]);
+
+    rebel(world, 4050);
+    rebel(world, 4150);
+    rebel(world, 4250);
+
+    prisoner(world, 1750);
+    prisoner(world, 3250);
 
     return promise(world)
 };
@@ -349,6 +400,10 @@ upAndDown = (world) => {
     for (const x of [850, 1600, 1850, 2600, 2900, 3350, 3450, 3900]) {
         rebel(world, x)
     }
+
+    prisoner(world, 1950);
+    prisoner(world, 3550);
+
     return promise(world)
 }
 

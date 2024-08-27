@@ -131,6 +131,7 @@ class Chopper extends Entity {
         for (const target of targets(this.world, this)) {
             if (dist(target, this) > 600) continue;
             if (target instanceof Prisoner) continue; // Don't lock on prisoners
+            if (target instanceof Rebel && !this.buckets.includes('player')) continue; // Dear reader, please don't judge me
             const angleToTarget = normalize(angleBetween(this, target));
 
             const angleDiff = abs(normalize(angleToTarget - normalize(angle)));

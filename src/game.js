@@ -34,16 +34,16 @@ class Game {
 
     async gameLoop() {
         const levels = [
-            tutorialFly,
-            firstMountain,
-            mountainThenCeiling,
-            tutorialShoot,
-            caveThenCeiling,
-            lowCeiling,
-            mountainChopperCeilingChopper,
-            hardMountains,
-            smallMountainSuccession,
-            nightMountains,
+            // tutorialFly,
+            // firstMountain,
+            // mountainThenCeiling,
+            // tutorialShoot,
+            // caveThenCeiling,
+            // lowCeiling,
+            // mountainChopperCeilingChopper,
+            // hardMountains,
+            // smallMountainSuccession,
+            // nightMountains,
             upAndDown,
         ]
         let levelIndex = 0;
@@ -181,10 +181,13 @@ class Game {
             ctx.font = '14pt Courier';
             ctx.lineWidth = 3;
 
+            const player = firstItem(this.world.bucket('player'));
+
             let y = CANVAS_HEIGHT - 10;
             for (const line of [
                 'FPS: ' + ~~(1 / elapsed),
                 'Entities: ' + this.world.entities.size,
+                'Player: ' + (player ? `${~~player.x},${~~player.y}` : ''),
             ].reverse()) {
                 ctx.strokeText(line, 10, y);
                 ctx.fillText(line, 10, y);

@@ -21,7 +21,7 @@ class Exposition extends Entity {
     cycle(elapsed) {
         const { visibleChars } = this;
 
-        if (DOWN[32]) elapsed *= 2;
+        if (DOWN[32]) elapsed *= 4;
 
         super.cycle(elapsed);
 

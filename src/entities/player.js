@@ -7,6 +7,8 @@ class Player extends Chopper {
         this.ladderLength = 0;
         this.hangingPrisoner = null;
         this.rescuedPrisoners = 0;
+
+        this.lastDamageBeep = 0;
     }
 
     cycle(elapsed) {

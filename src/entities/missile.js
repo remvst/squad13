@@ -31,7 +31,8 @@ class Missile extends Entity {
         for (const obstacle of this.world.bucket('obstacle')) {
             if (!isBetween(obstacle.minX, this.x, obstacle.maxX)) continue;
 
-            if (obstacle.pushAway(this)) {
+            const idealY = obstacle.yAt(this.x);
+            if (sign(idealY - this.y) !== obstacle.directionY) {
                 this.explode();
             }
         }
@@ -40,7 +41,6 @@ class Missile extends Entity {
             if (dist(target, this) > target.radius) continue;
             this.explode();
         }
-
 
         if (this.target) {
             const angleToTarget = normalize(angleBetween(this, this.target));

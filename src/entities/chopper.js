@@ -69,6 +69,7 @@ class Chopper extends Entity {
 
         this.landed = false;
         this.landedTime = 0;
+        this.lastLanded = 0;
 
         this.damagedTimeLeft = 0;
         this.lastDamageBeep = 0;
@@ -306,14 +307,16 @@ class Chopper extends Entity {
         this.angle = between(-PI / 4, this.angle, PI / 4);
 
         const wasLanded = this.landed;
+        const { lastLanded } = this;
         this.landed = landed;
         if (this.landed) {
+            this.lastLanded = this.age;
             this.landedTime += elapsed;
         } else {
             this.landedTime = 0;
         }
 
-        if (this.landed && !wasLanded && this.age > 0.5) {
+        if (this.landed && !wasLanded && this.age - lastLanded > 0.5) {
             const [a, b] = this.globalHitBoxes.filter(hitBox => hitBox.isLanding);
 
             for (let i = 0 ; i < 10 ; i++) {

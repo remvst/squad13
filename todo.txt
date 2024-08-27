@@ -1,5 +1,3 @@
 - Mobile controls
 - More levels
 - Daytime
-- Blood when humans die
-- Enemy choppers shoot

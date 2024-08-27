@@ -29,6 +29,7 @@ class Chopper extends Entity {
         this.radius = 35;
 
         this.lastShot = 0;
+        this.shotInterval = 1;
 
         this.facing = facing;
 
@@ -76,6 +77,8 @@ class Chopper extends Entity {
 
         this.lockedTarget = null;
         this.lockedTargetFactor = 0;
+        this.lockedTargetAcquireAngle = PI / 8;
+        this.lockedTargetKeepAngle = PI / 4;
 
         this.lastCollisionSound = 0;
     }
@@ -111,20 +114,29 @@ class Chopper extends Entity {
     }
 
     get readyToShoot() {
-        return this.age - this.lastShot > 1;
+        return this.age - this.lastShot > this.shotInterval;
     }
 
     shootingTarget() {
         if (!this.readyToShoot) return null;
 
+        let { angle } = this;
+        if (this.facing < 0) {
+            angle = atan2(sin(angle), -cos(angle));
+        }
+
         let bestTarget;
-        let bestTargetAngleDiff = PI / 4;
+        let bestTargetAngleDiff = this.lockedTargetAcquireAngle;
         for (const target of targets(this.world, this)) {
             if (dist(target, this) > 600) continue;
             if (target instanceof Prisoner) continue; // Don't lock on prisoners
             const angleToTarget = normalize(angleBetween(this, target));
 
-            const angleDiff = Math.abs(normalize(angleToTarget - normalize(this.angle)));
+            const angleDiff = abs(normalize(angleToTarget - normalize(angle)));
+            if (target === this.lockedTarget && angleDiff < this.lockedTargetKeepAngle) {
+                return target;
+            }
+
             if (angleDiff < bestTargetAngleDiff) {
                 bestTarget = target;
                 bestTargetAngleDiff = angleDiff;
@@ -154,23 +166,13 @@ class Chopper extends Entity {
         if (bestTarget !== this.lockedTarget) {
             this.lockedTarget = bestTarget;
             this.lockedTargetFactor = 0;
-
-            if (bestTarget) {
-                // sound(...[,,100,.02,.28,.31,,.5,,,50,.06,.06,,,,,.56,.23]); // Loaded Sound 597
-                sound(...[,,354,.02,.28,.32,,.9,5,160,491,.07,.09,,,,,.66,.17,.39]); // Powerup 616
-            }
         }
 
         if (this.lockedTarget) {
-            const previous = this.lockedTargetFactor;
             this.lockedTargetFactor = min(
                 1,
                 this.lockedTargetFactor + elapsed,
             );
-
-            if (previous < 1 && this.lockedTargetFactor >= 1) {
-                sound(...[2,,12,.01,.04,.006,,2.8,,,-436,.01,.02,,,,.14,.61,.02]); // Blip 591
-            }
         }
 
         // Shooting
@@ -180,7 +182,9 @@ class Chopper extends Entity {
 
             if (this.lockedTarget && this.lockedTargetFactor >= 1) {
                 missile.angle = angleBetween(this, this.lockedTarget);
-                missile.target = this.lockedTarget;
+                if (this.buckets.includes('player')) { // Boy this is ugly, please forgive me for my sin
+                    missile.target = this.lockedTarget;
+                }
             }
 
             this.lastShot = this.age;

@@ -10,6 +10,8 @@ class Player extends Chopper {
     }
 
     cycle(elapsed) {
+        const { lockedTargetFactor } = this;
+
         super.cycle(elapsed);
 
         const title = firstItem(this.world.bucket('title'));
@@ -51,9 +53,21 @@ class Player extends Chopper {
             this.sound.setRate(interpolate(0.5, 1, this.propellerPower));
         }
 
+        // Warning beep
         if (this.damagedTimeLeft > 0 && this.age - this.lastDamageBeep > 0.25) {
             this.lastDamageBeep = this.age;
-            sound(...[1,,154,,.07,.04,3,2.1,,,,,,.4,,,,.45,.04,.07,680]); // Hit 406
+            // sound(...[1,,154,,.07,.04,3,2.1,,,,,,.4,,,,.45,.04,.07,680]); // Hit 406
+            sound(...[.4,,434,,.03,.01,3,2,,5,,,,,168,,,.76,.03,,520]); // Blip 639
+        }
+
+        // Target locking
+        if (lockedTargetFactor === 0 && this.lockedTargetFactor > 0) {
+            sound(...[,,354,.02,.28,.32,,.9,5,160,491,.07,.09,,,,,.66,.17,.39]); // Powerup 616
+        }
+
+        // Target locked
+        if (lockedTargetFactor < 1 && this.lockedTargetFactor >= 1) {
+            sound(...[2,,12,.01,.04,.006,,2.8,,,-436,.01,.02,,,,.14,.61,.02]); // Blip 591
         }
     }
 

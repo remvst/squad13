@@ -114,6 +114,7 @@ class Chopper extends Entity {
     }
 
     get readyToShoot() {
+        if (this.age < this.damagedEnd) return false;
         return this.age - this.lastShot > this.shotInterval;
     }
 
@@ -224,14 +225,6 @@ class Chopper extends Entity {
         if (dX || dY) {
             this.x += dX;
             this.y += dY;
-
-            // this.momentum.x += dX / readjustedHitbboxes;
-            // this.momentum.y += dY / readjustedHitbboxes;
-
-            const angleOriginal = atan2(averagePoint.y, averagePoint.x);
-            const angleNew = atan2(newAverage.y, newAverage.x);
-
-            this.angle += angleOriginal - angleNew;
         }
 
         if (this.age >= this.damagedEnd) {

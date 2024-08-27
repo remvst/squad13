@@ -4,8 +4,28 @@ class Game {
 
         this.age = 0;
 
+        if (SCREENSHOT) {
+            CANVAS_WIDTH = 4096;
+            CANVAS_HEIGHT = 4096;
+            can.width = CANVAS_WIDTH;
+            can.height = CANVAS_HEIGHT;
+
+            const world = new World();
+
+            const camera = firstItem(world.bucket('camera'));
+            camera.zoom = 20;
+
+            const chopper = new Chopper();
+            chopper.angle = PI / 6;
+            chopper.age = -0.01;
+            world.add(chopper);
+
+            world.render();
+
+            throw new Error('plz taek screenshot');
+        }
+
         (async () => {
-            let loopId = 0;
             while (true) {
                 await this.gameLoop();
             }

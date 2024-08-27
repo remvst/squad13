@@ -1,11 +1,11 @@
 onload = () => {
-    G = new Game();
-
     can = document.querySelector('canvas');
     can.width = CANVAS_WIDTH;
     can.height = CANVAS_HEIGHT;
 
     ctx = can.getContext('2d');
+
+    G = new Game();
 
     onresize();
 

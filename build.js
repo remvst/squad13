@@ -36,6 +36,8 @@ const CONSTANTS = {
     "null": 0,
 
     "SONG_VOLUME": 0.3,
+
+    "SCREENSHOT": 0,
 };
 
 function copy(obj) {

@@ -239,7 +239,9 @@ class Game {
                     ];
                 }));
 
-                this.world.add(new MobileControls());
+                if (inputMode === INPUT_MODE_TOUCH) {
+                    this.world.add(new MobileControls());
+                }
 
                 await levelPromise;
 

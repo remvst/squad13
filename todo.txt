@@ -2,3 +2,5 @@
 - More levels
 - Daytime
 - Easy mode (enemies shoot less, easier physics)
+- nomangle strings
+- redo preview screenshot (include enemies)

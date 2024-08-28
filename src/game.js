@@ -229,6 +229,8 @@ class Game {
                     ];
                 }));
 
+                this.world.add(new MobileControls());
+
                 await levelPromise;
 
                 missionFailures = 0;

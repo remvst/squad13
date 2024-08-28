@@ -38,6 +38,8 @@ const CONSTANTS = {
     "SONG_VOLUME": 0.3,
 
     "SCREENSHOT": 0,
+
+    "MOBILE_CONTROLS_HEIGHT": 200,
 };
 
 function copy(obj) {
@@ -102,6 +104,8 @@ compiler.run((tasks) => {
                 'entities/mountains.js',
                 'entities/rain.js',
                 'entities/water.js',
+
+                'entities/mobile-controls.js',
 
                 'graphics/wrap.js',
                 'graphics/create-canvas.js',
@@ -331,7 +335,7 @@ compiler.run((tasks) => {
 
     function main() {
         return tasks.sequence([
-            buildMain(),
+            // buildMain(),
             buildDebug({
                 'mangle': false,
                 'suffix': ''

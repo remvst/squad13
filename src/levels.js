@@ -105,19 +105,19 @@ tutorialFly = (world) => {
 
     world.add(new Water(400));
 
-    const upInstruction = new Instruction('HOLD [UP] TO FLY');
+    const upInstruction = new Instruction('');
     upInstruction.y = -200;
     world.add(upInstruction);
 
-    const tiltInstruction = new Instruction('HOLD [LEFT/RIGHT] TO TILT');
+    const tiltInstruction = new Instruction('');
     tiltInstruction.x = 500;
     tiltInstruction.y = -200;
     world.add(tiltInstruction);
 
     world.waitFor(() => {
         const tilt = distP(player.x, player.y, 0, 100) > 200;
-        upInstruction.instruction = tilt ? '' : 'HOLD [UP] TO FLY';
-        tiltInstruction.instruction = tilt ? 'HOLD [LEFT/RIGHT] TO TILT' : '';
+        upInstruction.instruction = tilt ? '' : nomangle('HOLD [UP] TO FLY');
+        tiltInstruction.instruction = tilt ? nomangle('HOLD [LEFT/RIGHT] TO TILT') : '';
     });
 
     return promise(world);
@@ -159,7 +159,7 @@ mountainThenCeiling = (world) => {
 
     world.add(new Water(400));
 
-    const rescueInstruction = new Instruction('PRISONERS CAN BE RESCUED');
+    const rescueInstruction = new Instruction(nomangle('PRISONERS CAN BE RESCUED'));
     rescueInstruction.x = 500;
     rescueInstruction.y = -200;
     world.add(rescueInstruction);

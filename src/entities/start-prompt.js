@@ -22,9 +22,13 @@ class StartPrompt extends Entity {
 
         let released = true;
         for (const keyCode of this.keyCodes) {
-            released = released && !DOWN[keyCode];
+            let isDown = DOWN[keyCode];
 
-            if (DOWN[keyCode] && this.released) {
+            if (keyCode === 32) isDown = isDown || TOUCHES.length > 0;
+
+            released = released && !isDown;
+
+            if (isDown && this.released) {
                 sound(...[2,,409,,.02,.02,1,.5,-2,,-316,.05,,,137,,.43,.82,.02]); // Blip 189
                 this.released = false;
                 this.onKeyDown();

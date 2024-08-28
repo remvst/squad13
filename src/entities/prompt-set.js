@@ -1,7 +1,7 @@
 class PromptSet extends Entity {
     constructor(prompts) {
         super();
-        this.prompts = prompts;
+        this.prompts = prompts.filter(x => x);
     }
 
     cycle(elapsed) {
@@ -13,6 +13,10 @@ class PromptSet extends Entity {
 
     render(camera) {
         ctx.translate(camera.x, camera.y + CANVAS_HEIGHT / 5);
+
+        if (inputMode === INPUT_MODE_TOUCH) {
+            ctx.scale(2, 2);
+        }
 
         for (const prompt of this.prompts) {
             prompt.render(camera);

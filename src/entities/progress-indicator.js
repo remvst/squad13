@@ -6,20 +6,24 @@ class ProgressIndicator extends Entity {
     }
 
     render(camera) {
-        ctx.translate(~~camera.x - CANVAS_WIDTH / 2, ~~camera.y - CANVAS_HEIGHT / 2);
+        ctx.translate(~~camera.x + CANVAS_WIDTH / 2 - 50, ~~camera.y - CANVAS_HEIGHT / 2 + 50);
         ctx.textAlign = 'right';
         ctx.textBaseline = 'top';
         ctx.shadowColor = '#000';
         ctx.shadowOffsetY = 2;
         ctx.fillStyle = '#fff';
 
-        let y = 50;
+        if (inputMode === INPUT_MODE_TOUCH) {
+            ctx.scale(1.5, 1.5);
+        }
+
+        let y = 0;
         for (const [label, value] of this.labels()) {
             ctx.font = '14pt Courier';
-            ctx.fillText(label, CANVAS_WIDTH - 50, y);
+            ctx.fillText(label, 0, y);
             y += 20;
 
-            ctx.fillText(value, CANVAS_WIDTH - 50, y);
+            ctx.fillText(value, 0, y);
             y += 30;
         }
     }

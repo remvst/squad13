@@ -100,10 +100,18 @@ class Game {
         const title = new Title('SQUAD 13');
 
         const promptSet = new PromptSet([
-            new StartPrompt('PRESS [SPACE] TO DEPLOY', [32], () => {
-                promptSet.world.remove(promptSet);
-            }),
-            this.difficultyPrompt(true),
+            new StartPrompt(
+                inputMode === INPUT_MODE_TOUCH
+                    ? 'TAP TO DEPLOY'
+                    : 'PRESS [SPACE] TO DEPLOY',
+                [32],
+                () => {
+                    promptSet.world.remove(promptSet);
+                },
+            ),
+            inputMode != INPUT_MODE_TOUCH
+                ? this.difficultyPrompt(true)
+                : null,
         ]);
 
         this.pauseWorld.add(
@@ -150,9 +158,9 @@ class Game {
 
     async gameLoop() {
         const levels = [
-            tutorialFly,
-            firstMountain,
-            mountainThenCeiling,
+            // tutorialFly,
+            // firstMountain,
+            // mountainThenCeiling,
             tutorialShoot,
             caveThenCeiling,
             lowCeiling,
@@ -327,9 +335,13 @@ class Game {
 
         const promptSet = new PromptSet([
             ...recap.map(([label, value]) => new RunRecap(label, value)),
-            new StartPrompt('PRESS [SPACE] TO REDEPLOY', [32], () => {
-                promptSet.world.remove(promptSet);
-            }),
+            new StartPrompt(
+                inputMode === INPUT_MODE_TOUCH
+                    ? 'TAP TO REDEPLOY'
+                    : 'PRESS [SPACE] TO REDEPLOY',
+                [32],
+                () => promptSet.world.remove(promptSet),
+            ),
         ])
 
         this.pauseWorld.add(title, promptSet);

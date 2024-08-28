@@ -195,15 +195,14 @@ tutorialShoot = (world) => {
     prisoner(world, 2000);
     prisoner(world, 3800);
 
-    const instruction = new Instruction('PRESS [SPACE] TO SHOOT');
+    const instruction = new Instruction(
+        inputMode === INPUT_MODE_TOUCH
+            ? nomangle('TAP CIRCLE TO SHOOT')
+            : nomangle('PRESS [SPACE] TO SHOOT')
+    );
     instruction.x = 500;
     instruction.y = -200;
     world.add(instruction);
-
-    const optionalInstruction = new Instruction('SHOOTING IS ALWAYS OPTIONAL');
-    optionalInstruction.x = 1500;
-    optionalInstruction.y = -200;
-    world.add(optionalInstruction);
 
     return promise(world)
 };

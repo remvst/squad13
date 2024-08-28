@@ -208,7 +208,6 @@ compiler.run((tasks) => {
                     "message",
                     "name",
                     "ratio",
-                    "size",
                     "index",
                     "controls",
                     "attack",

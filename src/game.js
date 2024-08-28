@@ -380,9 +380,9 @@ class Game {
 
             let y = CANVAS_HEIGHT - 10;
             for (const line of [
-                'FPS: ' + ~~(1 / elapsed),
-                'Entities: ' + this.world.entities.size,
-                'Player: ' + (player ? `${~~player.x},${~~player.y}` : ''),
+                nomangle('FPS: ') + ~~(1 / elapsed),
+                nomangle('Entities: ') + this.world.entities.size,
+                nomangle('Player: ') + (player ? `${~~player.x},${~~player.y}` : ''),
             ].reverse()) {
                 ctx.strokeText(line, 10, y);
                 ctx.fillText(line, 10, y);

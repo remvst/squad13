@@ -33,8 +33,8 @@ class Game {
         })();
     }
 
-    difficultyPrompt() {
-        const text = () => 'DIFFICULTY: ' + (this.easyMode ? 'EASY' : 'NORMAL') + ' - PRESS [K] TO CHANGE';
+    difficultyPrompt(withText) {
+        const text = () => withText ? 'DIFFICULTY: ' + (this.easyMode ? 'EASY' : 'NORMAL') + ' - PRESS [K] TO CHANGE' : '';
 
         const prompt = new StartPrompt(
             text(),
@@ -103,7 +103,7 @@ class Game {
             new StartPrompt('PRESS [SPACE] TO DEPLOY', [32], () => {
                 promptSet.world.remove(promptSet);
             }),
-            this.difficultyPrompt(),
+            this.difficultyPrompt(true),
         ]);
 
         this.pauseWorld.add(
@@ -135,7 +135,7 @@ class Game {
             new StartPrompt('PRESS [SPACE] TO RESUME', [32, 27, 80], () => {
                 promptSet.world.remove(promptSet);
             }),
-            this.difficultyPrompt(),
+            this.difficultyPrompt(true),
         ]);
         this.pauseWorld.add(title, promptSet);
 
@@ -183,10 +183,7 @@ class Game {
             this.world = new World();
 
             // Invisible prompt to change difficulty
-            this.world.add(new StartPrompt('', [75], () => {
-                this.easyMode = !this.easyMode;
-                wasEverEasy = wasEverEasy || this.easyMode;
-            }));
+            this.world.add(this.difficultyPrompt(false));
 
             const level = levels[levelIndex];
             try {

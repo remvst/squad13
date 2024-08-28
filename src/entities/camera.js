@@ -18,6 +18,18 @@ class Camera extends Entity {
     cycle(elapsed) {
         super.cycle(elapsed);
 
+        // Readjust bounds in case they are smaller than the canvas
+        const width = max(this.maxX - this.minX, CANVAS_WIDTH) / 2;
+        const height = max(this.maxY - this.minY, CANVAS_HEIGHT) / 2;
+        const midX = (this.maxX + this.minX) / 2;
+        const midY = (this.maxY + this.minY) / 2;
+
+        this.minX = midX - width;
+        this.maxX = midX + width;
+
+        this.minY = midY - height;
+        this.maxY = midY + height;
+
         const player = firstItem(this.world.bucket('player'));
         if (!player) return;
 

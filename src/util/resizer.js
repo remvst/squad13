@@ -8,13 +8,37 @@ onresize = () => {
         appliedHeight,
         containerStyle = t.style;
 
-    if (availableRatio <= canvasRatio) {
-        appliedWidth = windowWidth;
-        appliedHeight = appliedWidth / canvasRatio;
+    CANVAS_WIDTH = 1600;
+    CANVAS_HEIGHT = 900;
+
+    if (inputMode === INPUT_MODE_TOUCH) {
+        // Flip the aspect ratio if in portrait
+        if (innerHeight > innerWidth) {
+            const width = CANVAS_WIDTH;
+            CANVAS_WIDTH = CANVAS_HEIGHT
+            CANVAS_HEIGHT = width;
+        }
+
+        // Adjust the ratio so we fill the screen
+        const currentAspectRatio = CANVAS_WIDTH / CANVAS_HEIGHT;
+        if (currentAspectRatio < availableRatio) {
+            CANVAS_HEIGHT = CANVAS_WIDTH / availableRatio;
+        } else {
+            CANVAS_WIDTH = CANVAS_HEIGHT * availableRatio;
+        }
     } else {
-        appliedHeight = windowHeight;
-        appliedWidth = appliedHeight * canvasRatio;
+        // Desktop mode, keep the aspect ratio intact
+        if (availableRatio <= canvasRatio) {
+            appliedWidth = windowWidth;
+            appliedHeight = appliedWidth / canvasRatio;
+        } else {
+            appliedHeight = windowHeight;
+            appliedWidth = appliedHeight * canvasRatio;
+        }
     }
+
+    can.width = CANVAS_WIDTH;
+    can.height = CANVAS_HEIGHT;
 
     containerStyle.width = appliedWidth + 'px';
     containerStyle.height = appliedHeight + 'px';

@@ -5,9 +5,9 @@ onload = () => {
 
     ctx = can.getContext('2d');
 
-    G = new Game();
-
     onresize();
+
+    G = new Game();
 
     frame();
 }

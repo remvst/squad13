@@ -227,6 +227,14 @@ class Chopper extends Entity {
             this.y += dY;
         }
 
+        let idealAngle = 0;
+        let angleVelocity = PI / 6;
+        if (!landed) {
+            if (this.controls.left) idealAngle = -PI / 4;
+            if (this.controls.right) idealAngle = PI / 4;
+            if (this.controls.left || this.controls.right) angleVelocity = PI / 2;
+        }
+
         if (this.age >= this.damagedEnd) {
             let x = 0, y = 0;
             if (this.controls.left) x -= 1;
@@ -240,14 +248,6 @@ class Chopper extends Entity {
                 targetPower - this.propellerPower,
                 elapsed * 4,
             );
-
-            let idealAngle = 0;
-            let angleVelocity = PI / 6;
-            if (!landed) {
-                if (this.controls.left) idealAngle = -PI / 4;
-                if (this.controls.right) idealAngle = PI / 4;
-                if (this.controls.left || this.controls.right) angleVelocity = PI / 2;
-            }
 
             this.angle += between(
                 -elapsed * angleVelocity,
@@ -268,11 +268,15 @@ class Chopper extends Entity {
         }
         this.momentum.angle = 0;
 
-        if (this.propellerPower) {
-            this.momentum.x += this.propellerPower * Math.cos(this.angle - PI / 2) * elapsed * 400 * 1.5;
-            this.momentum.y += this.propellerPower * Math.sin(this.angle - PI / 2) * elapsed * 400;
+        if (this.simplifiedPhysics) {
+            this.momentum.x += cos(idealAngle - PI / 2) * elapsed * 400 * 1.5;
+            this.momentum.y -= this.propellerPower * elapsed * 400;
+        } else {
+            this.momentum.x += this.propellerPower * cos(this.angle - PI / 2) * elapsed * 400 * 1.5;
+            this.momentum.y += this.propellerPower * sin(this.angle - PI / 2) * elapsed * 400;
         }
 
+        // Air resistance on X
         const opposition = Math.sign(Math.sin(this.angle)) !== Math.sign(this.momentum.x) || this.simplifiedPhysics
             ? 200
             : 50;
@@ -282,12 +286,21 @@ class Chopper extends Entity {
             elapsed * opposition,
         );
 
-        const maxFallSpeed = this.simplifiedPhysics ? 100 : 400;
+        // Gravity on Y
+        const maxFallSpeed = this.simplifiedPhysics
+            ? (this.controls.left || this.controls.right ? 20 : 100)
+            : 400;
         this.momentum.y += between(
             -elapsed * (this.simplifiedPhysics ? 100 : 200),
             maxFallSpeed - this.momentum.y,
-            elapsed * (this.simplifiedPhysics ? 200 : 150),
+            elapsed * (this.simplifiedPhysics ? 300 : 150),
         );
+
+        // Cap max momentum on simplified physics
+        if (this.simplifiedPhysics) {
+            this.momentum.x = between(-300, this.momentum.x, 300);
+            this.momentum.y = between(-200, this.momentum.y, 100);
+        }
 
         if (landed && !this.propellerPower) {
             this.momentum.y = 0;

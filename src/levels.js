@@ -21,9 +21,6 @@ spawn = (world, x, y = 100) => {
     player.y = landing.yAt(player.x) - 20;
     world.add(player);
 
-    const camera = firstItem(world.bucket('camera'));
-    camera.cycle(2);
-
     return player;
 }
 setTarget = (world, x) => {

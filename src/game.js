@@ -181,11 +181,7 @@ class Game {
         let promptedEasyMode = false;
         let missionFailures = 0;
 
-        const totalPrisoners = levels.reduce((sum, level) => {
-            const world = new World();
-            level(world);
-            return sum + Array.from(world.bucket('prisoner')).length;
-        }, 0);
+        const totalPrisoners = 0;
         let totalRescuedPrisoners = 0;
 
         while (levelIndex < levels.length) {
@@ -200,7 +196,7 @@ class Game {
                 const levelPromise = level(this.world);
 
                 // Force camera to update
-                this.world.cycle(0);
+                firstItem(this.world.bucket('camera')).cycle(2);
 
                 const missionPrisoners = Array.from(this.world.bucket('prisoner')).length;
 

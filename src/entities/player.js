@@ -11,8 +11,21 @@ class Player extends Chopper {
         this.lastDamageBeep = 0;
     }
 
+    destroy() {
+        if (this.sound) {
+            this.sound.stop();
+            this.sound = null;
+        }
+    }
+
     cycle(elapsed) {
         const { lockedTargetFactor } = this;
+
+        if (!this.sound && this.age > 0.5) {
+            this.sound = new FunZZfx(zzfxG(...[,,317,,3,0,,3.2,-12,16,,,.07,.1,,,,.59,.18,.12])); // Shoot 71
+            this.sound.source.loop = true;
+            this.sound.start();
+        }
 
         super.cycle(elapsed);
 
@@ -43,12 +56,6 @@ class Player extends Chopper {
             targetLadderLength - this.ladderLength,
             elapsed * 100,
         );
-
-        if (!this.sound) {
-            this.sound = new FunZZfx(zzfxG(...[,,317,,3,0,,3.2,-12,16,,,.07,.1,,,,.59,.18,.12])); // Shoot 71
-            this.sound.source.loop = true;
-            this.sound.start();
-        }
 
         if (this.sound) {
             this.sound.setVolume(interpolate(0.5, 1, this.propellerPower));

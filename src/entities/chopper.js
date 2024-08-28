@@ -6,8 +6,6 @@ class Hitbox {
         this.isLanding = false;
         this.readjusted = false;
         this.vital = false;
-
-        this.sound = null;
     }
 }
 
@@ -344,13 +342,6 @@ class Chopper extends Entity {
         if (!isBetween(camera.minY, this.y, camera.maxY)) {
             this.momentum.y = 0;
             this.y = between(camera.minY, this.y, camera.maxY);
-        }
-    }
-
-    destroy() {
-        if (this.sound) {
-            this.sound.stop();
-            this.sound = null;
         }
     }
 

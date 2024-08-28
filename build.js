@@ -338,7 +338,7 @@ compiler.run((tasks) => {
 
     function main() {
         return tasks.sequence([
-            // buildMain(),
+            buildMain(),
             buildDebug({
                 'mangle': false,
                 'suffix': ''

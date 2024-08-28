@@ -29,14 +29,23 @@ class Player extends Chopper {
 
         super.cycle(elapsed);
 
-        const title = firstItem(this.world.bucket('title'));
-        const hasTitle = title && title.alpha > 0.5;
+        const { controls } = this;
 
-        this.controls.left = (DOWN[37] || DOWN[65]) && !hasTitle;
-        this.controls.right = (DOWN[39] || DOWN[68]) && !hasTitle;
-        this.controls.up = (DOWN[38] || DOWN[87]) && !hasTitle;
-        this.controls.down = (DOWN[40] || DOWN[83]) && !hasTitle;
-        this.controls.shoot = DOWN[32] && !hasTitle;
+        // Keyboard controls
+        controls.left = (DOWN[37] || DOWN[65]);
+        controls.right = (DOWN[39] || DOWN[68]);
+        controls.up = (DOWN[38] || DOWN[87]);
+        controls.shoot = DOWN[32];
+
+        // Touch controls
+        for (const touch of TOUCHES) {
+            const relX = touch.x / CANVAS_WIDTH;
+
+            controls.left = controls.left || isBetween(0, relX, 0.25);
+            controls.right = controls.right || isBetween(0.25, relX, 0.5);
+            controls.shoot = controls.shoot || isBetween(0.5, relX, 0.75);
+            controls.up = controls.up || isBetween(0.75, relX, 1);
+        }
 
         let hasPrisoner;
         for (const prisoner of this.world.bucket('prisoner')) {

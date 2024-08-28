@@ -18,7 +18,6 @@ class Chopper extends Entity {
 
         this.controls = {
             up: false,
-            down: false,
             left: false,
             right: false,
             shoot: false,

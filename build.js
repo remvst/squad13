@@ -40,6 +40,10 @@ const CONSTANTS = {
     "SCREENSHOT": 0,
 
     "MOBILE_CONTROLS_HEIGHT": 200,
+
+    "INPUT_MODE_KEYBOARD": 0,
+    "INPUT_MODE_TOUCH": 1,
+    "INPUT_MODE_GAMEPAD": 2,
 };
 
 function copy(obj) {
@@ -118,6 +122,7 @@ compiler.run((tasks) => {
 
                 'input/keyboard.js',
                 'input/mouse.js',
+                'input/touch.js',
 
                 'game.js',
                 'levels.js',

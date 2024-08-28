@@ -1,9 +1,6 @@
 let MOUSE = {x: 0, y: 0, down: 0};
-onmousemove = e => {
-    const rect = can.getBoundingClientRect();
-
-    MOUSE.x = (e.clientX - rect.left) / rect.width * CANVAS_WIDTH;
-    MOUSE.y = (e.clientY - rect.top) / rect.height * CANVAS_HEIGHT;
+onmousemove = event => {
+    getEventPosition(event, can, MOUSE);
 };
 
 onmousedown = e => {
@@ -13,3 +10,12 @@ onmousedown = e => {
 onmouseup = e => {
     MOUSE.down = false;
 };
+
+oncontextmenu = (event) => event.preventDefault();
+
+getEventPosition = (event, can, out) => {
+    if (!can) return;
+    const canvasRect = can.getBoundingClientRect();
+    out.x = (event.pageX - canvasRect.left) / canvasRect.width * can.width;
+    out.y = (event.pageY - canvasRect.top) / canvasRect.height * can.height;
+}

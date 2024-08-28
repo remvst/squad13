@@ -3,7 +3,7 @@ class Game {
         this.world = new World();
 
         this.age = 0;
-        this.easyMode = false;
+        this.easyMode = inputMode === INPUT_MODE_TOUCH;
 
         if (SCREENSHOT) {
             CANVAS_WIDTH = 4096;

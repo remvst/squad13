@@ -34,7 +34,9 @@ class Game {
     }
 
     difficultyPrompt(withText) {
-        const text = () => withText ? 'DIFFICULTY: ' + (this.easyMode ? 'EASY' : 'NORMAL') + ' - PRESS [K] TO CHANGE' : '';
+        const text = () => withText
+            ? nomangle('DIFFICULTY: ') + (this.easyMode ? nomangle('EASY') : nomangle('NORMAL')) + nomangle(' - PRESS [K] TO CHANGE')
+            : '';
 
         const prompt = new StartPrompt(
             text(),
@@ -57,7 +59,7 @@ class Game {
         this.paused = true;
         this.world.destroy();
 
-        const title = new Title('MISSION\nFAILED', '#f00');
+        const title = new Title(nomangle('MISSION\nFAILED'), '#f00');
         this.pauseWorld.add(title);
         title.fade(0, 1, 0.2);
         await title.agesBy(1);
@@ -80,7 +82,7 @@ class Game {
         this.paused = true;
         this.world.destroy();
 
-        const title = new Title('MISSION\nSUCCESS', '#fff');
+        const title = new Title(nomangle('MISSION\nSUCCESS'), '#fff');
         this.pauseWorld.add(title);
         title.fade(0, 1, 0.2);
         await title.agesBy(1);
@@ -97,13 +99,13 @@ class Game {
         this.paused = true;
         this.pauseWorld = new World();
 
-        const title = new Title('SQUAD 13');
+        const title = new Title(nomangle('SQUAD 13'));
 
         const promptSet = new PromptSet([
             new StartPrompt(
                 inputMode === INPUT_MODE_TOUCH
-                    ? 'TAP TO DEPLOY'
-                    : 'PRESS [SPACE] TO DEPLOY',
+                    ? nomangle('TAP TO DEPLOY')
+                    : nomangle('PRESS [SPACE] TO DEPLOY'),
                 [32],
                 () => {
                     promptSet.world.remove(promptSet);
@@ -137,10 +139,10 @@ class Game {
         this.paused = true;
         this.pauseWorld = new World();
 
-        const title = new Title('PAUSED', 'rgba(0,0,0,0)', 'rgba(0,0,0,0.95)');
+        const title = new Title(nomangle('PAUSED'), 'rgba(0,0,0,0)', 'rgba(0,0,0,0.95)');
 
         const promptSet = new PromptSet([
-            new StartPrompt('PRESS [SPACE] TO RESUME', [32, 27, 80], () => {
+            new StartPrompt(nomangle('PRESS [SPACE] TO RESUME'), [32, 27, 80], () => {
                 promptSet.world.remove(promptSet);
             }),
             this.difficultyPrompt(true),
@@ -158,9 +160,9 @@ class Game {
 
     async gameLoop() {
         const levels = [
-            // tutorialFly,
-            // firstMountain,
-            // mountainThenCeiling,
+            tutorialFly,
+            firstMountain,
+            mountainThenCeiling,
             tutorialShoot,
             caveThenCeiling,
             lowCeiling,
@@ -229,11 +231,11 @@ class Game {
                     wasEverEasy = wasEverEasy || this.easyMode;
 
                     return [
-                        ['MISSION', `${levelIndex + 1}/${levels.length}`],
-                        ['PRISONERS', (player ? player.rescuedPrisoners : 0) + '/' + missionPrisoners],
-                        ['TIME', formatTime(this.age - missionStartTime)],
-                        ['OVERALL', formatTime(this.age - startTime)],
-                        ['DIFFICULTY [K]', this.easyMode ? 'EASY' : 'NORMAL'],
+                        [nomangle('MISSION'), `${levelIndex + 1}/${levels.length}`],
+                        [nomangle('PRISONERS'), (player ? player.rescuedPrisoners : 0) + '/' + missionPrisoners],
+                        [nomangle('TIME'), formatTime(this.age - missionStartTime)],
+                        [nomangle('OVERALL'), formatTime(this.age - startTime)],
+                        [nomangle('DIFFICULTY [K]'), this.easyMode ? nomangle('EASY') : nomangle('NORMAL')],
                     ];
                 }));
 
@@ -265,7 +267,7 @@ class Game {
 
                 if (missionFailures % 5 === 0 && !this.easyMode && !promptedEasyMode) {
                     promptedEasyMode = true;
-                    if (confirm('Enable easy mode? (simplified physics, less aggressive enemies)')) {
+                    if (confirm(nomangle('Enable easy mode? (simplified physics, less aggressive enemies)'))) {
                         this.easyMode = true;
                     }
                 }
@@ -279,10 +281,10 @@ class Game {
         this.world.destroy();
 
         await this.runRecap([
-            ['TOTAL TIME', formatTime(this.age - startTime)],
-            ['DIFFICULTY', wasEverEasy ? 'EASY' : 'NORMAL'],
-            ['RESCUED PRISONERS', `${totalRescuedPrisoners}/${totalPrisoners}`],
-            ['CRASHES', `${totalDeaths}`],
+            [nomangle('TOTAL TIME'), formatTime(this.age - startTime)],
+            [nomangle('DIFFICULTY'), wasEverEasy ? nomangle('EASY') : nomangle('NORMAL')],
+            [nomangle('RESCUED PRISONERS'), `${totalRescuedPrisoners}/${totalPrisoners}`],
+            [nomangle('CRASHES'), `${totalDeaths}`],
         ]);
     }
 
@@ -298,8 +300,8 @@ class Game {
         {
             this.pauseWorld = new World();
             const exposition = new Exposition([
-                'When all hope is lost, the World Police Organization sends SQUAD 13.',
-                'They are tasked with the most dangerous missions.',
+                nomangle('When all hope is lost, the World Police Organization sends SQUAD 13.'),
+                nomangle('They are tasked with the most dangerous missions.'),
             ]);
             this.pauseWorld.add(exposition);
 
@@ -310,8 +312,8 @@ class Game {
         {
             this.pauseWorld = new World();
             const exposition = new Exposition([
-                'SQUAD 13 is feared even by the most wicked evil terrorists.',
-                'This is their story.',
+                nomangle('SQUAD 13 is feared even by the most wicked evil terrorists.'),
+                nomangle('This is their story.'),
             ]);
             this.pauseWorld.add(exposition);
 
@@ -331,14 +333,14 @@ class Game {
         this.pauseWorld.add(transitionIn);
         await transitionIn.agesBy(0.3);
 
-        const title = new Title('THX FOR PLAYING', '#fff');
+        const title = new Title(nomangle('THX FOR PLAYING'), '#fff');
 
         const promptSet = new PromptSet([
             ...recap.map(([label, value]) => new RunRecap(label, value)),
             new StartPrompt(
                 inputMode === INPUT_MODE_TOUCH
-                    ? 'TAP TO REDEPLOY'
-                    : 'PRESS [SPACE] TO REDEPLOY',
+                    ? nomangle('TAP TO REDEPLOY')
+                    : nomangle('PRESS [SPACE] TO REDEPLOY'),
                 [32],
                 () => promptSet.world.remove(promptSet),
             ),
@@ -369,9 +371,9 @@ class Game {
         if (DEBUG) {
             ctx.fillStyle = '#fff';
             ctx.strokeStyle = '#000';
-            ctx.textAlign = 'left';
-            ctx.textBaseline = 'bottom';
-            ctx.font = '14pt Courier';
+            ctx.textAlign = nomangle('left');
+            ctx.textBaseline = nomangle('bottom');
+            ctx.font = nomangle('14pt Courier');
             ctx.lineWidth = 3;
 
             const player = firstItem(this.world.bucket('player'));

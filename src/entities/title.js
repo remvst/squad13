@@ -11,10 +11,10 @@ class Title extends Entity {
             ctx.fillStyle = mainBackground;
             ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-            ctx.globalCompositeOperation = 'destination-out';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.font = 'bold 148pt Impact';
+            ctx.globalCompositeOperation = nomangle('destination-out');
+            ctx.textAlign = nomangle('center');
+            ctx.textBaseline = nomangle('middle');
+            ctx.font = nomangle('bold 148pt Impact');
 
             let y = CANVAS_HEIGHT / 2 - 100;
             for (const line of title.split('\n')) {

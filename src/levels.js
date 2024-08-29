@@ -152,8 +152,6 @@ ceiling = (world, startX, endX, minY, maxY, periodCount = 1) => {
 }
 
 tutorialFly = (world) => {
-
-
     const player = spawn(world, 0);
     setTarget(world, 1000);
 
@@ -216,8 +214,7 @@ mountainThenCeiling = (world) => {
 };
 
 tutorialShoot = (world) => {
-
-    spawn(world, 0);
+    const player = spawn(world, 0);
     mountain(world, 500, 2500, -150, 100, 1.5);
     mountain(world, 2700, 3000, 0, 200, 2);
     ceiling(world, 2000, 3000, -500, -350, 2);
@@ -243,12 +240,16 @@ tutorialShoot = (world) => {
     instruction.y = -200;
     world.add(instruction);
 
+    world.waitFor(() => {
+        instruction.instruction = player.shotInterval < 9
+            ? nomangle('PRESS [SPACE] TO SHOOT')
+            : nomangle('NO MISSILES ON HARD MODE');
+    });
+
     return promise(world)
 };
 
-
 caveThenCeiling = (world) => {
-
     spawn(world, 0);
     mountain(world, 500, 2000, -200, 200, 0.5);
     ceiling(world, 400, 1500, -500, -200, 0.5);
@@ -272,7 +273,6 @@ caveThenCeiling = (world) => {
 };
 
 lowCeiling = (world) => {
-
     spawn(world, 0);
 
     ceiling(world, 500, 1500, -200, 100, 0.5);

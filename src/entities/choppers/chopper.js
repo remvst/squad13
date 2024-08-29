@@ -279,7 +279,7 @@ class Chopper extends Entity {
             this.momentum.x += cos(idealAngle - PI / 2) * elapsed * 400 * 1.5;
             this.momentum.y -= this.propellerPower * elapsed * 400;
         } else {
-            this.momentum.x += this.propellerPower * cos(this.angle - PI / 2) * elapsed * 400 * 1.5;
+            this.momentum.x += interpolate(0.5, 1.5, this.propellerPower) * cos(this.angle - PI / 2) * elapsed * 400;
             this.momentum.y += this.propellerPower * sin(this.angle - PI / 2) * elapsed * 400;
         }
 

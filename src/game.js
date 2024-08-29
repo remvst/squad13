@@ -205,7 +205,7 @@ class Game {
         let startTime = this.age;
         let missionStartTime = this.age;
         let totalDeaths = 0;
-        let lowestDifficultyIndex = 0;
+        let lowestDifficultyIndex = 9;
         let promptedEasyMode = false;
         let missionFailures = 0;
 
@@ -223,6 +223,7 @@ class Game {
             // Invisible prompt to change difficulty
             this.world.add(this.difficultyPrompt(false));
 
+            let lowestDifficultyIndexInMission = 9;
             const level = levels[levelIndex];
             try {
                 const settings = [
@@ -281,9 +282,6 @@ class Game {
 
                 this.world.add(new ProgressIndicator(() => {
                     const player = firstItem(this.world.bucket('player'));
-
-                    lowestDifficultyIndex = min(lowestDifficultyIndex, DIFFICULTY_SETTINGS.indexOf(this.difficulty));
-
                     return [
                         [nomangle('MISSION'), `${levelIndex + 1}/${levels.length}`],
                         [nomangle('PRISONERS'), (player ? player.rescuedPrisoners : 0) + '/' + missionPrisoners],
@@ -293,6 +291,10 @@ class Game {
                     ];
                 }));
 
+                this.world.waitFor(() => {
+                    lowestDifficultyIndexInMission = min(lowestDifficultyIndexInMission, DIFFICULTY_SETTINGS.indexOf(this.difficulty));
+                });
+
                 if (inputMode === INPUT_MODE_TOUCH) {
                     this.world.add(new MobileControls());
                 }
@@ -300,6 +302,7 @@ class Game {
                 await levelPromise;
 
                 missionFailures = 0;
+                lowestDifficultyIndex = min(lowestDifficultyIndex, lowestDifficultyIndexInMission);
 
                 const player = firstItem(this.world.bucket('player'));
                 if (player) totalRescuedPrisoners += player.rescuedPrisoners;
@@ -351,7 +354,9 @@ class Game {
             totalRescuedPrisoners,
             '/',
             totalPrisoners,
-            ' prisoners!',
+            ' prisoners! (',
+            DIFFICULTY_SETTINGS[lowestDifficultyIndex][0],
+            ' mode)',
         ].join(''));
     }
 

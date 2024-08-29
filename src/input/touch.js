@@ -9,6 +9,8 @@ updateTouches = (touches) => {
     }
 };
 
+document.addEventListener('touchstart', {}); // iOS Safari touches fix in iframes
+
 ontouchstart = (event) => {
     inputMode = INPUT_MODE_TOUCH;
     event.preventDefault();

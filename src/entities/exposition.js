@@ -23,7 +23,7 @@ class Exposition extends Entity {
     cycle(elapsed) {
         const { visibleChars } = this;
 
-        if (DOWN[32]) elapsed *= 4;
+        if (DOWN[32] || TOUCHES.length) elapsed *= 8;
 
         super.cycle(elapsed);
 
@@ -118,6 +118,12 @@ class Exposition extends Entity {
         }
 
         ctx.textAlign = nomangle('right');
-        ctx.fillText(nomangle('Hold [SPACE] to fast forward'), CANVAS_WIDTH - 50, CANVAS_HEIGHT - 50);
+        ctx.fillText(
+            inputMode === INPUT_MODE_KEYBOARD
+                ? nomangle('Hold [SPACE] to fast forward')
+                : nomangle('Hold to fast forward'),
+            CANVAS_WIDTH - 50,
+            CANVAS_HEIGHT - 50,
+        );
     }
 }

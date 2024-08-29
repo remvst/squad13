@@ -1,7 +1,5 @@
-- Mobile controls
 - More levels
-- Daytime
-- Easy mode (enemies shoot less, easier physics)
 - nomangle strings
 - redo preview screenshot (include enemies)
-- mute soundtrack
+- mute soundtrack?
+- Add daytime to a couple extra levels

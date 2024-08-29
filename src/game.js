@@ -35,8 +35,25 @@ class Game {
 
     cycleDifficulty() {
         let index = DIFFICULTY_SETTINGS.indexOf(this.difficulty);
-        index = (index + 1) % DIFFICULTY_SETTINGS.length;
+        index = (index - 1 + DIFFICULTY_SETTINGS.length) % DIFFICULTY_SETTINGS.length;
         this.difficulty = DIFFICULTY_SETTINGS[index];
+
+        if (this.difficultyExposition) {
+            this.difficultyExposition.world.remove(this.difficultyExposition);
+        }
+
+        if (!this.pauseWorld) {
+            (async () => {
+                this.difficultyExposition = new Exposition([
+                    nomangle('DIFFICULTY: ') + this.difficulty[0],
+                ]);
+                this.world.add(this.difficultyExposition);
+
+                await this.difficultyExposition.complete();
+                await this.difficultyExposition.agesBy(2);
+                this.difficultyExposition.world.remove(this.difficultyExposition);
+            })();
+        }
     }
 
     difficultyPrompt(withText) {
@@ -170,9 +187,9 @@ class Game {
 
     async gameLoop() {
         const levels = [
-            tutorialFly,
-            firstMountain,
-            mountainThenCeiling,
+            // tutorialFly,
+            // firstMountain,
+            // mountainThenCeiling,
             tutorialShoot,
             caveThenCeiling,
             lowCeiling,

@@ -168,6 +168,7 @@ class Game {
             lowCeiling,
             mountainChopperCeilingChopper,
             hardMountains,
+            tightSqueezes,
             smallMountainSuccession,
             nightMountains,
             upAndDown,

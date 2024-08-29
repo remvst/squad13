@@ -442,5 +442,53 @@ mountainChopperCeilingChopper = (world) => {
 
     world.add(new Water(400));
 
-    return promise(world)
+    return promise(world);
 }
+
+tightSqueezes = (world) => {
+    const camera = firstItem(world.bucket('camera'));
+    camera.minX = -300;
+    camera.minY = -700;
+    camera.maxY = 700;
+
+    world.add(...daytime());
+    spawn(world, 0);
+
+    world.add(Obstacle.ceiling(500, 1000, 0, 150, 1));
+    world.add(Obstacle.mountain(550, 1200, 400, 550, 1));
+    world.add(Obstacle.ceiling(1200, 1700, -400, -500, 0.7));
+
+    world.add(Obstacle.mountain(1500, 2300, 0, 250, 0.5));
+    world.add(Obstacle.ceiling(2000, 2450, -300, -200, 1));
+    world.add(Obstacle.ceiling(2700, 3150, -50, 50, 1));
+
+    world.add(Obstacle.mountain(2900, 3400, 600, 550, 1.2));
+    world.add(Obstacle.mountain(3500, 4000, -200, -300, 1.2));
+    world.add(Obstacle.ceiling(3750, 4000, -500, -600, 0.8));
+
+    setTarget(world, 4500);
+
+    rebel(world, 950);
+    rebel(world, 1550);
+    rebel(world, 2250);
+    rebel(world, 2200);
+    rebel(world, 3000);
+    rebel(world, 3850);
+
+    prisoner(world, 1850);
+    prisoner(world, 3250);
+
+    enemyChopper(world, [
+        { x: 2900, y: 150 },
+        { x: 2600, y: 250 },
+    ]);
+
+    enemyChopper(world, [
+        { x: 4650, y: -350 },
+        { x: 4400, y: -150 },
+    ]);
+
+    world.add(new Water(600));
+
+    return promise(world);
+};

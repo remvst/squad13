@@ -1,9 +1,11 @@
 class Exposition extends Entity {
-    constructor(lines) {
+    constructor(lines, skippable) {
         super();
-        this.lines = lines.map(l => l + '                  ');
+        this.lines = lines;
         this.text = this.lines.join('\n');
         this.totalChars = this.lines.reduce((acc, line) => acc + line.length, 0);
+
+        this.skippable = skippable;
 
         this.computedLinesCanvasWidth = 0;
     }
@@ -23,7 +25,7 @@ class Exposition extends Entity {
     cycle(elapsed) {
         const { visibleChars } = this;
 
-        if (DOWN[32] || TOUCHES.length) elapsed *= 8;
+        if (this.skippable && (DOWN[32] || TOUCHES.length)) elapsed *= 8;
 
         super.cycle(elapsed);
 
@@ -87,9 +89,6 @@ class Exposition extends Entity {
     render(camera) {
         ctx.translate(~~camera.x - CANVAS_WIDTH / 2, ~~camera.y - CANVAS_HEIGHT / 2);
 
-        ctx.fillStyle = '#000';
-        ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-
         ctx.fillStyle = '#fff';
         ctx.shadowColor = '#000';
         ctx.shadowOffsetY = 2;
@@ -102,7 +101,7 @@ class Exposition extends Entity {
             this.computedLines = this.calculateLines(CANVAS_WIDTH - 100);
         }
 
-        let y = CANVAS_HEIGHT / 2 - (this.computedLines.length * 50) / 2;
+        let y = CANVAS_HEIGHT / 2 - (this.computedLines.length * 25) / 2;
 
         let longestLine = 0;
 
@@ -113,17 +112,19 @@ class Exposition extends Entity {
         let charCount = 0;
         for (const line of this.computedLines) {
             ctx.fillText(line.slice(0, max(0, this.visibleChars - charCount)), (CANVAS_WIDTH - longestLine) / 2, y);
-            y += 50;
+            y += 25;
             charCount += line.length;
         }
 
-        ctx.textAlign = nomangle('right');
-        ctx.fillText(
-            inputMode === INPUT_MODE_KEYBOARD
-                ? nomangle('Hold [SPACE] to fast forward')
-                : nomangle('Hold to fast forward'),
-            CANVAS_WIDTH - 50,
-            CANVAS_HEIGHT - 50,
-        );
+        if (this.skippable) {
+            ctx.textAlign = nomangle('right');
+            ctx.fillText(
+                inputMode === INPUT_MODE_KEYBOARD
+                    ? nomangle('Hold [SPACE] to fast forward')
+                    : nomangle('Hold to fast forward'),
+                CANVAS_WIDTH - 50,
+                CANVAS_HEIGHT - 50,
+            );
+        }
     }
 }

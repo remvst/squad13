@@ -197,7 +197,8 @@ class Game {
                 const levelPromise = level(this.world);
 
                 // Force camera to update
-                firstItem(this.world.bucket('camera')).cycle(2);
+                const camera = firstItem(this.world.bucket('camera'));
+                camera.cycle(2);
 
                 const missionPrisoners = Array.from(this.world.bucket('prisoner')).length;
 
@@ -214,6 +215,22 @@ class Game {
 
                 if (missionFailures === 0) {
                     missionStartTime = this.age;
+
+                    if (levelIndex > 0) {
+                        (async () => {
+                            await camera.agesBy(1);
+
+                            const exposition = new Exposition([
+                                COUNTRIES[levelIndex % COUNTRIES.length],
+                                MONTHS[levelIndex % MONTHS.length] + ' ' + ((levelIndex * 7) % 28) + ', ' + (2017 + ~~(levelIndex / 2)),
+                            ]);
+                            this.world.add(exposition);
+
+                            await exposition.complete();
+                            await exposition.agesBy(1);
+                            exposition.world.remove(exposition);
+                        })();
+                    }
                 }
 
                 // Invisible prompt to pause the game
@@ -300,9 +317,13 @@ class Game {
             this.pauseWorld = new World();
             const exposition = new Exposition([
                 nomangle('When all hope is lost, the World Police Organization sends SQUAD 13.'),
+                ' '.repeat(10),
                 nomangle('They are tasked with the most dangerous missions.'),
-            ]);
-            this.pauseWorld.add(exposition);
+            ], true);
+            this.pauseWorld.add(
+                new Background('#000', '#000'),
+                exposition,
+            );
 
             await exposition.complete();
             await exposition.agesBy(1);
@@ -312,9 +333,13 @@ class Game {
             this.pauseWorld = new World();
             const exposition = new Exposition([
                 nomangle('SQUAD 13 is feared even by the most wicked evil terrorists.'),
+                ' '.repeat(10),
                 nomangle('This is their story.'),
-            ]);
-            this.pauseWorld.add(exposition);
+            ], true);
+            this.pauseWorld.add(
+                new Background('#000', '#000'),
+                exposition,
+            );
 
             await exposition.complete();
             await exposition.agesBy(1);

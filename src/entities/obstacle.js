@@ -40,7 +40,7 @@ class Obstacle extends Entity {
     static mountain(startX, endX, minY, maxY, periodCount = 1) {
         const obstacle = new Obstacle();
         obstacle.points.push({ x: startX - 100, y: maxY + 2000 });
-        this.sinePoints(obstacle.points, startX, endX, minY, maxY, periodCount = 1);
+        this.sinePoints(obstacle.points, startX, endX, minY, maxY, periodCount);
         obstacle.points.push({ x: endX + 100, y: maxY + 2000 });
         return obstacle;
     }
@@ -49,7 +49,7 @@ class Obstacle extends Entity {
         const obstacle = new Obstacle();
         obstacle.directionY = -1;
         obstacle.points.push({ x: startX - 100, y: maxY - 2000 });
-        this.sinePoints(obstacle.points, startX, endX, minY, maxY, periodCount = 1);
+        this.sinePoints(obstacle.points, startX, endX, minY, maxY, periodCount);
         obstacle.points.push({ x: endX + 100, y: maxY - 2000 });
         return obstacle;
     }

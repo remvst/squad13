@@ -3,6 +3,7 @@ class Rebel extends Human {
         super();
         this.buckets.push('rebel');
         this.lastShot = 0;
+        this.shotInterval = 6;
     }
 
     cycle(elapsed) {
@@ -15,8 +16,7 @@ class Rebel extends Human {
             if (dist(player, this) < 500) {
                 this.angle = angleBetween(this, player);
 
-                const interval = player.simplifiedPhysics ? 6 : 4;
-                if (this.age - this.lastShot > interval) {
+                if (this.age - this.lastShot > this.shotInterval) {
                     const missile = new Missile(this);
                     missile.speed *= 0.5;
                     this.world.add(missile);

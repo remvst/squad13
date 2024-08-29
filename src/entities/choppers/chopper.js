@@ -74,6 +74,7 @@ class Chopper extends Entity {
         this.damagedStart = 0;
         this.damagedEnd = 0;
 
+        this.lockDuration = 1;
         this.lockedTarget = null;
         this.lockedTargetFactor = 0;
         this.lockedTargetTime = 0;
@@ -81,6 +82,8 @@ class Chopper extends Entity {
         this.lockedTargetKeepAngle = PI / 4;
 
         this.lastCollisionSound = 0;
+
+        this.uncontrollableDuration = 1;
     }
 
     updateGlobalHitboxes() {
@@ -173,7 +176,7 @@ class Chopper extends Entity {
         if (this.lockedTarget) {
             this.lockedTargetFactor = min(
                 1,
-                this.lockedTargetFactor + elapsed,
+                this.lockedTargetFactor + elapsed / this.lockDuration,
             );
         }
 
@@ -381,7 +384,7 @@ class Chopper extends Entity {
         this.momentum.y = sin(angle) * 300;
 
         this.damagedStart = this.age;
-        this.damagedEnd = this.age + duration * (this.simplifiedPhysics ? 0.5 : 1);
+        this.damagedEnd = this.age + this.uncontrollableDuration;
     }
 
     explode() {

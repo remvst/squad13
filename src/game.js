@@ -3,7 +3,7 @@ class Game {
         this.world = new World();
 
         this.age = 0;
-        this.easyMode = inputMode === INPUT_MODE_TOUCH;
+        this.difficulty = DIFFICULTY_NORMAL;
 
         if (SCREENSHOT) {
             CANVAS_WIDTH = 4096;
@@ -33,16 +33,26 @@ class Game {
         })();
     }
 
+    cycleDifficulty() {
+        let index = DIFFICULTY_SETTINGS.indexOf(this.difficulty);
+        index = (index + 1) % DIFFICULTY_SETTINGS.length;
+        this.difficulty = DIFFICULTY_SETTINGS[index];
+    }
+
     difficultyPrompt(withText) {
         const text = () => withText
-            ? nomangle('DIFFICULTY: ') + (this.easyMode ? nomangle('EASY') : nomangle('NORMAL')) + nomangle(' - PRESS [K] TO CHANGE')
+            ? nomangle('DIFFICULTY: ') + this.difficulty[0] + nomangle(' - PRESS [K] TO CHANGE')
             : '';
 
         const prompt = new StartPrompt(
             text(),
             [75],
             () => {
-                this.easyMode = !this.easyMode;
+                this.cycleDifficulty();
+                if (this.world) {
+                    applyDifficulty(this.world, this.difficulty);
+                }
+
                 prompt.text = text();
             },
         );
@@ -178,7 +188,7 @@ class Game {
         let startTime = this.age;
         let missionStartTime = this.age;
         let totalDeaths = 0;
-        let wasEverEasy = false;
+        let lowestDifficultyIndex = 0;
         let promptedEasyMode = false;
         let missionFailures = 0;
 
@@ -209,6 +219,8 @@ class Game {
 
                 const levelPromise = level(this.world);
 
+                applyDifficulty(this.world, this.difficulty);
+
                 // Force camera to update
                 const camera = firstItem(this.world.bucket('camera'));
                 camera.cycle(2);
@@ -218,7 +230,6 @@ class Game {
                 if (attemptIndex++ === 0) {
                     await this.titleScreen();
                     startTime = this.age;
-                    wasEverEasy = false;
                     startTime = this.age;
 
                     playSong();
@@ -253,16 +264,15 @@ class Game {
 
                 this.world.add(new ProgressIndicator(() => {
                     const player = firstItem(this.world.bucket('player'));
-                    if (player) player.simplifiedPhysics = this.easyMode;
 
-                    wasEverEasy = wasEverEasy || this.easyMode;
+                    lowestDifficultyIndex = min(lowestDifficultyIndex, DIFFICULTY_SETTINGS.indexOf(this.difficulty));
 
                     return [
                         [nomangle('MISSION'), `${levelIndex + 1}/${levels.length}`],
                         [nomangle('PRISONERS'), (player ? player.rescuedPrisoners : 0) + '/' + missionPrisoners],
                         [nomangle('TIME'), formatTime(this.age - missionStartTime)],
                         [nomangle('OVERALL'), formatTime(this.age - startTime)],
-                        [nomangle('DIFFICULTY [K]'), this.easyMode ? nomangle('EASY') : nomangle('NORMAL')],
+                        [nomangle('DIFFICULTY [K]'), this.difficulty[0]],
                     ];
                 }));
 
@@ -294,10 +304,10 @@ class Game {
                 await new Promise(resolve => setTimeout(resolve, 250));
                 await this.missionFailed();
 
-                if (missionFailures % 5 === 0 && !this.easyMode && !promptedEasyMode) {
+                if (missionFailures % 5 === 0 && this.difficulty === DIFFICULTY_NORMAL && !promptedEasyMode) {
                     promptedEasyMode = true;
                     if (confirm(nomangle('Enable easy mode? (simplified physics, less aggressive enemies)'))) {
-                        this.easyMode = true;
+                        this.difficulty = DIFFICULTY_EASY;
                     }
                 }
             }
@@ -311,7 +321,7 @@ class Game {
 
         await this.runRecap([
             [nomangle('TOTAL TIME'), formatTime(this.age - startTime)],
-            [nomangle('DIFFICULTY'), wasEverEasy ? nomangle('EASY') : nomangle('NORMAL')],
+            [nomangle('DIFFICULTY'), DIFFICULTY_SETTINGS[lowestDifficultyIndex][0]],
             [nomangle('RESCUED PRISONERS'), `${totalRescuedPrisoners}/${totalPrisoners}`],
             [nomangle('CRASHES'), `${totalDeaths}`],
             ['', ''],

@@ -3,6 +3,8 @@ class EnemyChopper extends Chopper {
     constructor() {
         super(-1);
 
+        this.buckets.push('enemy-chopper');
+
         this.reachedTarget = false;
         this.path = [];
 
@@ -45,13 +47,12 @@ class EnemyChopper extends Chopper {
         this.controls.left = false;
         this.controls.right = false;
 
-        const player = firstItem(this.world.bucket('player'));
-        this.shotInterval = player.simplifiedPhysics ? 6 : 3;
-
         const target = this.path[0]
         if (!target) return;
 
         const distToTarget = dist(target, this);
+
+        console.log(this.shotInterval);
 
         if (distToTarget > 10) {
             const future = this.futurePosition();

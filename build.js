@@ -122,6 +122,7 @@ compiler.run((tasks) => {
                 'input/mouse.js',
                 'input/touch.js',
 
+                'difficulty.js',
                 'game.js',
                 'levels.js',
                 'social.js',

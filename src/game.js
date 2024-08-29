@@ -198,6 +198,15 @@ class Game {
 
             const level = levels[levelIndex];
             try {
+                const settings = [
+                    sunset,
+                    daytime,
+                    night,
+                ];
+
+                const setting = settings[~~(levelIndex / 2) % settings.length];
+                this.world.add(...setting());
+
                 const levelPromise = level(this.world);
 
                 // Force camera to update
@@ -226,7 +235,7 @@ class Game {
 
                             const exposition = new Exposition([
                                 COUNTRIES[levelIndex % COUNTRIES.length],
-                                MONTHS[levelIndex % MONTHS.length] + ' ' + ((levelIndex * 7) % 28) + ', ' + (2017 + ~~(levelIndex / 2)),
+                                MONTHS[levelIndex % MONTHS.length] + ' ' + (1 + (levelIndex * 7) % 27) + ', ' + (2017 + ~~(levelIndex / 2)),
                             ]);
                             this.world.add(exposition);
 

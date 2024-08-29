@@ -103,12 +103,12 @@ water = (world, y) => {
 landingObstacle = (world, x, y, length = 100) => {
     const obstacle = new Obstacle();
     obstacle.points = [
-        {x: x - length, y: y + 2000},
-        {x: x - length / 2 - 50, y: y - 10},
-        {x: x - length / 2, y},
-        {x: x + length / 2, y},
-        {x: x + length / 2 + 50, y: y - 10},
-        {x: x + length, y: y + 2000},
+        { x: x - length, y: y + 2000 },
+        { x: x - length / 2 - 50, y: y - 10 },
+        { x: x - length / 2, y },
+        { x: x + length / 2, y },
+        { x: x + length / 2 + 50, y: y - 10 },
+        { x: x + length, y: y + 2000 },
     ];
     world.add(obstacle);
 
@@ -120,7 +120,7 @@ sinePoints = (world, points, startX, endX, minY, maxY, periodCount) => {
     const length = endX - startX;
     const amplitude = maxY - minY;
 
-    for (let x = startX ; x <= endX ; x += 100)  {
+    for (let x = startX; x <= endX; x += 100) {
         points.push({
             x: x,
             y: minY + amplitude / 2
@@ -152,7 +152,7 @@ ceiling = (world, startX, endX, minY, maxY, periodCount = 1) => {
 }
 
 tutorialFly = (world) => {
-    world.add(...sunset());
+
 
     const player = spawn(world, 0);
     setTarget(world, 1000);
@@ -178,7 +178,7 @@ tutorialFly = (world) => {
 }
 
 firstMountain = (world) => {
-    world.add(...sunset());
+
     spawn(world, 0);
     mountain(world, 500, 2500, -200, 200, 1);
     ceiling(world, 2700, 3500, -400, -300, 2);
@@ -191,7 +191,7 @@ firstMountain = (world) => {
 };
 
 mountainThenCeiling = (world) => {
-    world.add(...sunset());
+
     spawn(world, 0);
 
     mountain(world, 500, 2500, -200, 200, 1);
@@ -216,7 +216,7 @@ mountainThenCeiling = (world) => {
 };
 
 tutorialShoot = (world) => {
-    world.add(...sunset());
+
     spawn(world, 0);
     mountain(world, 500, 2500, -150, 100, 1.5);
     mountain(world, 2700, 3000, 0, 200, 2);
@@ -248,7 +248,7 @@ tutorialShoot = (world) => {
 
 
 caveThenCeiling = (world) => {
-    world.add(...sunset());
+
     spawn(world, 0);
     mountain(world, 500, 2000, -200, 200, 0.5);
     ceiling(world, 400, 1500, -500, -200, 0.5);
@@ -272,7 +272,7 @@ caveThenCeiling = (world) => {
 };
 
 lowCeiling = (world) => {
-    world.add(...sunset());
+
     spawn(world, 0);
 
     ceiling(world, 500, 1500, -200, 100, 0.5);
@@ -303,7 +303,6 @@ lowCeiling = (world) => {
 }
 
 hardMountains = (world) => {
-    world.add(...sunset());
     spawn(world, 0);
     ceiling(world, -200, 600, -300, -400, 2.2);
     mountain(world, 500, 4500, -200, 200, 2);
@@ -329,7 +328,6 @@ hardMountains = (world) => {
 }
 
 smallMountainSuccession = world => {
-    world.add(...sunset());
     spawn(world, 0);
     mountain(world, 500, 1000, 0, 200, 2);
     ceiling(world, 900, 1500, -400, -500, 2);
@@ -360,7 +358,6 @@ smallMountainSuccession = world => {
 }
 
 nightMountains = (world) => {
-    world.add(...night());
     spawn(world, 0, 0);
     mountain(world, 500, 2500, -300, 0, 1);
     ceiling(world, 2700, 3800, -400, 0, 2);
@@ -388,7 +385,6 @@ nightMountains = (world) => {
 };
 
 upAndDown = (world) => {
-    world.add(...night());
     spawn(world, 0);
     mountain(world, 500, 1000, 0, 200, 2);
     ceiling(world, 900, 1500, -500, -300, 2);
@@ -415,7 +411,6 @@ upAndDown = (world) => {
 }
 
 mountainChopperCeilingChopper = (world) => {
-    world.add(...sunset());
     spawn(world, 0);
     mountain(world, 500, 1000, -400, 200, 1);
     ceiling(world, 2000, 3400, -200, 150, 1);
@@ -447,7 +442,6 @@ mountainChopperCeilingChopper = (world) => {
 }
 
 tightSqueezes = (world) => {
-    world.add(...daytime());
     spawn(world, 0);
 
     ceiling(world, 500, 1000, 0, 150, 1);

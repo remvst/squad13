@@ -76,6 +76,7 @@ class Chopper extends Entity {
 
         this.lockedTarget = null;
         this.lockedTargetFactor = 0;
+        this.lockedTargetTime = 0;
         this.lockedTargetAcquireAngle = PI / 8;
         this.lockedTargetKeepAngle = PI / 4;
 
@@ -174,6 +175,12 @@ class Chopper extends Entity {
                 1,
                 this.lockedTargetFactor + elapsed,
             );
+        }
+
+        if (this.lockedTargetFactor >= 1) {
+            this.lockedTargetTime += elapsed;
+        } else {
+            this.lockedTargetTime = 0;
         }
 
         // Shooting

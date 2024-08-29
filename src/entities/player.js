@@ -90,7 +90,44 @@ class Player extends Chopper {
     }
 
     render(camera) {
-        super.render(camera);
+        // Target lock on indicator
+        ctx.wrap(() => {
+            if (!this.lockedTarget) return;
+
+            if (this.lockedTargetFactor >= 1 && this.lockedTargetTime < 1 && (this.lockedTargetTime / 0.2 % 1) < 0.5) {
+                return;
+            }
+
+            ctx.strokeStyle = ctx.fillStyle = this.lockedTargetFactor >= 1 ? '#f00' : '#ff0';
+            ctx.globalAlpha = interpolate(0, 0.2, this.lockedTargetFactor);
+            ctx.beginPath();
+            ctx.lineWidth = interpolate(40, 4, this.lockedTargetFactor);
+            ctx.moveTo(this.x, this.y);
+            ctx.lineTo(this.lockedTarget.x, this.lockedTarget.y);
+            ctx.stroke();
+
+            ctx.translate(this.lockedTarget.x, this.lockedTarget.y);
+
+            ctx.globalAlpha = this.lockedTargetFactor;
+            ctx.shadowColor = '#000';
+            ctx.shadowOffsetY = 2;
+
+            const s = interpolate(2, 1, this.lockedTargetFactor);
+            ctx.scale(s, s);
+
+            ctx.rotate(this.age * PI);
+
+            const radius = Math.max(this.lockedTarget.radius, 20);
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(0, 0, radius, 0, 2 * PI);
+            ctx.stroke();
+
+            for (let i = 0 ; i < 4 ; i++) {
+                ctx.rotate(PI / 2);
+                ctx.fillRect(radius - 5, 0, 10, 2);
+            }
+        });
 
         // Ladder
         ctx.wrap(() => {
@@ -104,29 +141,6 @@ class Player extends Chopper {
             }
         });
 
-        // Target lock on indicator
-        ctx.wrap(() => {
-            if (!this.lockedTarget) return;
-
-            ctx.translate(this.lockedTarget.x, this.lockedTarget.y);
-
-            const s = interpolate(2, 1, this.lockedTargetFactor);
-            ctx.scale(s, s);
-
-            ctx.globalAlpha = this.lockedTargetFactor;
-
-            ctx.rotate(this.age * PI);
-
-            const radius = Math.max(this.lockedTarget.radius, 20);
-            ctx.strokeStyle = ctx.fillStyle = '#ff0';
-            ctx.beginPath();
-            ctx.arc(0, 0, radius, 0, 2 * PI);
-            ctx.stroke();
-
-            for (let i = 0 ; i < 4 ; i++) {
-                ctx.rotate(PI / 2);
-                ctx.fillRect(radius - 5, 0, 10, 2);
-            }
-        });
+        super.render(camera);
     }
 }

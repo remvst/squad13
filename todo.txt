@@ -1,7 +1,2 @@
-- More levels
-- nomangle strings
-- redo preview screenshot (include enemies)
-- mute soundtrack?
-- Add daytime to a couple extra levels
-- Add "LOCKED!" label to locked targets
+- 13th level
 - Hard mode (no shooting, inverted X, lethal missiles)

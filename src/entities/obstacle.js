@@ -10,50 +10,6 @@ class Obstacle extends Entity {
     get minX() { return this.points[0].x; }
     get maxX() { return this.points[this.points.length - 1].x; }
 
-    static landingObstacle(x, y, length) {
-        const obstacle = new Obstacle();
-        obstacle.points = [
-            {x: x - length, y: y + 2000},
-            {x: x - length / 2 - 50, y: y - 10},
-            {x: x - length / 2, y},
-            {x: x + length / 2, y},
-            {x: x + length / 2 + 50, y: y - 10},
-            {x: x + length, y: y + 2000},
-        ];
-        return obstacle;
-    }
-
-    static sinePoints(points, startX, endX, minY, maxY, periodCount = 1) {
-        const length = endX - startX;
-        const amplitude = maxY - minY;
-
-        for (let x = startX ; x <= endX ; x += 100)  {
-            points.push({
-                x: x,
-                y: minY + amplitude / 2
-                    + sin(x / length * PI * 2 * periodCount) * amplitude / 2
-                    + sin(x / length * PI * 2 * periodCount * 4) * amplitude / 4,
-            });
-        }
-    }
-
-    static mountain(startX, endX, minY, maxY, periodCount = 1) {
-        const obstacle = new Obstacle();
-        obstacle.points.push({ x: startX - 100, y: maxY + 2000 });
-        this.sinePoints(obstacle.points, startX, endX, minY, maxY, periodCount);
-        obstacle.points.push({ x: endX + 100, y: maxY + 2000 });
-        return obstacle;
-    }
-
-    static ceiling(startX, endX, minY, maxY, periodCount = 1) {
-        const obstacle = new Obstacle();
-        obstacle.directionY = -1;
-        obstacle.points.push({ x: startX - 100, y: maxY - 2000 });
-        this.sinePoints(obstacle.points, startX, endX, minY, maxY, periodCount);
-        obstacle.points.push({ x: endX + 100, y: maxY - 2000 });
-        return obstacle;
-    }
-
     pushVertically(hitbox) {
         let i = 0;
         while (this.points[i] && this.points[i].x < hitbox.x) {

@@ -5,8 +5,6 @@ class Water extends Entity {
         this.buckets.push('water');
         this.y = y;
 
-
-
         const amplitude = 10;
         this.patterns = [0.8, 1].map(factor => {
             const color = multiplyColor('#27c6dc', factor);

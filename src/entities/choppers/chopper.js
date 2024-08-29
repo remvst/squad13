@@ -216,6 +216,17 @@ class Chopper extends Entity {
         for (const water of this.world.bucket('water')) {
             if (this.y >= water.y) {
                 crashed = true;
+
+                for (let i = 0 ; i < 20 ; i++) {
+                    this.world.add(new Fireball(
+                        this.x + rnd(-20, 20),
+                        this.y + rnd(-20, 20),
+                        -rnd(PI / 4, PI * 3 / 4),
+                        rnd(400, 600),
+                        ['#27c6dc'],
+                    ));
+                }
+
             }
         }
 

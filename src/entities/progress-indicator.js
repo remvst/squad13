@@ -7,8 +7,8 @@ class ProgressIndicator extends Entity {
 
     render(camera) {
         ctx.translate(~~camera.x + CANVAS_WIDTH / 2 - 50, ~~camera.y - CANVAS_HEIGHT / 2 + 50);
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'top';
+        ctx.textAlign = nomangle('right');
+        ctx.textBaseline = nomangle('top');
         ctx.shadowColor = '#000';
         ctx.shadowOffsetY = 2;
         ctx.fillStyle = '#fff';
@@ -19,7 +19,7 @@ class ProgressIndicator extends Entity {
 
         let y = 0;
         for (const [label, value] of this.labels()) {
-            ctx.font = '14pt Courier';
+            ctx.font = nomangle('14pt Courier');
             ctx.fillText(label, 0, y);
             y += 20;
 

@@ -1,9 +1,14 @@
 let TOUCHES = [];
 
-updateTouches = (touches) => {
+updateTouches = (event) => {
+    inputMode = INPUT_MODE_TOUCH;
+
     TOUCHES = [];
 
-    for (const touch of touches) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    for (const touch of event.touches) {
         TOUCHES.push({});
         getEventPosition(touch, can, TOUCHES[TOUCHES.length - 1]);
     }
@@ -11,18 +16,6 @@ updateTouches = (touches) => {
 
 document.addEventListener('touchstart', {}); // iOS Safari touches fix in iframes
 
-ontouchstart = (event) => {
-    inputMode = INPUT_MODE_TOUCH;
-    event.preventDefault();
-    updateTouches(event.touches);
-};
-
-ontouchmove = (event) => {
-    event.preventDefault();
-    updateTouches(event.touches);
-};
-
-ontouchend = (event) => {
-    event.preventDefault();
-    updateTouches(event.touches);
-};
+ontouchstart = updateTouches;
+ontouchmove = updateTouches;
+ontouchend = updateTouches;

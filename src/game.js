@@ -227,7 +227,7 @@ class Game {
                             this.world.add(exposition);
 
                             await exposition.complete();
-                            await exposition.agesBy(1);
+                            await exposition.agesBy(2);
                             exposition.world.remove(exposition);
                         })();
                     }

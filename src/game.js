@@ -354,6 +354,7 @@ class Game {
     }
 
     cycle(elapsed) {
+        const before = performance.now();
         this.age += elapsed;
 
         if (!this.pauseWorld || !this.paused) {
@@ -366,6 +367,8 @@ class Game {
             this.pauseWorld.cycle(elapsed);
             this.pauseWorld.render();
         }
+
+        const after = performance.now();
 
         if (DEBUG) {
             ctx.fillStyle = '#fff';
@@ -380,6 +383,7 @@ class Game {
             let y = CANVAS_HEIGHT - 10;
             for (const line of [
                 nomangle('FPS: ') + ~~(1 / elapsed),
+                nomangle('FPS (theoretical): ') + ~~(1000 / (after - before)),
                 nomangle('Entities: ') + this.world.entities.size,
                 nomangle('Player: ') + (player ? `${~~player.x},${~~player.y}` : ''),
             ].reverse()) {

@@ -155,6 +155,7 @@ compiler.run((tasks) => {
                     "finally",
                     "padStart",
                     "start",
+                    "repeat",
                 ],
                 "force": [
                     "a",

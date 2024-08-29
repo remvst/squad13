@@ -182,7 +182,11 @@ class Game {
         let promptedEasyMode = false;
         let missionFailures = 0;
 
-        const totalPrisoners = 0;
+        const totalPrisoners = levels.reduce((sum, level) => {
+            const world = new World();
+            level(world);
+            return sum + Array.from(world.bucket('prisoner')).length;
+        }, 0);
         let totalRescuedPrisoners = 0;
 
         while (levelIndex < levels.length) {

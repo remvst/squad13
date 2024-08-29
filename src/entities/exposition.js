@@ -1,7 +1,7 @@
 class Exposition extends Entity {
     constructor(lines) {
         super();
-        this.lines = lines.map(l => l + '           ');
+        this.lines = lines.map(l => l + '                  ');
         this.text = this.lines.join('\n');
         this.totalChars = this.lines.reduce((acc, line) => acc + line.length, 0);
 
@@ -53,13 +53,14 @@ class Exposition extends Entity {
                     k++;
                 }
 
+                const addedWord = line.slice(i, k + 1);
+                const addedWordWidth = ctx.measureText(addedWord).width;
                 if (k > i) {
-                    const addedWord = line.slice(i, k + 1);
-                    const addedWordWidth = ctx.measureText(addedWord).width;
+                    // const addedWord = line.slice(i, k + 1);
 
                     if (addedWordWidth + currentLineWidth < availableWidth) {
                         // The word fits, keep building the current line
-                        currentLine = currentLine + addedWord;
+                        currentLine += addedWord;
                         currentLineWidth += addedWordWidth;
                     } else {
                         // The word doesn't fit, add the current line and start a new one
@@ -67,6 +68,9 @@ class Exposition extends Entity {
                         currentLine = addedWord;
                         currentLineWidth = addedWordWidth;
                     }
+                } else {
+                    currentLine += addedWord;
+                    currentLineWidth += addedWordWidth;
                 }
 
                 i = k + 1;

@@ -38,20 +38,20 @@ class Game {
         index = (index - 1 + DIFFICULTY_SETTINGS.length) % DIFFICULTY_SETTINGS.length;
         this.difficulty = DIFFICULTY_SETTINGS[index];
 
-        if (this.difficultyExposition) {
-            this.difficultyExposition.world.remove(this.difficultyExposition);
+        for (const exposition of this.world.bucket('exposition')) {
+            exposition.world.remove(exposition);
         }
 
         if (!this.pauseWorld) {
             (async () => {
-                this.difficultyExposition = new Exposition([
+                const exposition = new Exposition([
                     nomangle('DIFFICULTY: ') + this.difficulty[0],
                 ]);
-                this.world.add(this.difficultyExposition);
+                this.world.add(exposition);
 
-                await this.difficultyExposition.complete();
-                await this.difficultyExposition.agesBy(2);
-                this.difficultyExposition.world.remove(this.difficultyExposition);
+                await exposition.complete();
+                await exposition.agesBy(2);
+                exposition.world.remove(exposition);
             })();
         }
     }
@@ -187,9 +187,9 @@ class Game {
 
     async gameLoop() {
         const levels = [
-            // tutorialFly,
-            // firstMountain,
-            // mountainThenCeiling,
+            tutorialFly,
+            firstMountain,
+            mountainThenCeiling,
             tutorialShoot,
             caveThenCeiling,
             lowCeiling,

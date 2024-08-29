@@ -1,6 +1,7 @@
 class Exposition extends Entity {
     constructor(lines, skippable) {
         super();
+        this.buckets.push('exposition');
         this.lines = lines;
         this.text = this.lines.join('\n');
         this.totalChars = this.lines.reduce((acc, line) => acc + line.length, 0);

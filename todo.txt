@@ -3,3 +3,5 @@
 - redo preview screenshot (include enemies)
 - mute soundtrack?
 - Add daytime to a couple extra levels
+- Add "LOCKED!" label to locked targets
+- Hard mode

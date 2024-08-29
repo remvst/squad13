@@ -314,7 +314,18 @@ class Game {
             [nomangle('DIFFICULTY'), wasEverEasy ? nomangle('EASY') : nomangle('NORMAL')],
             [nomangle('RESCUED PRISONERS'), `${totalRescuedPrisoners}/${totalPrisoners}`],
             [nomangle('CRASHES'), `${totalDeaths}`],
-        ]);
+            ['', ''],
+        ], [
+            nomangle(`I finished SQUAD 13 in `),
+            formatTime(this.age - startTime),
+            nomangle(' after crashing '),
+            totalDeaths,
+            nomangle(' times and rescued '),
+            totalRescuedPrisoners,
+            '/',
+            totalPrisoners,
+            ' prisoners!',
+        ].join(''));
     }
 
     async exposition() {
@@ -362,7 +373,7 @@ class Game {
         this.pauseWorld = null;
     }
 
-    async runRecap(recap) {
+    async runRecap(recap, tweetText) {
         this.pauseWorld = new World();
         this.paused = true;
 
@@ -381,6 +392,13 @@ class Game {
                 [32],
                 () => promptSet.world.remove(promptSet),
             ),
+            inputMode != INPUT_MODE_TOUCH
+                ? new StartPrompt(
+                    nomangle('PRESS [T] TO TWEET YOUR SCORE'),
+                    [84],
+                    () => tweet(tweetText),
+                )
+                : null
         ])
 
         this.pauseWorld.add(title, promptSet);

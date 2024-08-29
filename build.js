@@ -124,6 +124,7 @@ compiler.run((tasks) => {
 
                 'game.js',
                 'levels.js',
+                'social.js',
                 'index.js',
             ].filter(file => !!file).map(file => 'src/' + file)),
             tasks.concat(),

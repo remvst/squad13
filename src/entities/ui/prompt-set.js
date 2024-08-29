@@ -12,7 +12,7 @@ class PromptSet extends Entity {
     }
 
     render(camera) {
-        ctx.translate(camera.x, camera.y + CANVAS_HEIGHT / 5);
+        ctx.translate(camera.x, camera.y + 100);
 
         if (inputMode === INPUT_MODE_TOUCH) {
             ctx.scale(2, 2);

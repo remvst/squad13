@@ -73,8 +73,6 @@ compiler.run((tasks) => {
                 'engine/entity.js',
                 'engine/world.js',
 
-                'entities/camera.js',
-
                 'entities/choppers/chopper.js',
                 'entities/choppers/player.js',
                 'entities/choppers/enemy-chopper.js',
@@ -92,7 +90,10 @@ compiler.run((tasks) => {
                 'entities/decoration/mountains.js',
                 'entities/decoration/rain.js',
 
+                'entities/camera.js',
                 'entities/missile.js',
+                'entities/transition.js',
+                'entities/condition.js',
 
                 'entities/human/human.js',
                 'entities/human/rebel.js',
@@ -107,7 +108,6 @@ compiler.run((tasks) => {
                 'entities/ui/progress-indicator.js',
                 'entities/ui/mobile-controls.js',
 
-                'entities/transition.js',
 
                 'graphics/wrap.js',
                 'graphics/create-canvas.js',

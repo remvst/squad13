@@ -3,6 +3,11 @@ sunset = () => ([
     new Sun('#faf857'),
     new Mountains('#fa7f02'),
 ])
+daytime = () => ([
+    new Background('#51ccfc', '#c2e9fc'),
+    new Sun('#faf857'),
+    new Mountains('#c2e9fc'),
+])
 night = () => ([
     // new Background('#01010a', '#092644'),
     new Background('#092644', '#01010a'),

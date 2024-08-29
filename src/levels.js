@@ -26,6 +26,9 @@ spawn = (world, x, y = 100) => {
     player.y = landing.yAt(player.x) - 20;
     world.add(player);
 
+    const camera = firstItem(world.bucket('camera'));
+    camera.minX = min(camera.minX, x - 300);
+
     return player;
 }
 setTarget = (world, x) => {
@@ -92,11 +95,15 @@ prisoner = (world, x) => {
     }
 }
 
+water = (world, y) => {
+    const camera = firstItem(world.bucket('camera'));
+    world.add(new Water(y));
+    camera.maxY = max(camera.maxY, y + 300);
+}
+
 tutorialFly = (world) => {
     const camera = firstItem(world.bucket('camera'));
-    camera.minX = -300;
     camera.minY = -500;
-    camera.maxY = 500;
 
     world.add(...sunset());
 
@@ -105,7 +112,7 @@ tutorialFly = (world) => {
     const player = spawn(world, 0);
     setTarget(world, 1000);
 
-    world.add(new Water(400));
+    water(world, 400);
 
     const upInstruction = new Instruction('');
     upInstruction.y = -200;
@@ -127,9 +134,7 @@ tutorialFly = (world) => {
 
 firstMountain = (world) => {
     const camera = firstItem(world.bucket('camera'));
-    camera.minX = -300;
     camera.minY = -500;
-    camera.maxY = 500;
 
     world.add(...sunset());
     spawn(world, 0);
@@ -138,16 +143,14 @@ firstMountain = (world) => {
 
     setTarget(world, 3000);
 
-    world.add(new Water(400));
+    water(world, 400);
 
     return promise(world)
 };
 
 mountainThenCeiling = (world) => {
     const camera = firstItem(world.bucket('camera'));
-    camera.minX = -300;
     camera.minY = -500;
-    camera.maxY = 500;
 
     world.add(...sunset());
     spawn(world, 0);
@@ -159,7 +162,7 @@ mountainThenCeiling = (world) => {
 
     setTarget(world, 6500);
 
-    world.add(new Water(400));
+    water(world, 400);
 
     const rescueInstruction = new Instruction(nomangle('PRISONERS CAN BE RESCUED'));
     rescueInstruction.x = 500;
@@ -175,9 +178,7 @@ mountainThenCeiling = (world) => {
 
 tutorialShoot = (world) => {
     const camera = firstItem(world.bucket('camera'));
-    camera.minX = -300;
     camera.minY = -500;
-    camera.maxY = 500;
 
     world.add(...sunset());
     spawn(world, 0);
@@ -188,7 +189,7 @@ tutorialShoot = (world) => {
 
     setTarget(world, 3500);
 
-    world.add(new Water(400));
+    water(world, 400);
 
     for (const x of [800, 850, 1500, 2300]) {
         rebel(world, x);
@@ -212,9 +213,7 @@ tutorialShoot = (world) => {
 
 caveThenCeiling = (world) => {
     const camera = firstItem(world.bucket('camera'));
-    camera.minX = -300;
     camera.minY = -500;
-    camera.maxY = 500;
 
     world.add(...sunset());
     spawn(world, 0);
@@ -226,7 +225,7 @@ caveThenCeiling = (world) => {
 
     setTarget(world, 4000);
 
-    world.add(new Water(400));
+    water(world, 400);
 
     for (const x of [650, 1200, 1750, 1850, 2650]) {
         rebel(world, x);
@@ -241,9 +240,7 @@ caveThenCeiling = (world) => {
 
 lowCeiling = (world) => {
     const camera = firstItem(world.bucket('camera'));
-    camera.minX = -300;
     camera.minY = -500;
-    camera.maxY = 500;
 
     world.add(...sunset());
     spawn(world, 0);
@@ -259,7 +256,7 @@ lowCeiling = (world) => {
 
     setTarget(world, 4500);
 
-    world.add(new Water(400));
+    water(world, 400);
 
     for (const x of [1450, 2050, 2650, 4050]) {
         rebel(world, x);
@@ -278,9 +275,7 @@ lowCeiling = (world) => {
 
 hardMountains = (world) => {
     const camera = firstItem(world.bucket('camera'));
-    camera.minX = -300;
     camera.minY = -500;
-    camera.maxY = 500;
 
     world.add(...sunset());
     spawn(world, 0);
@@ -294,7 +289,7 @@ hardMountains = (world) => {
 
     setTarget(world, 5500);
 
-    world.add(new Water(400));
+    water(world, 400);
 
     for (const x of [1000, 1900, 2050, 2500, 3000, 3500, 4400, 4200]) {
         rebel(world, x);
@@ -309,9 +304,7 @@ hardMountains = (world) => {
 
 smallMountainSuccession = world => {
     const camera = firstItem(world.bucket('camera'));
-    camera.minX = -300;
     camera.minY = -500;
-    camera.maxY = 500;
 
     world.add(...sunset());
     spawn(world, 0);
@@ -326,7 +319,7 @@ smallMountainSuccession = world => {
 
     setTarget(world, 4000);
 
-    world.add(new Water(400));
+    water(world, 400);
 
     for (const x of [850, 1600, 1850, 2580, 2880, 3350, 3450]) {
         rebel(world, x)
@@ -345,9 +338,7 @@ smallMountainSuccession = world => {
 
 nightMountains = (world) => {
     const camera = firstItem(world.bucket('camera'));
-    camera.minX = -300;
     camera.minY = -800;
-    camera.maxY = 500;
 
     world.add(...night());
     spawn(world, 0, 0);
@@ -359,7 +350,7 @@ nightMountains = (world) => {
 
     setTarget(world, 5000);
 
-    world.add(new Water(400));
+    water(world, 400);
 
     enemyChopper(world, [
         { x: 2000, y: -500 },
@@ -378,9 +369,7 @@ nightMountains = (world) => {
 
 upAndDown = (world) => {
     const camera = firstItem(world.bucket('camera'));
-    camera.minX = -300;
     camera.minY = -500;
-    camera.maxY = 500;
 
     world.add(...night());
     spawn(world, 0);
@@ -396,7 +385,7 @@ upAndDown = (world) => {
 
     setTarget(world, 4500);
 
-    world.add(new Water(400));
+    water(world, 400);
 
     for (const x of [850, 1600, 1850, 2600, 2900, 3350, 3450, 3900]) {
         rebel(world, x)
@@ -410,9 +399,7 @@ upAndDown = (world) => {
 
 mountainChopperCeilingChopper = (world) => {
     const camera = firstItem(world.bucket('camera'));
-    camera.minX = -300;
     camera.minY = -500;
-    camera.maxY = 500;
 
     world.add(...sunset());
     spawn(world, 0);
@@ -440,16 +427,14 @@ mountainChopperCeilingChopper = (world) => {
         { x: 4200, y: 200 },
     ]);
 
-    world.add(new Water(400));
+    water(world, 400);
 
     return promise(world);
 }
 
 tightSqueezes = (world) => {
     const camera = firstItem(world.bucket('camera'));
-    camera.minX = -300;
     camera.minY = -700;
-    camera.maxY = 700;
 
     world.add(...daytime());
     spawn(world, 0);
@@ -488,7 +473,7 @@ tightSqueezes = (world) => {
         { x: 4400, y: -150 },
     ]);
 
-    world.add(new Water(600));
+    water(world, 600);
 
     return promise(world);
 };

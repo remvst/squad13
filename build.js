@@ -35,6 +35,8 @@ const CONSTANTS = {
     "const": "let",
     "null": 0,
 
+    "PERSPECTIVE": 50,
+
     "SONG_VOLUME": 0.3,
 
     "SCREENSHOT": 0,
@@ -69,6 +71,7 @@ compiler.run((tasks) => {
                 'util/format-time.js',
                 'util/rng.js',
                 'util/explosion.js',
+                'util/perspective.js',
 
                 'engine/entity.js',
                 'engine/world.js',

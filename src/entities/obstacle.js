@@ -129,19 +129,70 @@ class Obstacle extends Entity {
     }
 
     render(camera) {
-        if (camera.x + CANVAS_WIDTH / 2 < this.minX) return;
-        if (camera.x - CANVAS_WIDTH / 2 > this.maxX) return;
+        if (camera.x + CANVAS_WIDTH / 2 < this.minX - 50) return;
+        if (camera.x - CANVAS_WIDTH / 2 > this.maxX + 50) return;
+
+        ctx.wrap(() => {
+            ctx.fillStyle = ctx.strokeStyle = '#111';
+            ctx.miterLimit = 1;
+
+            for (let i = 1 ; i < this.points.length ; i++) {
+                const prevPoint = this.points[i - 1];
+                const point = this.points[i];
+
+                applyPerspective(camera, prevPoint, 1, PERSPECTIVE_OUT1);
+                applyPerspective(camera, point, 1, PERSPECTIVE_OUT2);
+
+                ctx.beginPath();
+                ctx.lineTo(prevPoint.x, prevPoint.y);
+                ctx.lineTo(point.x, point.y);
+                ctx.lineTo(PERSPECTIVE_OUT2.x, PERSPECTIVE_OUT2.y);
+                ctx.lineTo(PERSPECTIVE_OUT1.x, PERSPECTIVE_OUT1.y);
+                ctx.fill();
+                ctx.stroke();
+            }
+
+            // if (this.directionY > 0) {
+            //     ctx.lineTo(this.points[this.points.length - 1].x, camera.maxY);
+            //     ctx.lineTo(this.points[0].x, camera.maxY);
+            // } else {
+            //     ctx.lineTo(this.points[this.points.length - 1].x, camera.minY);
+            //     ctx.lineTo(this.points[0].x, camera.minY);
+            // }
+
+            // ctx.fill();
+        });
+
+        // ctx.wrap(() => {
+        //     ctx.fillStyle = '#000';
+        //     ctx.beginPath();
+
+        //     let maxY = this.points[0].y;
+        //     let minY = maxY;
+        //     for (const point of this.points) {
+        //         ctx.lineTo(point.x, point.y);
+        //         maxY = max(maxY, point.y + 100);
+        //         minY = min(minY, point.y - 100);
+        //     }
+
+        //     if (this.directionY > 0) {
+        //         ctx.lineTo(this.points[this.points.length - 1].x, camera.maxY);
+        //         ctx.lineTo(this.points[0].x, camera.maxY);
+        //     } else {
+        //         ctx.lineTo(this.points[this.points.length - 1].x, camera.minY);
+        //         ctx.lineTo(this.points[0].x, camera.minY);
+        //     }
+
+        //     ctx.fill();
+        // });
 
         ctx.wrap(() => {
             ctx.fillStyle = '#000';
             ctx.beginPath();
 
-            let maxY = this.points[0].y;
-            let minY = maxY;
             for (const point of this.points) {
-                ctx.lineTo(point.x, point.y);
-                maxY = max(maxY, point.y + 100);
-                minY = min(minY, point.y - 100);
+                applyPerspective(camera, point, 1, PERSPECTIVE_OUT2);
+                ctx.lineTo(PERSPECTIVE_OUT2.x, PERSPECTIVE_OUT2.y);
             }
 
             if (this.directionY > 0) {

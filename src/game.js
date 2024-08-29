@@ -261,7 +261,7 @@ class Game {
                 missionFailures++;
                 console.log(err);
 
-                await new Promise(resolve => setTimeout(resolve, 500));
+                await new Promise(resolve => setTimeout(resolve, 250));
                 await this.missionFailed();
 
                 if (missionFailures % 5 === 0 && !this.easyMode && !promptedEasyMode) {

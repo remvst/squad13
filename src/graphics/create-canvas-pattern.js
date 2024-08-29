@@ -1,6 +1,6 @@
 createCanvasPattern = (patternWidth, patternHeight, instructions) => {
     const x = createCanvas(patternWidth, patternHeight, instructions);
-    const pattern = x.getContext('2d').createPattern(x, 'repeat');
+    const pattern = x.getContext('2d').createPattern(x, nomangle('repeat'));
 
     // Add some extra properties (background rendering needs to know the size of patterns)
     pattern.width = patternWidth;

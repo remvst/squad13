@@ -1,7 +1,7 @@
 class Exposition extends Entity {
     constructor(lines) {
         super();
-        this.lines = lines;
+        this.lines = lines.map(l => l + '           ');
         this.text = this.lines.join('\n');
         this.totalChars = this.lines.reduce((acc, line) => acc + line.length, 0);
 
@@ -39,35 +39,43 @@ class Exposition extends Entity {
     calculateLines(availableWidth) {
         const newLines = [];
 
-        console.log(this.lines);
-
         ctx.font = '18pt Courier';
 
         for (const line of this.lines) {
-            let addedLine;
-            let candidateStart = 0;
-            for (let k = 0 ; k <= line.length ; k++) {
-                if (k === line.length || line.charAt(k) === ' ') {
-                    const candidate = line.slice(candidateStart, k);
-                    const candidateWidth = ctx.measureText(candidate).width;
+            let currentLine = '';
+            let currentLineWidth = 0;
 
-                    if (candidateWidth < availableWidth) {
-                        addedLine = candidate;
+            let i = 0;
+            while (i < line.length) {
+                let k = i;
+
+                while (k < line.length && line.charAt(k) !== ' ') {
+                    k++;
+                }
+
+                if (k > i) {
+                    const addedWord = line.slice(i, k + 1);
+                    const addedWordWidth = ctx.measureText(addedWord).width;
+
+                    if (addedWordWidth + currentLineWidth < availableWidth) {
+                        // The word fits, keep building the current line
+                        currentLine = currentLine + addedWord;
+                        currentLineWidth += addedWordWidth;
                     } else {
-                        if (addedLine) {
-                            newLines.push(addedLine);
-                        }
-                        candidateStart = candidateStart + addedLine.length + 1;
-                        addedLine = line.slice(candidateStart, k);
+                        // The word doesn't fit, add the current line and start a new one
+                        newLines.push(currentLine);
+                        currentLine = addedWord;
+                        currentLineWidth = addedWordWidth;
                     }
                 }
+
+                i = k + 1;
             }
 
-            if (candidateStart < line.length - 1) {
-                newLines.push(line.slice(candidateStart));
+            if (currentLine.length) {
+                newLines.push(currentLine);
             }
         }
-
 
         return newLines;
     }
@@ -85,12 +93,12 @@ class Exposition extends Entity {
         ctx.textAlign = nomangle('left');
         ctx.textBaseline = nomangle('middle');
 
-        let y = CANVAS_HEIGHT / 2 - (this.lines.length * 50) / 2;
-
         if (this.computedLinesCanvasWidth !== CANVAS_WIDTH) {
             this.computedLinesCanvasWidth = CANVAS_WIDTH;
             this.computedLines = this.calculateLines(CANVAS_WIDTH - 100);
         }
+
+        let y = CANVAS_HEIGHT / 2 - (this.computedLines.length * 50) / 2;
 
         let longestLine = 0;
 

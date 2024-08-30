@@ -254,7 +254,7 @@ class Chopper extends Entity {
         if (!landed) {
             if (this.controls.left) idealAngle = -PI / 4;
             if (this.controls.right) idealAngle = PI / 4;
-            if (this.controls.left || this.controls.right) angleVelocity = PI / 2;
+            if (this.controls.left || this.controls.right) angleVelocity = PI / 1.5;
         }
 
         if (this.age >= this.damagedEnd) {

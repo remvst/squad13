@@ -482,3 +482,51 @@ tightSqueezes = (world) => {
 
     return promise(world);
 };
+
+doubleChopperNonsense = (world) => {
+    spawn(world, 0);
+
+    mountain(world, 500, 1500, -200, 0, 1);
+    ceiling(world, 450, 1500, -600, -400, 1);
+
+    enemyChopper(world, [
+        { x: 1800, y: -300 },
+        { x: 1800, y: 200 },
+    ]);
+
+    enemyChopper(world, [
+        { x: 5150, y: -250 },
+        { x: 5500, y: -350 },
+    ]);
+
+    mountain(world, 1750, 2150, 400, 300, 1);
+    ceiling(world, 2650, 3400, 300, 200, 1);
+    ceiling(world, 1750, 2800, -750, -450, 4);
+    mountain(world, 2250, 2500, 500, 450, 0.5);
+    mountain(world, 3100, 3250, 550, 560, 1);
+    mountain(world, 3550, 4150, 500, 0, 1);
+    ceiling(world, 3600, 4200, -300, -500, 0.8);
+
+    ceiling(world, 4400, 5000, -400, -600, 0.8);
+    mountain(world, 4400, 4950, -200, -100, 0.7);
+    mountain(world, 5600, 5900, 500, 550, 0.7);
+
+    setTarget(world, 5500);
+
+    prisoner(world, 3150);
+    prisoner(world, 4100);
+    prisoner(world, 5800);
+
+    rebel(world, 710);
+    rebel(world, 1150);
+    rebel(world, 1800);
+    rebel(world, 2430);
+    rebel(world, 3700);
+    rebel(world, 3900);
+    rebel(world, 4550);
+    rebel(world, 4900);
+
+    water(world, 600);
+
+    return promise(world);
+}

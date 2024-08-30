@@ -196,6 +196,7 @@ class Game {
             mountainChopperCeilingChopper,
             hardMountains,
             tightSqueezes,
+            doubleChopperNonsense,
             smallMountainSuccession,
             nightMountains,
             upAndDown,

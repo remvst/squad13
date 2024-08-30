@@ -52,8 +52,6 @@ class EnemyChopper extends Chopper {
 
         const distToTarget = dist(target, this);
 
-        console.log(this.shotInterval);
-
         if (distToTarget > 10) {
             const future = this.futurePosition();
             this.controls.right = future.x < target.x - 10;

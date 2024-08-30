@@ -13,10 +13,10 @@ onresize = () => {
 
     if (inputMode === INPUT_MODE_TOUCH) {
         // Flip the aspect ratio if in portrait
-        if (innerHeight > innerWidth) {
-            const width = CANVAS_WIDTH;
+        if (windowWidth > windowHeight) {
+            const tmpWidth = CANVAS_WIDTH;
             CANVAS_WIDTH = CANVAS_HEIGHT
-            CANVAS_HEIGHT = width;
+            CANVAS_HEIGHT = tmpWidth;
         }
 
         // Adjust the ratio so we fill the screen

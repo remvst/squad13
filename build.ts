@@ -183,13 +183,20 @@ const MANGLE_PARAMS = {
 (async () => {
     await fs.rm('build/', { force: true, recursive: true });
 
+    console.log('Reading input...');
+    const html = await fs.readFile('src/index.html', 'utf-8');
+    const css = await fs.readFile('src/style.css', 'utf-8');
+
     const fileContents: string[] = [];
     for (const path of JS_FILES) {
         fileContents.push(await fs.readFile('src/' + path, 'utf-8'));
     }
 
-    let jsCode = fileContents.join('\n');
+    let jsCode = (await Promise.all(
+        JS_FILES.map(path => fs.readFile('src/' + path, 'utf-8')))
+    ).join('\n');
 
+    console.log('debug...');
     let debugJs = jsCode;
     debugJs = hardcodeConstants(debugJs, {
         DEBUG: true,
@@ -198,6 +205,7 @@ const MANGLE_PARAMS = {
     debugJs = macro(debugJs, NOMANGLE);
     debugJs = macro(debugJs, EVALUATE);
 
+    console.log('debug+mangled.js...');
     let debugMangledJs = jsCode;
     debugMangledJs = hardcodeConstants(debugMangledJs, {
         DEBUG: true,
@@ -207,6 +215,7 @@ const MANGLE_PARAMS = {
     debugMangledJs = macro(debugMangledJs, EVALUATE);
     debugMangledJs = mangle(debugMangledJs, MANGLE_PARAMS);
 
+    console.log('prod.js...');
     let prodJs = jsCode;
     prodJs = hardcodeConstants(prodJs, {
         DEBUG: false,
@@ -221,6 +230,7 @@ const MANGLE_PARAMS = {
     })
     prodJs = (await terser.minify(prodJs)).code!;
 
+    console.log('packer...');
     const packer = new Packer([
         {
             data: prodJs,
@@ -230,37 +240,26 @@ const MANGLE_PARAMS = {
     ], {
         // see the Usage for available options.
     });
-    await packer.optimize();
+    await packer.optimize(2);
     const { firstLine, secondLine } = packer.makeDecoder();
-    prodJs = [firstLine, secondLine].join('\n');
+    prodJs = firstLine + secondLine;
 
-    const html = await fs.readFile('src/index.html', 'utf-8');
+    console.log('html...');
     const minifiedHtml = minifyHTML(html, {
-        'collapseWhitespace': true,
-        'minifyCSS': false,
-        'minifyJS': false
+        collapseWhitespace: true,
+        minifyCSS: false,
+        minifyJS: false
     });
 
-    const css = await fs.readFile('src/style.css', 'utf-8');
+    console.log('css...');
     const minifiedCss = new CleanCSS().minify(css).styles;
 
-    const debugHtml = assembleHtml({
-        html,
-        css,
-        js: debugJs,
-    });
+    console.log('output...');
+    const debugHtml = assembleHtml({ html, css, js: debugJs });
+    const debugMangledHtml = assembleHtml({ html, css, js: debugMangledJs});
+    const prodHtml = assembleHtml({ html: minifiedHtml, css: minifiedCss, js: prodJs, });
 
-    const debugMangledHtml = assembleHtml({
-        html,
-        css,
-        js: debugMangledJs,
-    });
-
-    const prodHtml = assembleHtml({
-        html: minifiedHtml,
-        css: minifiedCss,
-        js: prodJs,
-    });
+    console.log(prodJs.length);
 
     await fs.mkdir('build/', { recursive: true });
     await fs.writeFile('build/debug.html', debugHtml);

@@ -178,7 +178,7 @@ tutorialFly = (world) => {
 
         upInstruction.instruction = up ? nomangle('HOLD [UP] TO FLY') : '';
         tiltInstruction.instruction = tilt ? nomangle('HOLD [LEFT/RIGHT] TO TILT') : '';
-        downInstruction.instruction = down && !player.simplifiedPhysics ? nomangle('HOLD [DOWN] TO DESCENT FASTER') : '';
+        downInstruction.instruction = down && !player.simplifiedPhysics ? nomangle('HOLD [DOWN] TO DESCEND FASTER') : '';
     });
 
     return promise(world);

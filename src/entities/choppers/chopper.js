@@ -310,13 +310,13 @@ class Chopper extends Entity {
 
         // Gravity on Y
         const maxFallSpeed = this.simplifiedPhysics
-            ? (this.controls.left || this.controls.right ? 20 : 100)
+            ? (this.controls.left || this.controls.right ? 20 : 200)
             : 400;
         const fallAccel = this.simplifiedPhysics
-            ? 300
+            ? 200
             : (this.controls.down ? 300 : 150);
         this.momentum.y += between(
-            -elapsed * (this.simplifiedPhysics ? 100 : 200),
+            -elapsed * (this.simplifiedPhysics ? 150 : 200),
             maxFallSpeed - this.momentum.y,
             elapsed * fallAccel,
         );
@@ -324,7 +324,7 @@ class Chopper extends Entity {
         // Cap max momentum on simplified physics
         if (this.simplifiedPhysics) {
             this.momentum.x = between(-300, this.momentum.x, 300);
-            this.momentum.y = between(-200, this.momentum.y, 100);
+            this.momentum.y = between(-300, this.momentum.y, 200);
         }
 
         if (landed && !this.propellerPower) {

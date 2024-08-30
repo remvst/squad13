@@ -55,11 +55,9 @@ const JS_FILES = [
     'entities/ui/progress-indicator.js',
     'entities/ui/mobile-controls.js',
 
-
     'graphics/wrap.js',
     'graphics/create-canvas.js',
     'graphics/create-canvas-pattern.js',
-    'graphics/font.js',
 
     'sound/ZzFXMicro.js',
     'sound/sonantx.js',
@@ -93,7 +91,7 @@ const CONSTANTS = {
 
 const MANGLE_PARAMS = {
     "skip": [
-
+        "repeat",
     ],
     "force": [
         "a",
@@ -172,7 +170,6 @@ const MANGLE_PARAMS = {
         "timeout",
         "frame",
         "line",
-        "repeat",
         "elements",
         "text",
         "source",
@@ -211,7 +208,12 @@ const argv = yargs(process.argv.slice(2)).options({
 
     if (argv.minify) {
         console.log('Minifying...');
-        js = (await terser.minify(js)).code!;
+        js = (await terser.minify(js, {
+            mangle: {
+                properties: true,
+                toplevel: true,
+            }
+        })).code!;
     }
 
     if (argv['roadroll-level'] > 0) {

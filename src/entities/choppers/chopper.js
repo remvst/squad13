@@ -21,6 +21,7 @@ class Chopper extends Entity {
             left: false,
             right: false,
             shoot: false,
+            down: false,
         };
 
         this.radius = 35;
@@ -311,10 +312,13 @@ class Chopper extends Entity {
         const maxFallSpeed = this.simplifiedPhysics
             ? (this.controls.left || this.controls.right ? 20 : 100)
             : 400;
+        const fallAccel = this.simplifiedPhysics
+            ? 300
+            : (this.controls.down ? 300 : 150);
         this.momentum.y += between(
             -elapsed * (this.simplifiedPhysics ? 100 : 200),
             maxFallSpeed - this.momentum.y,
-            elapsed * (this.simplifiedPhysics ? 300 : 150),
+            elapsed * fallAccel,
         );
 
         // Cap max momentum on simplified physics

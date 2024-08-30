@@ -32,9 +32,10 @@ class Player extends Chopper {
         const { controls } = this;
 
         // Keyboard controls
-        controls.left = (DOWN[37] || DOWN[65]);
+        controls.left = (DOWN[37] || DOWN[65] || DOWN[81]);
         controls.right = (DOWN[39] || DOWN[68]);
-        controls.up = (DOWN[38] || DOWN[87]);
+        controls.up = (DOWN[38] || DOWN[87] || DOWN[90]);
+        controls.down = (DOWN[40] || DOWN[83]);
         controls.shoot = DOWN[32];
 
         // Touch controls

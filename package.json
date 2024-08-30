@@ -13,7 +13,7 @@
   "type": "module",
   "author": "Rémi Vansteelandt",
   "dependencies": {
-    "@remvst/js13k-tools": "file:../js13k-tools",
+    "@remvst/js13k-tools": "^1.0.0",
     "clean-css": "^5.3.3",
     "html-minifier": "^4.0.0",
     "roadroller": "^2.1.0",

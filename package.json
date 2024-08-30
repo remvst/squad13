@@ -1,0 +1,22 @@
+{
+  "name": "@remvst/squad13",
+  "private": true,
+  "scripts": {
+    "build": "tsx build.ts"
+  },
+  "type": "module",
+  "author": "Rémi Vansteelandt",
+  "dependencies": {
+    "@remvst/js13k-tools": "file:../js13k-tools",
+    "clean-css": "^5.3.3",
+    "html-minifier": "^4.0.0",
+    "roadroller": "^2.1.0",
+    "terser": "^5.31.6",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.4"
+  },
+  "devDependencies": {
+    "@types/clean-css": "^4.2.11",
+    "@types/html-minifier": "^4.0.5"
+  }
+}

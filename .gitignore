@@ -2,3 +2,5 @@
 *.zip
 dist/
 build/
+build-new/
+node_modules/

@@ -2,7 +2,13 @@
   "name": "@remvst/squad13",
   "private": true,
   "scripts": {
-    "build": "tsx build.ts"
+    "build:debug": "tsx build-game.ts --debug --html=build/debug.html",
+    "build:debug:mangled": "tsx build-game.ts --debug --mangle --html=build/debug_mangled.html",
+    "build:preprod": "tsx build-game.ts --mangle --minify --roadroll-level=1 --html=build/preprod.html",
+    "build:prod": "tsx build-game.ts --mangle --minify --roadroll-level=2 --html=build/index.html",
+
+    "zip:preprod": "tsx build-zip.ts --html=build/preprod.html --zip=build/preprod.zip",
+    "zip:prod": "tsx build-zip.ts --html=build/index.html --zip=build/game.zip --optimize"
   },
   "type": "module",
   "author": "Rémi Vansteelandt",
@@ -14,6 +20,7 @@
     "terser": "^5.31.6",
     "tsx": "^4.19.0",
     "typescript": "^5.5.4",
+    "yargs": "^17.7.2",
     "zip-lib": "^1.0.4"
   },
   "devDependencies": {

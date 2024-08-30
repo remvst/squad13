@@ -1,10 +1,18 @@
 .PHONY: build
 
-build:
-	npm run build
+build: debug preprod prod
 
-update: install
-	git submodule update --init --recursive
+debug:
+	npm run build:debug
+	npm run build:debug:mangled
+
+preprod:
+	npm run build:preprod
+	npm run zip:preprod
+
+prod:
+	npm run build:prod
+	npm run zip:prod
 
 install:
 	git submodule update --init --recursive

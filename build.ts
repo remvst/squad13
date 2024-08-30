@@ -181,8 +181,6 @@ const MANGLE_PARAMS = {
 };
 
 (async () => {
-    await fs.rm('build/', { force: true, recursive: true });
-
     console.log('Reading input...');
     const html = await fs.readFile('src/index.html', 'utf-8');
     const css = await fs.readFile('src/style.css', 'utf-8');
@@ -261,6 +259,7 @@ const MANGLE_PARAMS = {
 
     console.log(prodJs.length);
 
+    await fs.rm('build/', { force: true, recursive: true });
     await fs.mkdir('build/', { recursive: true });
     await fs.writeFile('build/debug.html', debugHtml);
     await fs.writeFile('build/debug_mangled.html', debugMangledHtml);

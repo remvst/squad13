@@ -13,7 +13,8 @@
     "roadroller": "^2.1.0",
     "terser": "^5.31.6",
     "tsx": "^4.19.0",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "zip-lib": "^1.0.4"
   },
   "devDependencies": {
     "@types/clean-css": "^4.2.11",

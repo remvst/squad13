@@ -5,6 +5,7 @@ import { minify as minifyHTML } from 'html-minifier';
 import { Packer } from 'roadroller';
 import * as terser from 'terser';
 import { spawn } from 'child_process';
+import { archiveFile } from "zip-lib";
 
 const JS_FILES = [
     'globals.js',
@@ -181,7 +182,7 @@ const MANGLE_PARAMS = {
 };
 
 (async () => {
-    console.log('Reading input...');
+    console.log('reading input...');
     const html = await fs.readFile('src/index.html', 'utf-8');
     const css = await fs.readFile('src/style.css', 'utf-8');
 
@@ -257,20 +258,36 @@ const MANGLE_PARAMS = {
     const debugMangledHtml = assembleHtml({ html, css, js: debugMangledJs});
     const prodHtml = assembleHtml({ html: minifiedHtml, css: minifiedCss, js: prodJs, });
 
-    console.log(prodJs.length);
-
     await fs.rm('build/', { force: true, recursive: true });
     await fs.mkdir('build/', { recursive: true });
     await fs.writeFile('build/debug.html', debugHtml);
     await fs.writeFile('build/debug_mangled.html', debugMangledHtml);
     await fs.writeFile('build/index.html', prodHtml);
 
-    await makeZip({
-        html: 'build/index.html',
-        zip: 'build/game.zip',
+    console.log('zip...');
+    await archiveFile('build/index.html', 'build/game.zip');
+    await logFileSize('build/game.zip', 13 * 1024);
+
+    console.log('advzip...');
+    await new Promise<void>((resolve, reject) => {
+        const subprocess = spawn('advzip', ['-z', 'build/game.zip', '--shrink-insane']);
+
+        subprocess.stderr.on('data', (data) => {
+            console.error('stderr: ' + data);
+        });
+
+        subprocess.on('exit', (code) => {
+            if (code === 0) {
+                resolve();
+            } else {
+                reject('advzip failed with error code ' + code);
+            }
+        });
     });
     await logFileSize('build/game.zip', 13 * 1024);
 
+    // ECT
+    console.log('ect...');
     await new Promise<void>((resolve, reject) => {
         // Guess I'm hardcoding this :p
         const subprocess = spawn('./Efficient-Compression-Tool/build/ect', [
@@ -288,6 +305,5 @@ const MANGLE_PARAMS = {
             }
         });
     });
-
     await logFileSize('build/game.zip', 13 * 1024);
 })();

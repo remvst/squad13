@@ -53,6 +53,4 @@ const argv = yargs(process.argv.slice(2)).options({
         });
         await logFileSize(argv.zip, 13 * 1024);
     }
-
-    await logFileSize(argv.zip, 13 * 1024);
 })();

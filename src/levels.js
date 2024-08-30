@@ -166,10 +166,19 @@ tutorialFly = (world) => {
     tiltInstruction.y = -200;
     world.add(tiltInstruction);
 
+    const downInstruction = new Instruction('');
+    downInstruction.x = 1000;
+    downInstruction.y = -200;
+    world.add(downInstruction);
+
     world.waitFor(() => {
-        const tilt = distP(player.x, player.y, 0, 100) > 200;
-        upInstruction.instruction = tilt ? '' : nomangle('HOLD [UP] TO FLY');
+        const down = abs(player.x - 1000) < 200;
+        const tilt = !down && distP(player.x, player.y, 0, 100) > 200;
+        const up = !down && !tilt;
+
+        upInstruction.instruction = up ? nomangle('HOLD [UP] TO FLY') : '';
         tiltInstruction.instruction = tilt ? nomangle('HOLD [LEFT/RIGHT] TO TILT') : '';
+        downInstruction.instruction = down && !player.simplifiedPhysics ? nomangle('HOLD [DOWN] TO DESCENT FASTER') : '';
     });
 
     return promise(world);

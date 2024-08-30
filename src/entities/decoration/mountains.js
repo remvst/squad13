@@ -8,8 +8,8 @@ class Mountains extends Entity {
             const pattern = createCanvasPattern(400, 100, (ctx) => {
                 ctx.fillStyle = color;
 
-                const offset1 = Math.random() * 800;
-                const offset2 = Math.random() * 800;
+                const offset1 = random() * 800;
+                const offset2 = random() * 800;
 
                 ctx.beginPath();
                 ctx.moveTo(0, 400);
@@ -17,8 +17,8 @@ class Mountains extends Entity {
                     ctx.lineTo(
                         x,
                         50
-                            + sin((x + offset1) / 400 * Math.PI * 2) * 25
-                            + sin((x + offset2) / 200 * Math.PI * 2) * 12
+                            + sin((x + offset1) / 400 * PI * 2) * 25
+                            + sin((x + offset2) / 200 * PI * 2) * 12
                     );
                 }
                 ctx.lineTo(800, 400);

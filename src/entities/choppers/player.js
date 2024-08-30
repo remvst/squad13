@@ -117,7 +117,7 @@ class Player extends Chopper {
 
             ctx.rotate(this.age * PI);
 
-            const radius = Math.max(this.lockedTarget.radius, 20);
+            const radius = max(this.lockedTarget.radius, 20);
             ctx.lineWidth = 2;
             ctx.beginPath();
             ctx.arc(0, 0, radius, 0, 2 * PI);

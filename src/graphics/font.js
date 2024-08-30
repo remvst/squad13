@@ -63,7 +63,7 @@ const AVAILABLE_CHARACTERS = Object.keys(CHARACTERS);
 function spriteForCharacterDefinition(characterDefinition, cellSize, color, blur) {
     if (!characterDefinition) return;
 
-    const maxRowLength = Math.max(...characterDefinition.map(line => line.toString(2).length));
+    const maxRowLength = max(...characterDefinition.map(line => line.toString(2).length));
 
     return createCanvas(maxRowLength * cellSize + blur * 2, characterDefinition.length * cellSize + blur * 2, ctx => {
         ctx.shadowBlur = blur;

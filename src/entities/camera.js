@@ -54,8 +54,8 @@ class Camera extends Entity {
             this.maxY - CANVAS_HEIGHT / 2,
         );
 
-        const diffX = Math.abs(targetX - this.x);
-        const diffY = Math.abs(targetY - this.y);
+        const diffX = abs(targetX - this.x);
+        const diffY = abs(targetY - this.y);
         const velX = diffX / 0.5;
         const velY = diffY / 0.5;
 

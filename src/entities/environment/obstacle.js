@@ -59,10 +59,10 @@ class Obstacle extends Entity {
         if (!a || !b) return;
 
         const length = dist(a, b);
-        const angle = normalize(Math.atan2(b.y - a.y, b.x - a.x));
-        const alpha = normalize(normalize(Math.atan2(hitbox.y - a.y, hitbox.x - a.x)) - angle);
-        const l = Math.cos(alpha) * dist(a, hitbox);
-        const h = Math.abs(Math.sin(alpha) * dist(a, hitbox));
+        const angle = normalize(atan2(b.y - a.y, b.x - a.x));
+        const alpha = normalize(normalize(atan2(hitbox.y - a.y, hitbox.x - a.x)) - angle);
+        const l = cos(alpha) * dist(a, hitbox);
+        const h = abs(sin(alpha) * dist(a, hitbox));
 
         const ratio = l / length;
 
@@ -72,8 +72,8 @@ class Obstacle extends Entity {
         const adjustedX = a.x + ratio * (b.x - a.x);
         const adjustedY = a.y + ratio * (b.y - a.y);
 
-        hitbox.x = adjustedX - this.directionY * Math.cos(angle + PI / 2) * hitbox.radius;
-        hitbox.y = adjustedY - this.directionY * Math.sin(angle + PI / 2) * hitbox.radius;
+        hitbox.x = adjustedX - this.directionY * cos(angle + PI / 2) * hitbox.radius;
+        hitbox.y = adjustedY - this.directionY * sin(angle + PI / 2) * hitbox.radius;
 
         return true;
     }

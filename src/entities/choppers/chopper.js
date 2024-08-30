@@ -93,10 +93,10 @@ class Chopper extends Entity {
             }
 
             const hitBox = this.hitBoxes[i];
-            const hitBoxAngle = Math.atan2(hitBox.y, hitBox.x);
+            const hitBoxAngle = atan2(hitBox.y, hitBox.x);
             const dist = distP(0, 0, hitBox.x, hitBox.y);
-            this.globalHitBoxes[i].x = this.x + Math.cos(this.angle + hitBoxAngle) * dist;
-            this.globalHitBoxes[i].y = this.y + Math.sin(this.angle + hitBoxAngle) * dist;
+            this.globalHitBoxes[i].x = this.x + cos(this.angle + hitBoxAngle) * dist;
+            this.globalHitBoxes[i].y = this.y + sin(this.angle + hitBoxAngle) * dist;
             this.globalHitBoxes[i].radius = hitBox.radius;
             this.globalHitBoxes[i].isLanding = hitBox.isLanding;
             this.globalHitBoxes[i].vital = hitBox.vital;
@@ -298,7 +298,7 @@ class Chopper extends Entity {
         }
 
         // Air resistance on X
-        const opposition = Math.sign(Math.sin(this.angle)) !== Math.sign(this.momentum.x) || this.simplifiedPhysics
+        const opposition = sign(sin(this.angle)) !== sign(this.momentum.x) || this.simplifiedPhysics
             ? 200
             : 50;
         this.momentum.x += between(
@@ -443,8 +443,8 @@ class Chopper extends Entity {
         //     ctx.fillStyle = '#fff';
         //     ctx.translate(0, 50);
         //     for (const line of [
-        //         `propeller: ${Math.round(this.propellerPower * 100)}`,
-        //         `momentum: ${Math.round(this.momentum.x)},${Math.round(this.momentum.y)},${this.momentum.angle}`,
+        //         `propeller: ${round(this.propellerPower * 100)}`,
+        //         `momentum: ${round(this.momentum.x)},${round(this.momentum.y)},${this.momentum.angle}`,
         //     ]) {
         //         ctx.fillText(line, 0, 0);
         //         ctx.translate(0, 20);
@@ -454,7 +454,7 @@ class Chopper extends Entity {
         // for (const hitBox of this.globalHitBoxes) {
         //     ctx.fillStyle = hitBox.readjusted ? '#ff0' : '#0f0';
         //     ctx.beginPath();
-        //     ctx.arc(hitBox.x, hitBox.y, hitBox.radius, 0, Math.PI * 2);
+        //     ctx.arc(hitBox.x, hitBox.y, hitBox.radius, 0, PI * 2);
         //     ctx.fill();
         // }
 

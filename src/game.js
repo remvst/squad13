@@ -446,7 +446,7 @@ class Game {
         this.age += elapsed;
 
         if (!this.pauseWorld || !this.paused) {
-            this.world.cycle(Math.min(elapsed, 1 / 30));
+            this.world.cycle(min(elapsed, 1 / 30));
         }
 
         this.world.render();

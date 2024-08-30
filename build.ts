@@ -181,7 +181,7 @@ const MANGLE_PARAMS = {
 };
 
 (async () => {
-    await fs.rm('build-new/', { force: true, recursive: true });
+    await fs.rm('build/', { force: true, recursive: true });
 
     const fileContents: string[] = [];
     for (const path of JS_FILES) {
@@ -262,22 +262,22 @@ const MANGLE_PARAMS = {
         js: prodJs,
     });
 
-    await fs.mkdir('build-new/', { recursive: true });
-    await fs.writeFile('build-new/debug.html', debugHtml);
-    await fs.writeFile('build-new/debug_mangled.html', debugMangledHtml);
-    await fs.writeFile('build-new/index.html', prodHtml);
+    await fs.mkdir('build/', { recursive: true });
+    await fs.writeFile('build/debug.html', debugHtml);
+    await fs.writeFile('build/debug_mangled.html', debugMangledHtml);
+    await fs.writeFile('build/index.html', prodHtml);
 
     await makeZip({
-        html: 'build-new/index.html',
-        zip: 'build-new/game.zip',
+        html: 'build/index.html',
+        zip: 'build/game.zip',
     });
-    await logFileSize('build-new/game.zip', 13 * 1024);
+    await logFileSize('build/game.zip', 13 * 1024);
 
     await new Promise<void>((resolve, reject) => {
         // Guess I'm hardcoding this :p
         const subprocess = spawn('./Efficient-Compression-Tool/build/ect', [
             '-zip',
-            'build-new/game.zip',
+            'build/game.zip',
             '-9',
             '-strip',
         ]);
@@ -291,5 +291,5 @@ const MANGLE_PARAMS = {
         });
     });
 
-    await logFileSize('build-new/game.zip', 13 * 1024);
+    await logFileSize('build/game.zip', 13 * 1024);
 })();

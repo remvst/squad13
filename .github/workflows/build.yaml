@@ -21,7 +21,7 @@ jobs:
           make install
           npm i
       - name: Build game
-        run: make prod
+        run: make
       - name: Upload build/
         uses: actions/upload-artifact@v3
         with:

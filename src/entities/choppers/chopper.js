@@ -431,12 +431,43 @@ class Chopper extends Entity {
                 ctx.scale(1, 0.45);
                 ctx.rotate(this.propellerAngle);
                 ctx.fillRect(-50, -3, 100, 6);
+
+                ctx.globalAlpha = 0.2;
+                ctx.beginPath();
+
+                const effectAngle = interpolate(PI / 8, PI / 3, this.propellerPower);
+
+                ctx.moveTo(0, 0);
+                ctx.arc(0, 0, 50, 0, -effectAngle, true);
+
+                ctx.rotate(PI);
+
+                ctx.moveTo(0, 0);
+                ctx.arc(0, 0, 50, 0, -effectAngle, true);
+
+                ctx.fill();
             });
 
             ctx.wrap(() => {
                 ctx.translate(-55, -15);
                 ctx.rotate(this.propellerAngle);
                 ctx.fillRect(-12, -2, 24, 4);
+
+                const effectAngle = interpolate(PI / 8, PI / 3, this.propellerPower);
+
+                ctx.globalAlpha = 0.2;
+
+                ctx.beginPath();
+
+                ctx.moveTo(0, 0);
+                ctx.arc(0, 0, 12, 0, -effectAngle, true);
+
+                ctx.rotate(PI);
+
+                ctx.moveTo(0, 0);
+                ctx.arc(0, 0, 12, 0, -effectAngle, true);
+
+                ctx.fill();
             });
 
             // ctx.strokeStyle = '#fff';

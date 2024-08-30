@@ -29,6 +29,8 @@ class Chopper extends Entity {
         this.lastShot = 0;
         this.shotInterval = 1;
 
+        this.propellerAngle = 0;
+
         this.facing = facing;
 
         this.simplifiedPhysics = false;
@@ -154,6 +156,8 @@ class Chopper extends Entity {
 
     cycle(elapsed) {
         super.cycle(elapsed);
+
+        this.propellerAngle += interpolate(3, 5, this.propellerPower) * PI * elapsed;
 
         for (const chopper of this.world.bucket('chopper')) {
             if (chopper === this) continue;
@@ -425,13 +429,13 @@ class Chopper extends Entity {
             ctx.wrap(() => {
                 ctx.translate(0, -22);
                 ctx.scale(1, 0.45);
-                ctx.rotate(this.age * PI * 4);
+                ctx.rotate(this.propellerAngle);
                 ctx.fillRect(-50, -3, 100, 6);
             });
 
             ctx.wrap(() => {
                 ctx.translate(-55, -15);
-                ctx.rotate(this.age * PI * 4);
+                ctx.rotate(this.propellerAngle);
                 ctx.fillRect(-12, -2, 24, 4);
             });
 

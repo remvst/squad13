@@ -80,8 +80,6 @@ const CONSTANTS = {
     "const": "let",
     "null": 0,
 
-    "SONG_VOLUME": 0.5,
-
     "SCREENSHOT": 0,
 
     "INPUT_MODE_KEYBOARD": 0,

@@ -141,6 +141,9 @@ class Game {
             inputMode != INPUT_MODE_TOUCH
                 ? this.difficultyPrompt(true)
                 : null,
+            inputMode != INPUT_MODE_TOUCH
+                ? this.mutePrompt(true)
+                : null,
         ]);
 
         this.pauseWorld.add(
@@ -154,6 +157,22 @@ class Game {
         await title.fade(1, 0, 1, 0.3);
 
         this.pauseWorld = null;
+    }
+
+    mutePrompt(withText) {
+        const text = () => withText
+            ? nomangle('MUSIC: ') + (SONG_VOLUME > 0 ? nomangle('ON') : nomangle('OFF')) + nomangle(' - PRESS [M] TO ') + (SONG_VOLUME > 0 ? nomangle('MUTE') : nomangle('UNMUTE'))
+            : '';
+
+        const prompt = new StartPrompt(
+            text(),
+            [77],
+            () => {
+                setSongVolume(SONG_VOLUME > 0 ? 0 : 0.5);
+                prompt.text = text();
+            },
+        );
+        return prompt;
     }
 
     pause() {
@@ -173,6 +192,7 @@ class Game {
                 promptSet.world.remove(promptSet);
             }),
             this.difficultyPrompt(true),
+            this.mutePrompt(true),
         ]);
         this.pauseWorld.add(title, promptSet);
 
@@ -223,6 +243,7 @@ class Game {
 
             // Invisible prompt to change difficulty
             this.world.add(this.difficultyPrompt(false));
+            this.world.add(this.mutePrompt(false));
 
             let lowestDifficultyIndexInMission = 9;
             const level = levels[levelIndex];

@@ -232,19 +232,19 @@ SONG = {
             "osc1_det": 0,
             "osc1_detune": 0,
             "osc1_xenv": 1,
-            "osc1_vol": 255,
+            "osc1_vol": 128,
             "osc1_waveform": 0,
             "osc2_oct": 7,
             "osc2_det": 0,
             "osc2_detune": 0,
             "osc2_xenv": 1,
-            "osc2_vol": 255,
+            "osc2_vol": 128,
             "osc2_waveform": 0,
-            "noise_fader": 0,
+            "noise_fader": 255,
             "env_attack": 100,
             "env_sustain": 0,
             "env_release": 3636,
-            "env_master": 125,
+            "env_master": 59,
             "fx_filter": 2,
             "fx_freq": 500,
             "fx_resonance": 254,
@@ -477,7 +477,11 @@ playSong = () => new MusicGenerator(SONG).createAudioBuffer(buffer => {
     source.nomangle(start)();
 
     playSong = () => 0;
-    setSongVolume = (x) => gainNode.gain.value = x;
+    setSongVolume = (x) => {
+        SONG_VOLUME = x;
+        gainNode.gain.value = x;
+    }
 });
 
-setSongVolume = () => 0;
+SONG_VOLUME = 0.5;
+setSongVolume = (x) => SONG_VOLUME = x;

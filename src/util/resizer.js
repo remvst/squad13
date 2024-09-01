@@ -11,6 +11,8 @@ onresize = () => {
     CANVAS_WIDTH = 1600;
     CANVAS_HEIGHT = 900;
 
+    const expectedPixels = CANVAS_WIDTH * CANVAS_HEIGHT;
+
     if (inputMode === INPUT_MODE_TOUCH) {
         // Flip the aspect ratio if in portrait
         if (windowWidth > windowHeight) {
@@ -25,6 +27,12 @@ onresize = () => {
             CANVAS_HEIGHT = CANVAS_WIDTH / availableRatio;
         } else {
             CANVAS_WIDTH = CANVAS_HEIGHT * availableRatio;
+        }
+
+        // Hack so we have enough pixels that we aren't zoomed in too much
+        while (CANVAS_WIDTH * CANVAS_HEIGHT / expectedPixels < 0.5) {
+            CANVAS_WIDTH *= 2;
+            CANVAS_HEIGHT *= 2;
         }
     } else {
         // Desktop mode, keep the aspect ratio intact

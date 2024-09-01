@@ -34,7 +34,7 @@ class Exposition extends Entity {
             if (this.previousSound) {
                 this.previousSound.stop();
             }
-            this.previousSound = zzfx(...[.1,,634,,.01,.02,3,3.3,,,,,,.1,278,,,.95,.03,,518]); // Blip 687
+            this.previousSound = zzfx(...[.2,,634,,.01,.02,3,3.3,,,,,,.1,278,,,.95,.03,,518]); // Blip 687
             this.previousSound.start();
         }
     }

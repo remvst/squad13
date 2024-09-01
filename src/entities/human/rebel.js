@@ -4,6 +4,7 @@ class Rebel extends Human {
         this.buckets.push('rebel');
         this.lastShot = 0;
         this.shotInterval = 6;
+        this.aimLockRatio = 0;
     }
 
     cycle(elapsed) {
@@ -12,22 +13,43 @@ class Rebel extends Human {
         this.angle = PI;
 
         const player = firstItem(this.world.bucket('player'));
-        if (player) {
-            if (dist(player, this) < 500) {
-                this.angle = angleBetween(this, player);
+        if (player && dist(player, this) < 500) {
+            this.angle = angleBetween(this, player);
 
-                if (this.age - this.lastShot > this.shotInterval) {
-                    const missile = new Missile(this);
-                    missile.speed *= 0.5;
-                    this.world.add(missile);
-                    this.lastShot = this.age;
+            if (this.age - this.lastShot > this.shotInterval) {
+                if (this.aimLockRatio === 0) {
+                    sound(...[1.7,,391,.01,.12,.08,,3.4,18,-9,,,.02,.7,,,.13,.71,.1,.02]); // Shoot 767
                 }
+                this.aimLockRatio += elapsed * 2;
             }
+
+            if (this.aimLockRatio >= 1) {
+                const missile = new Missile(this);
+                missile.speed *= 0.5;
+                this.world.add(missile);
+                this.lastShot = this.age;
+
+                this.aimLockRatio = 0;
+            }
+        } else {
+            this.aimLockRatio = 0;
         }
     }
 
     render() {
         ctx.translate(this.x, this.y);
+
+        ctx.wrap(() => {
+            if (this.aimLockRatio <= 0) return;
+
+            ctx.fillStyle = '#ff0';
+            ctx.globalAlpha = interpolate(0, 0.5, this.aimLockRatio);
+            const s = interpolate(1, 0, this.aimLockRatio);
+            ctx.scale(s, s);
+            ctx.beginPath();
+            ctx.arc(0, 0, 40, 0, PI * 2);
+            ctx.fill();
+        })
 
         ctx.fillStyle = ctx.strokeStyle = '#000';
         ctx.scale(0.8, 0.8);

@@ -16,6 +16,21 @@ class Rebel extends Human {
         if (player && dist(player, this) < 500) {
             this.angle = angleBetween(this, player);
 
+            const x = this.x + cos(this.angle) * 30;
+            const y = this.y + sin(this.angle) * 30;
+
+            let obstacle = null;
+            for (const candidate of this.world.bucket('obstacle')) {
+                if (candidate.directionY < 0) continue;
+                if (!isBetween(candidate.minX, this.x, candidate.maxX)) continue;
+                obstacle = candidate;
+            }
+
+            if (obstacle && obstacle.contains(x, y)) {
+                this.aimLockRatio = 0;
+                return;
+            }
+
             if (this.age - this.lastShot > this.shotInterval) {
                 if (this.aimLockRatio === 0) {
                     sound(...[1.7,,391,.01,.12,.08,,3.4,18,-9,,,.02,.7,,,.13,.71,.1,.02]); // Shoot 767

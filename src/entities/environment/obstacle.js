@@ -31,6 +31,12 @@ class Obstacle extends Entity {
         return true;
     }
 
+    contains(x, y) {
+        const yOnEdge = this.yAt(x);
+        if (yOnEdge === null) return false;
+        return sign(yOnEdge - y) !== this.directionY;
+    }
+
     yAt(x) {
         let i = 0;
         while (this.points[i] && this.points[i].x < x) {

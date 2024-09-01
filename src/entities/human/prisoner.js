@@ -48,7 +48,7 @@ class Prisoner extends Human {
 
             // Grab the ladder
             if (!player.hangingPrisoner && abs(player.x - this.x) < 20 && isBetween(player.y, this.y, player.y + player.ladderLength)) {
-                this.grabbingLadderRatio += elapsed * 2;
+                this.grabbingLadderRatio += elapsed * 4;
 
                 if (this.grabbingLadderRatio > 1) {
                     this.climbing = true;

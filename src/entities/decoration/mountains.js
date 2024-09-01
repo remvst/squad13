@@ -5,7 +5,7 @@ class Mountains extends Entity {
 
         this.mountains = [0.8, 0.6, 0.4].map(factor => {
             const color = multiplyColor(baseColor, factor);
-            const pattern = createCanvasPattern(400, 100, (ctx) => {
+            const patt = createCanvasPattern(400, 100, (ctx) => {
                 ctx.fillStyle = color;
 
                 const offset1 = random() * 800;
@@ -24,9 +24,9 @@ class Mountains extends Entity {
                 ctx.lineTo(800, 400);
                 ctx.fill();
             });
-            pattern.color = color;
-            pattern.factor = factor;
-            return pattern;
+            patt.color = color;
+            patt.factor = factor;
+            return patt;
         });
     }
 

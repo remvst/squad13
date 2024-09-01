@@ -10,9 +10,9 @@ class StartPrompt extends Entity {
 
     render(camera) {
         if (this.age / 2 % 1 < 0.2) return;
-        ctx.font = '18pt Courier';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
+        ctx.font = nomangle('18pt Courier');
+        ctx.textAlign = nomangle('center');
+        ctx.textBaseline = nomangle('middle');
         ctx.fillStyle = '#fff';
         ctx.fillText(this.text, 0, 0);
     }

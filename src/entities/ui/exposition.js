@@ -42,7 +42,7 @@ class Exposition extends Entity {
     calculateLines(availableWidth) {
         const newLines = [];
 
-        ctx.font = '18pt Courier';
+        ctx.font = nomangle('18pt Courier');
 
         for (const line of this.lines) {
             let currentLine = '';

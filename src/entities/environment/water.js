@@ -8,7 +8,7 @@ class Water extends Entity {
         const amplitude = 10;
         this.patterns = [0.8, 1].map(factor => {
             const color = multiplyColor('#27c6dc', factor);
-            const pattern = createCanvasPattern(100, amplitude * 2, (ctx) => {
+            const patt = createCanvasPattern(100, amplitude * 2, (ctx) => {
                 ctx.fillStyle = color;
 
                 ctx.beginPath();
@@ -22,9 +22,9 @@ class Water extends Entity {
                 ctx.lineTo(100, amplitude * 2);
                 ctx.fill();
             });
-            pattern.color = color;
-            pattern.factor = factor;
-            return pattern;
+            patt.color = color;
+            patt.factor = factor;
+            return patt;
         });
     }
 
@@ -35,16 +35,16 @@ class Water extends Entity {
 
         let baseY = 0;
         let speedX = 50;
-        for (const pattern of this.patterns) {
+        for (const patt of this.patterns) {
             ctx.wrap(() => {
                 const offsetX = this.age * speedX - camera.x;
                 ctx.translate(offsetX, baseY);
 
-                ctx.fillStyle = pattern;
+                ctx.fillStyle = patt;
                 ctx.fillRect(-offsetX, 0, CANVAS_WIDTH, 100);
 
-                ctx.fillStyle = pattern.color;
-                ctx.fillRect(-offsetX, pattern.height, CANVAS_WIDTH, 1000);
+                ctx.fillStyle = patt.color;
+                ctx.fillRect(-offsetX, patt.height, CANVAS_WIDTH, 1000);
 
             });
 

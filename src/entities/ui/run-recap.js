@@ -6,15 +6,15 @@ class RunRecap extends Entity {
         this.value = value;
     }
 
-    render(camera) {
-        ctx.textBaseline = 'middle';
+    render() {
+        ctx.textBaseline = nomangle('middle');
         ctx.fillStyle = '#fff';
-        ctx.font = '18pt Courier';
+        ctx.font = nomangle('18pt Courier');
 
-        ctx.textAlign = 'right';
+        ctx.textAlign = nomangle('right');
         ctx.fillText(this.label, -20, 0);
 
-        ctx.textAlign = 'left';
+        ctx.textAlign = nomangle('left');
         ctx.fillText(this.value, 20, 0);
     }
 }

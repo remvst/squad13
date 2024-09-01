@@ -3,7 +3,11 @@ class Game {
         this.world = new World();
 
         this.age = 0;
-        this.difficulty = inputMode == INPUT_MODE_TOUCH
+
+        const savedDifficulty = parseInt(localStorage['df']);
+        this.difficulty = savedDifficulty >= 0
+            ? DIFFICULTY_SETTINGS[savedDifficulty]
+            : inputMode == INPUT_MODE_TOUCH
             ? DIFFICULTY_EASY
             : DIFFICULTY_NORMAL;
 
@@ -39,6 +43,7 @@ class Game {
         let index = DIFFICULTY_SETTINGS.indexOf(this.difficulty);
         index = (index - 1 + DIFFICULTY_SETTINGS.length) % DIFFICULTY_SETTINGS.length;
         this.difficulty = DIFFICULTY_SETTINGS[index];
+        localStorage['df'] = index;
 
         for (const exposition of this.world.bucket('exposition')) {
             exposition.world.remove(exposition);

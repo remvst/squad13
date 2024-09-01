@@ -25,7 +25,10 @@ You can play the game at http://chopper.tap2play.io/
 
 ```sh
 make install
-make
+make debug
+make preprod
+make prod
+make # Make all of the above
 ```
 
 # License

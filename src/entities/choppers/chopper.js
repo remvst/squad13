@@ -219,7 +219,7 @@ class Chopper extends Entity {
         }
 
         const landed = !this.globalHitBoxes.some(hitBox => hitBox.isLanding && !hitBox.readjusted);
-        let crashed = this.globalHitBoxes.some(hitBox => hitBox.vital && hitBox.readjusted);
+        let crashed = this.globalHitBoxes.some(hitBox => (hitBox.vital || this.damagedEnd > this.age) && hitBox.readjusted);
 
         for (const water of this.world.bucket('water')) {
             if (this.y >= water.y) {

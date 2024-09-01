@@ -330,7 +330,6 @@ hardMountains = (world) => {
     }
 
     prisoner(world, 1150);
-    prisoner(world, 1150);
     prisoner(world, 4750);
 
     return promise(world)
